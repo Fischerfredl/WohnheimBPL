@@ -20,3 +20,8 @@ Unterwettbewerb:
 Spiel:
 -SiegerID ist not null, wenn Spiel gespielt
 -Drei Typen: Turnnierspiel für Unterwb.modus = 'Turnier'; Ligaspiel für 'liga; KOspiel für 'ko'
+
+Funktionen:
+teamtabelle(Team, Spiele, Treffer, Kassiert, Differenz, G, V, OTS, OTN, Punkte)
+spielertabelle(Spieler, Treffer, Spiele, Schnitt)
+spieltag(Erg1, T1, T1Tref, T2Tref, T2, Erg2)
