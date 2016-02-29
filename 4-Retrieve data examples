@@ -1,0 +1,3 @@
+SELECT * FROM teamtabelle(3, 20) ORDER BY Punkte DESC, Differenz DESC, Treffer DESC, Team ASC;
+SELECT * FROM spielertabelle(3, 20) ORDER BY Treffer DESC, Schnitt DESC, Spieler ASC;
+SELECT * FROM spieltag(3, 1);
