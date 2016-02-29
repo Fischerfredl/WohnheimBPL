@@ -1,6 +1,6 @@
 static void Main(string[] args)
         {
-        		///Open Connection
+        ///Open Connection
             SqlConnection myConnection = new SqlConnection("user id=sa;password=Alfi2008;Data Source=localhost;Trusted_Connection=yes;database=Bierpongliga;connection timeout=10");
             try
             {
@@ -12,7 +12,7 @@ static void Main(string[] args)
                 Console.WriteLine(e.ToString());
             }
 
-						///Data retrieval
+	///Data retrieval
             try
             {
                 SqlDataReader myReader = null;
@@ -40,11 +40,11 @@ static void Main(string[] args)
                 Console.WriteLine(e.ToString());
             }
 
-						///Data manipulation
+	///Data manipulation
             SqlCommand myCommand = new SqlCommand("INSERT INTO table(Column1, Column2) VALUES ('string', 1)", myConnection);
             myCommand.ExecuteNonQuery();
 
-						///Close connection
+	///Close connection
             try
             {
                 myConnection.Close();
