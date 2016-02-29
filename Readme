@@ -8,9 +8,11 @@ Unterwettbewerb (UnterwbID, WbID, modus, OTN)
 Spiel (SpielID, UnterwbID, Team1ID, Team2ID, SiegerID, Gewertet)
 Turnierspiel (SpielID, Becherübrig)
 Ligaspiel (SpielID, Spieltag, Spieler1ID, Spieler2ID, Spieler3ID, Spieler4ID, sp1tref, sp2tref, sp3tref, sp4tref, T1tref, T2tref, T1Strafbecher, T2Strafbecher)
+##Ligaspiel (SpielID, Spieltag) und neue Tabelle LigaSpieler(SpielerID, spTref, Strafbecher) seperat, spart man sich evtl n bisschen code
+##sparst dir vllt auch n bisschen code in der Fkt "spielertabelle"
 KOspiel (SpielID, NFWinnerID, NFLoserID, Bestofwhat, T1Erg, T2Erg)
-
 Teilgenommen (TeamID, SpielerID, UnterwbID)
+##wird "Teilgenommen" manuell eingegeben?
 
 Beschreibung:
 Spieler, Teams und Wettbewerbe verknüpft in Teilgenommen.
