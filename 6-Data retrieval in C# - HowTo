@@ -1,7 +1,7 @@
 static void Main(string[] args)
         {
         ///Open Connection
-            SqlConnection myConnection = new SqlConnection("user id=sa;password=Alfi2008;Data Source=localhost;Trusted_Connection=yes;database=Bierpongliga;connection timeout=10");
+            SqlConnection myConnection = new SqlConnection("user id=sa;password=****;Data Source=localhost;Trusted_Connection=yes;database=Bierpongliga;connection timeout=10");
             try
             {
                 myConnection.Open();
