@@ -41,8 +41,8 @@ static void Main(string[] args)
             }
 
 	///Data manipulation
-            SqlCommand myCommand = new SqlCommand("INSERT INTO table(Column1, Column2) VALUES ('string', 1)", myConnection);
-            myCommand.ExecuteNonQuery();
+            SqlCommand myCommand2 = new SqlCommand("INSERT INTO table(Column1, Column2) VALUES ('string', 1)", myConnection);
+            myCommand2.ExecuteNonQuery();
 
 	///Close connection
             try
