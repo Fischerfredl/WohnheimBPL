@@ -1,3 +1,16 @@
+DROP TABLE IF EXISTS Teilgenommen;
+DROP TABLE IF EXISTS KOSpiel;
+DROP TABLE IF EXISTS Ligaspiel;
+DROP TABLE IF EXISTS Turnierspiel;
+DROP TABLE IF EXISTS Spiel;
+DROP TABLE IF EXISTS Unterwettbewerb;
+DROP TABLE IF EXISTS Wettbewerb;
+DROP TABLE IF EXISTS Team;
+DROP TABLE IF EXISTS Spieler;
+DROP PROCEDURE IF EXISTS teamtabelle;
+DROP PROCEDURE IF EXISTS spielertabelle;
+DROP PROCEDURE IF EXISTS spieltag;
+
 CREATE TABLE Spieler (
 	SpielerID int NOT NULL PRIMARY KEY,
 	Name varchar(20),
@@ -23,7 +36,7 @@ CREATE TABLE Unterwettbewerb (
 	OTN varchar(3) NOT NULL CHECK (OTN = 'ein' OR OTN = 'aus'),
 	Start date NOT NULL,
 	Ende date,
-    CONSTRAINT fk_WbUnterwb FOREIGN KEY (WbID) REFERENCES  Wettbewerb(WbID)
+  	CONSTRAINT fk_WbUnterwb FOREIGN KEY (WbID) REFERENCES  Wettbewerb(WbID)
 );
 
 CREATE TABLE Spiel (
