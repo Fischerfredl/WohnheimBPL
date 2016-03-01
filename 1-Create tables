@@ -12,7 +12,7 @@ CREATE TABLE Team (
 
 CREATE TABLE Wettbewerb (
 	WbID int NOT NULL PRIMARY KEY,
-	Name varchar(40) NOT NULL UNIQUE,
+	Name varchar(40) NOT NULL UNIQUE
 );
 
 CREATE TABLE Unterwettbewerb (
