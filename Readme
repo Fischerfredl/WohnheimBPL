@@ -2,10 +2,10 @@ Tabellen:
 Spieler (SpielerID, Name, Vorname, Nickname)
 Team (TeamID, Name)
 
-Wettbewerb (WbID, Name, Start)
-Unterwettbewerb (UnterwbID, WbID, modus, OTN)
+Wettbewerb (WbID, Name)
+Unterwettbewerb (UnterwbID, WbID, modus, OTN, Start, Ende)
 
-Spiel (SpielID, UnterwbID, Team1ID, Team2ID, SiegerID, Gewertet)
+Spiel (SpielID, UnterwbID, Team1ID, Team2ID, SiegerID, Gewertet, Datum)
 Turnierspiel (SpielID, Becherübrig)
 Ligaspiel (SpielID, Spieltag, Spieler1ID, Spieler2ID, Spieler3ID, Spieler4ID, sp1tref, sp2tref, sp3tref, sp4tref, T1tref, T2tref, T1Strafbecher, T2Strafbecher)
 KOspiel (SpielID, NFWinnerID, NFLoserID, Bestofwhat, T1Erg, T2Erg)
