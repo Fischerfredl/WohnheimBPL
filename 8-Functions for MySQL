@@ -14,42 +14,42 @@ SUM(CASE WHEN Treffer = 5 AND Kassiert = 6 THEN 1 ELSE 0 END) AS OTN,
 SUM(CASE WHEN Treffer = 6 AND Kassiert < 5 THEN 3 WHEN Treffer = 6 AND Kassiert = 5 THEN 2 WHEN Treffer = 5 AND Kassiert = 6 THEN 1 ELSE 0 END) AS Punkte 
 FROM 
 (SELECT DISTINCT TeamID FROM Teilgenommen WHERE Teilgenommen.UnterwbID = var_Unterwb) AS t2 Left Join
-((SELECT Spiel.SpielID, Team1ID TeamID, T1Tref Treffer, T2Tref Kassiert, Spiel.UnterwbID, Spiel.SiegerID, Ligaspiel.Spieltag, Spiel.Gewertet FROM Ligaspiel INNER JOIN Spiel ON Ligaspiel.SpielID = Spiel.SpielID WHERE Spiel.SiegerID IS NOT NULL AND Spiel.Gewertet = 1 AND Spiel.UnterwbID = var_UnterwbID AND Spieltag <= var_Spieltag) 
+((SELECT Spiel.SpielID, Team1ID TeamID, T1Tref Treffer, T2Tref Kassiert, Spiel.UnterwbID, Spiel.SiegerID, Ligaspiel.Spieltag, Spiel.Gewertet FROM Ligaspiel INNER JOIN Spiel ON Ligaspiel.SpielID = Spiel.SpielID WHERE Spiel.SiegerID IS NOT NULL AND Spiel.Gewertet = 1 AND Spiel.UnterwbID = var_Unterwb AND Spieltag <= var_Spieltag) 
 UNION 
-(SELECT Spiel.SpielID, Team2ID TeamID, T2Tref Treffer, T1Tref Kassiert, Spiel.UnterwbID, Spiel.SiegerID, Ligaspiel.Spieltag, Spiel.Gewertet FROM Ligaspiel INNER JOIN Spiel ON Ligaspiel.SpielID = Spiel.SpielID WHERE Spiel.SiegerID IS NOT NULL AND Spiel.Gewertet = 1 AND Spiel.UnterwbID = var_UnterwbID AND Spieltag <= var_Spieltag)) AS t1
+(SELECT Spiel.SpielID, Team2ID TeamID, T2Tref Treffer, T1Tref Kassiert, Spiel.UnterwbID, Spiel.SiegerID, Ligaspiel.Spieltag, Spiel.Gewertet FROM Ligaspiel INNER JOIN Spiel ON Ligaspiel.SpielID = Spiel.SpielID WHERE Spiel.SiegerID IS NOT NULL AND Spiel.Gewertet = 1 AND Spiel.UnterwbID = var_Unterwb AND Spieltag <= var_Spieltag)) AS t1
 ON t2.TeamID = t1.TeamID
 GROUP BY t2.TeamID
 ORDER BY Punkte DESC, Differenz DESC, Treffer DESC, Team ASC;
 END
 //
 
-CREATE PROCEDURE spieltag(var_Unterwb INT, var_spieltag INT) 
+CREATE PROCEDURE spieltag(var_Unterwb INT, var_Spieltag INT) 
 BEGIN
 SELECT (SELECT CASE WHEN T1Tref = 6 THEN CASE WHEN T2Tref = 5 THEN 'OTS' ELSE 'G' END ELSE CASE WHEN T1Tref = 5 THEN 'OTN' ELSE 'V' END END) AS Erg1, 
 (SELECT Name FROM Team WHERE Team.TeamID = Spiel.Team1ID) AS T1, 
 T1Tref, T2Tref,
 (SELECT Name From Team WHERE Team.TeamID = Spiel.Team2ID) AS T2, 
 (SELECT CASE WHEN T2Tref = 6 THEN CASE WHEN T1Tref = 5 THEN 'OTS' ELSE 'G' END ELSE CASE WHEN T2Tref = 5 THEN 'OTN' ELSE 'V' END END) AS Erg2
-FROM Ligaspiel Inner Join Spiel ON Ligaspiel.SpielID = Spiel.SpielID WHERE Spieltag = var_spieltag AND UnterwbID = var_Unterwb;
+FROM Ligaspiel Inner Join Spiel ON Ligaspiel.SpielID = Spiel.SpielID WHERE Spieltag = var_Spieltag AND UnterwbID = var_Unterwb;
 END
 //
 
-CREATE PROCEDURE spielertabelle(var_UnterwbID INT, var_Spieltag INT) 
+CREATE PROCEDURE spielertabelle(var_Unterwb INT, var_Spieltag INT) 
 BEGIN
 SELECT (SELECT Nickname FROM Spieler WHERE Spieler.SpielerID = t2.SpielerID) AS Spieler, 
 (SELECT CASE WHEN SUM(Treffer) IS NULL THEN 0 ELSE SUM(Treffer) END) AS Treffer,
 SUM(CASE WHEN t2.SpielerID = t1.SpielerID THEN 1 ELSE 0 END) Spiele,
 (SELECT CASE WHEN COUNT(t1.SpielerID) = 0 THEN 0 ELSE (SELECT CAST((CAST(SUM(Treffer) AS DECIMAL)/COUNT(t1.SpielerID)) AS DECIMAL(3, 2))) END) AS Schnitt
 FROM
-(SELECT DISTINCT SpielerID FROM Teilgenommen WHERE Teilgenommen.UnterwbID = var_UnterwbID) AS t2 LEFT JOIN
+(SELECT DISTINCT SpielerID FROM Teilgenommen WHERE Teilgenommen.UnterwbID = var_Unterwb) AS t2 LEFT JOIN
 (
-(SELECT Spiel.SpielID, Spieler1ID SpielerID, Ligaspiel.Sp1tref Treffer, Spiel.UnterwbID, Ligaspiel.Spieltag FROM Ligaspiel INNER JOIN Spiel ON Ligaspiel.SpielID = Spiel.SpielID WHERE Spiel.SiegerID IS NOT NULL AND Spiel.Gewertet = 1 AND Spiel.UnterwbID = var_UnterwbID AND Spieltag <= var_Spieltag) 
+(SELECT Spiel.SpielID, Spieler1ID SpielerID, Ligaspiel.Sp1tref Treffer, Spiel.UnterwbID, Ligaspiel.Spieltag FROM Ligaspiel INNER JOIN Spiel ON Ligaspiel.SpielID = Spiel.SpielID WHERE Spiel.SiegerID IS NOT NULL AND Spiel.Gewertet = 1 AND Spiel.UnterwbID = var_Unterwb AND Spieltag <= var_Spieltag) 
 UNION
-(SELECT Spiel.SpielID, Spieler2ID SpielerID, Ligaspiel.Sp2tref Treffer, Spiel.UnterwbID, Ligaspiel.Spieltag FROM Ligaspiel INNER JOIN Spiel ON Ligaspiel.SpielID = Spiel.SpielID WHERE Spiel.SiegerID IS NOT NULL AND Spiel.Gewertet = 1 AND Spiel.UnterwbID = var_UnterwbID AND Spieltag <= var_Spieltag) 
+(SELECT Spiel.SpielID, Spieler2ID SpielerID, Ligaspiel.Sp2tref Treffer, Spiel.UnterwbID, Ligaspiel.Spieltag FROM Ligaspiel INNER JOIN Spiel ON Ligaspiel.SpielID = Spiel.SpielID WHERE Spiel.SiegerID IS NOT NULL AND Spiel.Gewertet = 1 AND Spiel.UnterwbID = var_Unterwb AND Spieltag <= var_Spieltag) 
 UNION
-(SELECT Spiel.SpielID, Spieler3ID SpielerID, Ligaspiel.Sp3tref Treffer, Spiel.UnterwbID, Ligaspiel.Spieltag FROM Ligaspiel INNER JOIN Spiel ON Ligaspiel.SpielID = Spiel.SpielID WHERE Spiel.SiegerID IS NOT NULL AND Spiel.Gewertet = 1 AND Spiel.UnterwbID = var_UnterwbID AND Spieltag <= var_Spieltag) 
+(SELECT Spiel.SpielID, Spieler3ID SpielerID, Ligaspiel.Sp3tref Treffer, Spiel.UnterwbID, Ligaspiel.Spieltag FROM Ligaspiel INNER JOIN Spiel ON Ligaspiel.SpielID = Spiel.SpielID WHERE Spiel.SiegerID IS NOT NULL AND Spiel.Gewertet = 1 AND Spiel.UnterwbID = var_Unterwb AND Spieltag <= var_Spieltag) 
 UNION
-(SELECT Spiel.SpielID, Spieler4ID SpielerID, Ligaspiel.Sp4tref Treffer, Spiel.UnterwbID, Ligaspiel.Spieltag FROM Ligaspiel INNER JOIN Spiel ON Ligaspiel.SpielID = Spiel.SpielID WHERE Spiel.SiegerID IS NOT NULL AND Spiel.Gewertet = 1 AND Spiel.UnterwbID = var_UnterwbID AND Spieltag <= var_Spieltag)
+(SELECT Spiel.SpielID, Spieler4ID SpielerID, Ligaspiel.Sp4tref Treffer, Spiel.UnterwbID, Ligaspiel.Spieltag FROM Ligaspiel INNER JOIN Spiel ON Ligaspiel.SpielID = Spiel.SpielID WHERE Spiel.SiegerID IS NOT NULL AND Spiel.Gewertet = 1 AND Spiel.UnterwbID = var_Unterwb AND Spieltag <= var_Spieltag)
 ) AS t1
 ON t1.SpielerID = t2.SpielerID
 GROUP BY t2.SpielerID
