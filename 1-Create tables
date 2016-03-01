@@ -22,7 +22,7 @@ CREATE TABLE Unterwettbewerb (
 	Modus varchar(7) NOT NULL CHECK (Modus = 'turnier' OR Modus = 'liga' OR Modus = 'ko'),
 	OTN varchar(3) NOT NULL CHECK (OTN = 'ein' OR OTN = 'aus'),
 	Start date NOT NULL,
-	End date
+	Ende date
 );
 
 CREATE TABLE Spiel (
