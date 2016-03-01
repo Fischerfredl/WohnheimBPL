@@ -103,7 +103,7 @@ INSERT INTO  Wettbewerb(WbID, Name) VALUES
 (2, 'SS 15'),
 (3, 'WS 15/16');
 
-INSERT INTO Unterwettbewerb(UnterwbID, WbID, Name, Modus, OTN, Start, End) VALUES
+INSERT INTO Unterwettbewerb(UnterwbID, WbID, Name, Modus, OTN, Start, Ende) VALUES
 (1, 1, '14/15 liga', 'liga', 'ein', '2014-11-30', '2015-02-01'),
 (2, 2, '15 liga', 'liga', 'ein', '2015-04-30', '2015-07-14'),
 (3, 3, '15/16 REL', 'liga', 'ein', '2015-11-01', '2015-12-22'),
