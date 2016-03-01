@@ -13,7 +13,6 @@ CREATE TABLE Team (
 CREATE TABLE Wettbewerb (
 	WbID int NOT NULL PRIMARY KEY,
 	Name varchar(40) NOT NULL UNIQUE,
-	Start date
 );
 
 CREATE TABLE Unterwettbewerb (
@@ -22,6 +21,8 @@ CREATE TABLE Unterwettbewerb (
 	Name varchar(40) UNIQUE,
 	Modus varchar(7) NOT NULL CHECK (Modus = 'turnier' OR Modus = 'liga' OR Modus = 'ko'),
 	OTN varchar(3) NOT NULL CHECK (OTN = 'ein' OR OTN = 'aus'),
+	Start date NOT NULL,
+	Ende date
 );
 
 CREATE TABLE Spiel (
@@ -31,6 +32,7 @@ CREATE TABLE Spiel (
 	Team2ID int FOREIGN KEY REFERENCES Team(TeamID),
 	SiegerID int FOREIGN KEY REFERENCES Team(TeamID),
 	Gewertet int NOT NULL CHECK(Gewertet = 0 OR Gewertet = 1) DEFAULT 1,
+	Datum date
 );
 
 CREATE TABLE Turnierspiel (
