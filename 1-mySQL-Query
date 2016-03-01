@@ -1,3 +1,108 @@
+DROP TABLE IF EXISTS Teilgenommen;
+DROP TABLE IF EXISTS KOSpiel;
+DROP TABLE IF EXISTS Ligaspiel;
+DROP TABLE IF EXISTS Turnierspiel;
+DROP TABLE IF EXISTS Spiel;
+DROP TABLE IF EXISTS Unterwettbewerb;
+DROP TABLE IF EXISTS Wettbewerb;
+DROP TABLE IF EXISTS Team;
+DROP TABLE IF EXISTS Spieler;
+DROP PROCEDURE IF EXISTS teamtabelle;
+DROP PROCEDURE IF EXISTS spielertabelle;
+DROP PROCEDURE IF EXISTS spieltag;
+
+CREATE TABLE Spieler (
+	SpielerID int NOT NULL PRIMARY KEY,
+	Name varchar(20),
+	Vorname varchar(20) NOT NULL,
+	Nickname varchar(20) UNIQUE
+);
+
+CREATE TABLE Team (
+	TeamID int NOT NULL PRIMARY KEY,
+	Name varchar(40) NOT NULL UNIQUE
+);
+
+CREATE TABLE Wettbewerb (
+	WbID int NOT NULL PRIMARY KEY,
+	Name varchar(40) NOT NULL UNIQUE
+);
+
+CREATE TABLE Unterwettbewerb (
+	UnterwbID int NOT NULL PRIMARY KEY,
+	WbID int NOT NULL,
+	Name varchar(40) UNIQUE,
+	Modus varchar(7) NOT NULL CHECK (Modus = 'turnier' OR Modus = 'liga' OR Modus = 'ko'),
+	OTN varchar(3) NOT NULL CHECK (OTN = 'ein' OR OTN = 'aus'),
+	Start date NOT NULL,
+	Ende date,
+  	CONSTRAINT fk_WbUnterwb FOREIGN KEY (WbID) REFERENCES  Wettbewerb(WbID)
+);
+
+CREATE TABLE Spiel (
+	SpielID int NOT NULL PRIMARY KEY,
+	UnterwbID int NOT NULL,
+	Team1ID int,
+	Team2ID int,
+	SiegerID int,
+	Gewertet int NOT NULL DEFAULT 1,
+	Datum date,
+    CONSTRAINT fk_SpielUnterwb FOREIGN KEY (UnterwbID) REFERENCES Unterwettbewerb(UnterwbID),
+    CONSTRAINT fk_SpielTeam1 FOREIGN KEY (Team1ID) REFERENCES Team(TeamID),
+    CONSTRAINT fk_SpielTeam2 FOREIGN KEY (Team2ID) REFERENCES Team(TeamID),
+    CONSTRAINT fk_SpielSieger FOREIGN KEY (SiegerID) REFERENCES Team(TeamID),
+    CONSTRAINT chk_Gewertet CHECK(Gewertet = 0 OR Gewertet = 1)
+);
+
+CREATE TABLE Turnierspiel (
+	SpielID int NOT NULL,
+	Becherueber int CHECK (Becherueber <= 6),
+    CONSTRAINT fk_Turnierspiel FOREIGN KEY (SpielID) REFERENCES Spiel(SpielID)
+);
+
+CREATE TABLE Ligaspiel (
+	SpielID int NOT NULL,
+	Spieltag int,
+	Spieler1ID int,
+	Spieler2ID int,
+	Spieler3ID int,
+	Spieler4ID int,
+	Sp1tref int CHECK (Sp1tref <= 6),
+	Sp2tref int CHECK (Sp2tref <= 6),
+	Sp3tref int CHECK (Sp3tref <= 6),
+	Sp4tref int CHECK (Sp4tref <= 6),
+	T1tref int CHECK (T1tref <= 6),
+	T2tref int CHECK (T2tref <= 6),
+	T1Strafe int CHECK (T1Strafe <= 6),
+	T2Strafe int CHECK (T2Strafe <= 6),
+    CONSTRAINT fk_Ligaspiel FOREIGN KEY (SpielID) REFERENCES Spiel(SpielID),
+    CONSTRAINT fk_LigaSpieler1 FOREIGN KEY (Spieler1ID) REFERENCES Spieler(SpielerID),
+    CONSTRAINT fk_LigaSpieler2 FOREIGN KEY (Spieler2ID) REFERENCES Spieler(SpielerID),
+    CONSTRAINT fk_LigaSpieler3 FOREIGN KEY (Spieler3ID) REFERENCES Spieler(SpielerID),
+    CONSTRAINT fk_LigaSpieler4 FOREIGN KEY (Spieler4ID) REFERENCES Spieler(SpielerID)    
+);
+
+CREATE TABLE KOspiel (
+	SpielID int NOT NULL,
+	NFWinnerID int,
+	NFLoserID int,
+	Bestofwhat int DEFAULT 1,
+	T1Erg int,
+	T2Erg int,
+    CONSTRAINT fk_KOspiel FOREIGN KEY (SpielID) REFERENCES Spiel(SpielID),
+    CONSTRAINT fk_NWwin FOREIGN KEY (NFWinnerID) REFERENCES Spiel(SpielID),
+    CONSTRAINT fk_NFLos FOREIGN KEY (NFLoserID) REFERENCES Spiel(SpielID)
+);
+
+CREATE TABLE Teilgenommen (
+	UnterwbID int NOT NULL,
+	TeamID int NOT NULL,
+	SpielerID int NOT NULL, 
+    CONSTRAINT fk_TGUnterwb FOREIGN KEY (UnterwbID) REFERENCES Unterwettbewerb(UnterwbID),
+    CONSTRAINT fk_TGTeam FOREIGN KEY (TeamID) REFERENCES Team(TeamID),
+	CONSTRAINT fk_TGSpieler FOREIGN KEY (SpielerID) REFERENCES Spieler(SpielerID)
+);                                      
+
 INSERT INTO Team(TeamID, Name) VALUES
 (1, 'Fuckin Schnitzel'),
 (2, 'Bauernpower'),
@@ -630,3 +735,64 @@ INSERT INTO Kospiel(SpielID, NFWinnerID, NFLoserID, Bestofwhat, T1Erg, T2Erg) VA
 (188, 190, null, 3, 1, 2),
 (189, 190, null, 3, 2, 0),
 (190, null, null, 5, 3, 0);
+
+delimiter //
+
+CREATE PROCEDURE teamtabelle(var_Unterwb INT, var_Spieltag INT) 
+BEGIN
+SELECT (SELECT Name FROM Team WHERE Team.TeamID = t2.TeamID) As Team, 
+SUM(CASE WHEN t2.TeamID = t1.TeamID THEN 1 ELSE 0 END) Spiele, 
+SUM(CASE WHEN Treffer IS NULL THEN 0 ELSE Treffer END) Treffer, 
+SUM(CASE WHEN Kassiert IS NULL THEN 0 ELSE Kassiert END) Kassiert, 
+SUM(CASE WHEN Treffer IS NULL THEN CASE WHEN Kassiert IS NULL THEN 0 ELSE 0-Kassiert END ELSE CASE WHEN Kassiert IS NULL THEN Treffer ELSE Treffer-Kassiert END END) AS Differenz,
+SUM(CASE WHEN Treffer = 6 AND Kassiert < 5 THEN 1 ELSE 0 END) AS G,
+SUM(CASE WHEN Treffer < 5 AND Kassiert = 6 THEN 1 ELSE 0 END) AS V,
+SUM(CASE WHEN Treffer = 6 AND Kassiert = 5 THEN 1 ELSE 0 END) AS OTS,
+SUM(CASE WHEN Treffer = 5 AND Kassiert = 6 THEN 1 ELSE 0 END) AS OTN, 
+SUM(CASE WHEN Treffer = 6 AND Kassiert < 5 THEN 3 WHEN Treffer = 6 AND Kassiert = 5 THEN 2 WHEN Treffer = 5 AND Kassiert = 6 THEN 1 ELSE 0 END) AS Punkte 
+FROM 
+(SELECT DISTINCT TeamID FROM Teilgenommen WHERE Teilgenommen.UnterwbID = var_Unterwb) AS t2 Left Join
+((SELECT Spiel.SpielID, Team1ID TeamID, T1Tref Treffer, T2Tref Kassiert, Spiel.UnterwbID, Spiel.SiegerID, Ligaspiel.Spieltag, Spiel.Gewertet FROM Ligaspiel INNER JOIN Spiel ON Ligaspiel.SpielID = Spiel.SpielID WHERE Spiel.SiegerID IS NOT NULL AND Spiel.Gewertet = 1 AND Spiel.UnterwbID = var_Unterwb AND Spieltag <= var_Spieltag) 
+UNION 
+(SELECT Spiel.SpielID, Team2ID TeamID, T2Tref Treffer, T1Tref Kassiert, Spiel.UnterwbID, Spiel.SiegerID, Ligaspiel.Spieltag, Spiel.Gewertet FROM Ligaspiel INNER JOIN Spiel ON Ligaspiel.SpielID = Spiel.SpielID WHERE Spiel.SiegerID IS NOT NULL AND Spiel.Gewertet = 1 AND Spiel.UnterwbID = var_Unterwb AND Spieltag <= var_Spieltag)) AS t1
+ON t2.TeamID = t1.TeamID
+GROUP BY t2.TeamID
+ORDER BY Punkte DESC, Differenz DESC, Treffer DESC, Team ASC;
+END
+//
+
+CREATE PROCEDURE spieltag(var_Unterwb INT, var_Spieltag INT) 
+BEGIN
+SELECT (SELECT CASE WHEN T1Tref = 6 THEN CASE WHEN T2Tref = 5 THEN 'OTS' ELSE 'G' END ELSE CASE WHEN T1Tref = 5 THEN 'OTN' ELSE 'V' END END) AS Erg1, 
+(SELECT Name FROM Team WHERE Team.TeamID = Spiel.Team1ID) AS T1, 
+T1Tref, T2Tref,
+(SELECT Name From Team WHERE Team.TeamID = Spiel.Team2ID) AS T2, 
+(SELECT CASE WHEN T2Tref = 6 THEN CASE WHEN T1Tref = 5 THEN 'OTS' ELSE 'G' END ELSE CASE WHEN T2Tref = 5 THEN 'OTN' ELSE 'V' END END) AS Erg2
+FROM Ligaspiel Inner Join Spiel ON Ligaspiel.SpielID = Spiel.SpielID WHERE Spieltag = var_Spieltag AND UnterwbID = var_Unterwb;
+END
+//
+
+CREATE PROCEDURE spielertabelle(var_Unterwb INT, var_Spieltag INT) 
+BEGIN
+SELECT (SELECT Nickname FROM Spieler WHERE Spieler.SpielerID = t2.SpielerID) AS Spieler, 
+(SELECT CASE WHEN SUM(Treffer) IS NULL THEN 0 ELSE SUM(Treffer) END) AS Treffer,
+SUM(CASE WHEN t2.SpielerID = t1.SpielerID THEN 1 ELSE 0 END) Spiele,
+(SELECT CASE WHEN COUNT(t1.SpielerID) = 0 THEN 0 ELSE (SELECT CAST((CAST(SUM(Treffer) AS DECIMAL)/COUNT(t1.SpielerID)) AS DECIMAL(3, 2))) END) AS Schnitt
+FROM
+(SELECT DISTINCT SpielerID FROM Teilgenommen WHERE Teilgenommen.UnterwbID = var_Unterwb) AS t2 LEFT JOIN
+(
+(SELECT Spiel.SpielID, Spieler1ID SpielerID, Ligaspiel.Sp1tref Treffer, Spiel.UnterwbID, Ligaspiel.Spieltag FROM Ligaspiel INNER JOIN Spiel ON Ligaspiel.SpielID = Spiel.SpielID WHERE Spiel.SiegerID IS NOT NULL AND Spiel.Gewertet = 1 AND Spiel.UnterwbID = var_Unterwb AND Spieltag <= var_Spieltag) 
+UNION
+(SELECT Spiel.SpielID, Spieler2ID SpielerID, Ligaspiel.Sp2tref Treffer, Spiel.UnterwbID, Ligaspiel.Spieltag FROM Ligaspiel INNER JOIN Spiel ON Ligaspiel.SpielID = Spiel.SpielID WHERE Spiel.SiegerID IS NOT NULL AND Spiel.Gewertet = 1 AND Spiel.UnterwbID = var_Unterwb AND Spieltag <= var_Spieltag) 
+UNION
+(SELECT Spiel.SpielID, Spieler3ID SpielerID, Ligaspiel.Sp3tref Treffer, Spiel.UnterwbID, Ligaspiel.Spieltag FROM Ligaspiel INNER JOIN Spiel ON Ligaspiel.SpielID = Spiel.SpielID WHERE Spiel.SiegerID IS NOT NULL AND Spiel.Gewertet = 1 AND Spiel.UnterwbID = var_Unterwb AND Spieltag <= var_Spieltag) 
+UNION
+(SELECT Spiel.SpielID, Spieler4ID SpielerID, Ligaspiel.Sp4tref Treffer, Spiel.UnterwbID, Ligaspiel.Spieltag FROM Ligaspiel INNER JOIN Spiel ON Ligaspiel.SpielID = Spiel.SpielID WHERE Spiel.SiegerID IS NOT NULL AND Spiel.Gewertet = 1 AND Spiel.UnterwbID = var_Unterwb AND Spieltag <= var_Spieltag)
+) AS t1
+ON t1.SpielerID = t2.SpielerID
+GROUP BY t2.SpielerID
+ORDER BY Treffer DESC, Schnitt DESC, Spieler ASC;
+END
+//
+
+delimiter ;
