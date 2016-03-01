@@ -1,3 +1,16 @@
+DROP TABLE Teilgenommen;
+DROP TABLE KOSpiel;
+DROP TABLE Ligaspiel;
+DROP TABLE Turnierspiel;
+DROP TABLE Spiel;
+DROP TABLE Unterwettbewerb;
+DROP TABLE Wettbewerb;
+DROP TABLE Team;
+DROP TABLE Spieler;
+DROP FUNCTION teamtabelle;
+DROP FUNCTION spielertabelle;
+DROP FUNCTION spieltag;
+
 CREATE TABLE Spieler (
 	SpielerID int NOT NULL PRIMARY KEY,
 	Name varchar(20),
