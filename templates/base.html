@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% if title %}
+    <title>{{ title }} - Testing Index</title>
+     {% else %}
+    <title>Welcome</title>
+    {% endif %}
+</head>
+<body>
+    <div>Microblog:
+        <a href="/index">Home</a>
+        {% if not session.logged_in %}
+        <a href="{{ url_for('login') }}">login</a>
+        {% else %}
+        <a href="{{ url_for('logout') }}">logout</a>
+        {% endif %}
+        <a href="{{ url_for('tabellen') }}">Tabellen</a>
+    <hr>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>{% for message in messages %}<li>{{ message }}{% endfor %}</li></ul>
+        {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+</body>
+</html>

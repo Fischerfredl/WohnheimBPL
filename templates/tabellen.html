@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{%  block content %}
+    <h1>Spielertabelle</h1>
+
+        <table border="1">
+			<tr>
+				<th>ID</th>
+                <th>Nickname</th>
+				<th>Vorname</th>
+				<th>Nachname</th>
+			</tr>
+            {% for sp in spieler %}
+			<tr>
+				<td>{{ sp.ID }}</td>
+				<td>{{ sp.Nickname }}</td>
+				<td>{{ sp.Vorname }}</td>
+                <td>{{ sp.Nachname }}</td>
+			</tr>
+		    {% endfor %}
+		</table>
+    <h1>Teamtabelle</h1>
+
+        <table border="1">
+			<tr>
+				<th>ID</th>
+                <th>Name</th>
+			</tr>
+            {% for t in teams %}
+			<tr>
+				<td>{{ t.ID }}</td>
+				<td>{{ t.Name }}</td>
+			</tr>
+		    {% endfor %}
+		</table>
+{% endblock %}
