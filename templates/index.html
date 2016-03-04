@@ -1,7 +1,21 @@
 {% extends "base.html" %}
 {%  block content %}
-    <h1>Hello, {{ user.nickname }}!</h1>
-    {% for post in posts %}
-    <div><p>{{ post.author.nickname }} says: <b>{{ post.body }}  {{ post.test }}</b></p></div>
+    <h1>Wähle einen Unterwettbewerb</h1>
+
+    <table>
+        <tr>
+            <th>Wettbeweb</th>
+            <th>Unterwettbewerb</th>
+            <th>Start</th>
+            <th>Ende</th>
+        </tr>
+        {% for wb in table %}
+            <tr>
+                <td>{{ wb.wbname }}</td>
+                <td><a href="{{ wb.id }}/1">{{ wb.unterwb }}</a></td>
+                <td>{{ wb.start }}</td>
+                <td>{{ wb.ende }}</td>
+            </tr>
     {% endfor %}
+    </table>
 {% endblock %}

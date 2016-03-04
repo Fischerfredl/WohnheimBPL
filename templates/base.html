@@ -11,12 +11,13 @@
 <body>
     <div>Microblog:
         <a href="/index">Home</a>
+        <a href="{{ url_for('spieler') }}">Spieler</a>
+        <a href="{{ url_for('teams') }}">Teams</a>
         {% if not session.logged_in %}
         <a href="{{ url_for('login') }}">login</a>
         {% else %}
         <a href="{{ url_for('logout') }}">logout</a>
         {% endif %}
-        <a href="{{ url_for('tabellen') }}">Tabellen</a>
     <hr>
     {% with messages = get_flashed_messages() %}
         {% if messages %}
