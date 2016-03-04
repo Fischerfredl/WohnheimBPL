@@ -65,8 +65,25 @@ T1Tref, T2Tref, \
 (SELECT CASE WHEN T2Tref = 6 THEN CASE WHEN T1Tref = 5 THEN 'OTS' ELSE 'G' END ELSE CASE WHEN T2Tref = 5 THEN 'OTN' ELSE 'V' END END) AS Erg2 \
 FROM Ligaspiel Inner Join Spiel ON Ligaspiel.SpielID = Spiel.SpielID WHERE Spieltag = ? AND UnterwbID = ? ", [spieltag, unterwb])
     table_st = [dict(Erg1=row[0], T1=row[1], T1tref=row[2], T2tref=row[3], T2=row[4], Erg2=row[5]) for row in cur.fetchall()]
+    cur = g.db.execute("SELECT (SELECT Name FROM Team WHERE Team.TeamID = t2.TeamID) As Team, \
+SUM(CASE WHEN t2.TeamID = t1.TeamID THEN 1 ELSE 0 END) Spiele, \
+SUM(CASE WHEN Treffer IS NULL THEN 0 ELSE Treffer END) Treffer, \
+SUM(CASE WHEN Kassiert IS NULL THEN 0 ELSE Kassiert END) Kassiert, \
+SUM(CASE WHEN Treffer IS NULL THEN 0 ELSE Treffer-Kassiert END) AS Differenz, \
+SUM(CASE WHEN Treffer = 6 AND Kassiert < 5 THEN 1 ELSE 0 END) AS G,\
+SUM(CASE WHEN Treffer < 5 AND Kassiert = 6 THEN 1 ELSE 0 END) AS V, \
+SUM(CASE WHEN Treffer = 6 AND Kassiert = 5 THEN 1 ELSE 0 END) AS OTS, \
+SUM(CASE WHEN Treffer = 5 AND Kassiert = 6 THEN 1 ELSE 0 END) AS OTN, \
+SUM(CASE WHEN Treffer = 6 AND Kassiert < 5 THEN 3 WHEN Treffer = 6 AND Kassiert = 5 THEN 2 WHEN Treffer = 5 AND Kassiert = 6 THEN 1 ELSE 0 END) AS Punkte \
+FROM \
+(SELECT DISTINCT TeamID FROM Teilgenommen WHERE Teilgenommen.UnterwbID = ?) AS t2 Left Join \
+(SELECT Spiel.SpielID, Team1ID TeamID, T1Tref Treffer, T2Tref Kassiert, Spiel.UnterwbID, Spiel.SiegerID, Ligaspiel.Spieltag, Spiel.Gewertet FROM Ligaspiel INNER JOIN Spiel ON Ligaspiel.SpielID = Spiel.SpielID WHERE Spiel.SiegerID IS NOT NULL AND Spiel.Gewertet = 1 AND Spiel.UnterwbID = ? AND Spieltag <= ? UNION SELECT Spiel.SpielID, Team2ID TeamID, T2Tref Treffer, T1Tref Kassiert, Spiel.UnterwbID, Spiel.SiegerID, Ligaspiel.Spieltag, Spiel.Gewertet FROM Ligaspiel INNER JOIN Spiel ON Ligaspiel.SpielID = Spiel.SpielID WHERE Spiel.SiegerID IS NOT NULL AND Spiel.Gewertet = 1 AND Spiel.UnterwbID = ? AND Spieltag <= ?) AS t1 \
+ON t2.TeamID = t1.TeamID \
+GROUP BY t2.TeamID \
+ORDER BY Punkte DESC, Differenz DESC, Treffer DESC, Team ASC;", [unterwb, unterwb, spieltag, unterwb, spieltag])
+    table_t = [dict(team=row[0], spiele=row[1], treffer=row[2], kassiert=row[3], diff=row[4], g=row[5], v=row[6], ots=row[7], otn=row[8], punkte=row[9])for row in cur.fetchall()]
 
-    return render_template('tabellen.html', title='Teamtabelle', max_spieltag=max_spieltag, table_st=table_st, unterwb=unterwb, spieltag=spieltag)
+    return render_template('tabellen.html', title='Teamtabelle', max_spieltag=max_spieltag, table_st=table_st, table_t=table_t, unterwb=unterwb, spieltag=spieltag)
 
 
 

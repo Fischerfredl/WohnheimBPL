@@ -64,6 +64,40 @@
         <form action="/{{ unterwb }}/{{ spieltag+1 }}">
             <input type="submit" value="Spieltag weiter" {% if spieltag == max_spieltag %}disabled{% endif %}>
         </form>
+        <table border="1">
+        <tr>
+            <th>Platz</th>
+            <th>Team</th>
+            <th>Spiele</th>
+            <th>Treffer</th>
+            <th>Kassiert</th>
+            <th>Diff</th>
+            <th>G</th>
+            <th>V</th>
+            <th>OTS</th>
+            <th>OTN</th>
+            <th>Punkte</th>
+        </tr>
+        {% set count = 1 %}
+        {% for team in table_t %}
+        <tr>
+            <td>{{ count }}</td>
+            <td>{{ team.team }}</td>
+            <td>{{ team.spiele }}</td>
+            <td>{{ team.treffer }}</td>
+            <td>{{ team.kassiert }}</td>
+            <td>{{ team.diff }}</td>
+            <td>{{ team.g }}</td>
+            <td>{{ team.v }}</td>
+            <td>{{ team.ots }}</td>
+            <td>{{ team.otn }}</td>
+            <td>{{ team.punkte }}</td>
+        </tr>
+            {% set count = count+1 %}
+        {% endfor %}
+        </table>
+<br>
+        <br>
     <table border="1">
         <tr>
             <th>Erg1</th>
