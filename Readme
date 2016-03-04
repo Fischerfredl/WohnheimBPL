@@ -6,6 +6,7 @@ Wettbewerb (WbID, Name)
 Unterwettbewerb (UnterwbID, WbID, modus, OTN, Start, Ende)
 
 Spiel (SpielID, UnterwbID, Team1ID, Team2ID, SiegerID, Gewertet, Datum)
+
 Turnierspiel (SpielID, Becherübrig)
 Ligaspiel (SpielID, Spieltag, T1Tref, T2Tref)
 Ligaspieler (SpielID, SpielerID, treffer)
