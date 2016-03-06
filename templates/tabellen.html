@@ -119,5 +119,22 @@
             </tr>
     {% endfor %}
     </table>
+        <br><br>
+        <table border="1">
+            <tr>
+				<th>Name</th>
+                <th>Treffer</th>
+				<th>Spiele</th>
+                <th>Schnitt</th>
+            </tr>
+            {% for entry in spieler_t  %}
+			<tr>
+				<td>{{ entry.name }}</td>
+				<td>{{ entry.treffer }}</td>
+				<td>{{ entry.spiele }}</td>
+                <td>{{ entry.schnitt }}</td>
+			</tr>
+		    {% endfor %}
+		</table>
     {% endif %}
 {% endblock %}

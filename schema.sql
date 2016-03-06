@@ -13,7 +13,8 @@ CREATE TABLE Spieler (
 	SpielerID int NOT NULL PRIMARY KEY,
 	Name varchar(20),
 	Vorname varchar(20) NOT NULL,
-	Nickname varchar(20) UNIQUE
+	Nickname varchar(20) UNIQUE,
+	Passwort varchar(40)
 );
 
 CREATE TABLE Team (
