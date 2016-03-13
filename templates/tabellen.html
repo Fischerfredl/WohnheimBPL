@@ -12,10 +12,10 @@
 			</tr>
             {% for entry in table %}
 			<tr>
-				<td>{{ entry.ID }}</td>
-				<td>{{ entry.Nickname }}</td>
-				<td>{{ entry.Vorname }}</td>
-                <td>{{ entry.Nachname }}</td>
+				<td>{{ entry[0] }}</td>
+				<td>{{ entry[1] }}</td>
+				<td>{{ entry[2] }}</td>
+                <td>{{ entry[3] }}</td>
 			</tr>
 		    {% endfor %}
 		</table>
@@ -119,5 +119,22 @@
             </tr>
     {% endfor %}
     </table>
+        <br><br>
+        <table border="1">
+            <tr>
+				<th>Name</th>
+                <th>Treffer</th>
+				<th>Spiele</th>
+                <th>Schnitt</th>
+            </tr>
+            {% for entry in spieler_t  %}
+			<tr>
+				<td>{{ entry.name }}</td>
+				<td>{{ entry.treffer }}</td>
+				<td>{{ entry.spiele }}</td>
+                <td>{{ entry.schnitt }}</td>
+			</tr>
+		    {% endfor %}
+		</table>
     {% endif %}
 {% endblock %}
