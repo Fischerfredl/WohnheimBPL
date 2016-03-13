@@ -2,9 +2,10 @@ import sqlite3
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
 from contextlib import closing
 from queries import *
+from hashlib import sha1
 
 # configuration
-DATABASE = 'database.db'
+DATABASE = 'C:\\Users\\alfre\\Documents\\GitHub\\WohnheimBPL\\database.db'
 DEBUG = True
 SECRET_KEY = 'development key'
 USERNAME = 'admin'
@@ -56,13 +57,18 @@ def teamtabelle(unterwb, spieltag):
 def login():
     error = None
     if request.method == 'POST':
-        if request.form['username'] != app.config['USERNAME']:
+        user = request.form['username']
+        userliste = []
+        for row in query_db("SELECT Nickname FROM Spieler"):
+            userliste.append(row[0])
+        if user not in userliste:
             error = 'Invalid username'
-        elif request.form['password'] != app.config['PASSWORD']:
+        elif sha1(request.form['password']).hexdigest() != getPassword(user):
             error = 'Invalid password'
         else:
             session['logged_in'] = True
-            flash('You were logged in')
+            session['username'] = user
+            flash('You were logged in: %s' % user)
             return redirect(url_for('index'))
     return render_template('login.html', title='Login', error=error)
 
@@ -70,15 +76,23 @@ def login():
 def anlegen():
     error = None
     if request.method =='POST':
-        if request.form['username'] not in g.db.execute("SELECT Spieler FROM Spieler").fetchall():
+        user = request.form['username']
+        password = request.form['password']
+        userliste = []
+        for row in query_db("SELECT Nickname FROM Spieler"):
+            userliste.append(row[0])
+        if user not in userliste:
             error = 'Invalid username'
-
-    return render_template('anlegen.html', error=error)
-
+        else:
+            setPassword(user, sha1(password).hexdigest())
+            flash('Password set for user %s' % user)
+            return redirect(url_for('index'))
+    return render_template('anlegen.html', title='Passwort anlegen', error=error)
 
 @app.route('/logout')
 def logout():
     session.pop('logged_in', None)
+    session.pop('username', None)
     flash('You were logged out')
     return redirect(url_for('index'))
 

@@ -12,10 +12,10 @@
 			</tr>
             {% for entry in table %}
 			<tr>
-				<td>{{ entry.ID }}</td>
-				<td>{{ entry.Nickname }}</td>
-				<td>{{ entry.Vorname }}</td>
-                <td>{{ entry.Nachname }}</td>
+				<td>{{ entry[0] }}</td>
+				<td>{{ entry[1] }}</td>
+				<td>{{ entry[2] }}</td>
+                <td>{{ entry[3] }}</td>
 			</tr>
 		    {% endfor %}
 		</table>

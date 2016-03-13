@@ -1,8 +1,13 @@
 from app import g
 
+def query_db(query, args=(), one=False):
+    cur = g.db.execute(query, args)
+    rv = cur.fetchall()
+    return (rv[0][0] if rv else None) if one else rv
+
 def getSpieler():
-    cur = g.db.execute("select SpielerID, Nickname, Vorname, Name from Spieler")
-    return [dict(ID=row[0], Nickname=row[1], Vorname=row[2], Nachname=row[3]) for row in cur.fetchall()]
+    d = query_db("select * from Spieler")
+    return d
 
 def getTeams():
     cur = g.db.execute("select TeamID, Name from Team")
@@ -47,4 +52,9 @@ GROUP BY ls.SpielerID ORDER BY treffer DESC, Spiele ASC", [unterwb, spieltag])
     return [dict(name=row[0], treffer=row[1], spiele=row[2], schnitt=round(float(row[1])/row[2], 2)) for row in cur.fetchall()]
 
 def getPassword(nickname):
-    return g.db.execute("SELECT Passwort FROM Spieler WHERE Nickname = ?", [nickname])
+    return query_db("SELECT Passwort FROM Spieler WHERE Nickname = ?", [nickname], one=True)
+
+def setPassword(nickname, password):
+    g.db.execute("UPDATE Spieler SET Passwort = ? WHERE Nickname = ?", [password, nickname])
+    g.db.commit()
+    return
