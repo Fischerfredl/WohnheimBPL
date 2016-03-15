@@ -10,6 +10,7 @@ DEBUG = True
 SECRET_KEY = 'development key'
 USERNAME = 'admin'
 PASSWORD = 'default'
+ADMINS = ['Alfred', 'Toaster']
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -39,6 +40,11 @@ def index():
     cur = g.db.execute("select uwb.UnterwbID, Wettbewerb.Name, uwb.Name, uwb.Start, uwb.Ende FROM Unterwettbewerb uwb INNER JOIN Wettbewerb ON uwb.WbID = Wettbewerb.WbID WHERE uwb.modus = 'liga'")
     table = [dict(id=row[0], wbname=row[1], unterwb=row[2], start=row[3], ende=row[4]) for row in cur.fetchall()]
     return render_template('tabellen.html', title='Wettbewerbe', table=table)
+
+@app.route('/user/<username>')
+def usersite(username):
+
+    return render_template
 
 @app.route('/Spieler')
 def spieler():
