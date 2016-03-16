@@ -3,28 +3,33 @@
 <head>
     <link rel="stylesheet" type=text/css href="{{ url_for('static', filename='style.css') }}">
     <meta charset="UTF-8">
+    {% if title %}
+    <title>{{ title }} - Testing Index</title>
+     {% else %}
     <title>Welcome</title>
+    {% endif %}
 </head>
 <body>
     <div id="header">BPL:
-        <a href="{{ url_for('home') }}">Home</a> |
-        <a href="{{ url_for('comp') }}">Wettbewerbe</a>
+        <a href="/index">Home</a> |
+        <a href="{{ url_for('login') }}">Tabellen</a>
     </div>
 
     <div id="nav">
         {% if not session.logged_in %}
-            <a href="{{ url_for('home') }}">Login</a>
+            <a href="{{ url_for('login') }}">Login</a>
         {% else %}
-            <a href="{{ url_for('home') }}">Logout</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
             <br>
             Logged in as <br>
             {{ session.username }}
             <hr>
-            <a href="{{ url_for(player, username=session.userid) }}">See Profile</a>
-
-            {% if session.username == 'admin' %}
-                <hr>
-                <a href="{{ url_for('home') }}">User anlegen</a>
+            Userbereich
+            <hr>
+            {% if session.username == 'Alfred' %}
+                <a href="{{ url_for('anlegen') }}">User anlegen</a>
+            {% else %}
+                kein Admin
             {% endif %}
         {% endif %}
     </div>

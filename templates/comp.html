@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{%  block content %}
+    <h1>This is the Competition site</h1>
+    Wähle einen Wettbewerb
+    <table border = 1>
+        <tr>
+            <th>Link</th>
+            {% for item in tablehead %}
+            <th>{{ item }}</th>
+            {% endfor %}
+        </tr>
+    {% for row in table %}
+        <tr>
+            <td><a href='{{ url_for('compsite', compid=row[0]) }}'>Link</a></td>
+            {% for item in row %}
+            <td>{{ item }}</td>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+    </table>
+{% endblock %}
