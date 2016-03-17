@@ -14,16 +14,23 @@ KOspiel (SpielID, NFWinnerID, NFLoserID, Bestofwhat, T1Erg, T2Erg)
 
 Teilgenommen (TeamID, SpielerID, UnterwbID)
 
-Beschreibung:
-Spieler, Teams und Wettbewerbe verknüpft in Teilgenommen.
-Unterwettbewerb: 
--modus: 'liga', 'turnier' oder 'ko'
--OTN: Overtime-berechnung für Punktetabelle 'ein' oder 'aus'
-Spiel:
--SiegerID ist not null, wenn Spiel gespielt
--Drei Typen: Turnnierspiel für Unterwb.modus = 'Turnier'; Ligaspiel für 'liga; KOspiel für 'ko'
+Routes mit funktionen
+'/', '/home': home() #Startseite
 
-Funktionen:
-teamtabelle(Team, Spiele, Treffer, Kassiert, Differenz, G, V, OTS, OTN, Punkte)
-spielertabelle(Spieler, Treffer, Spiele, Schnitt)
-spieltag(Erg1, T1, T1Tref, T2Tref, T2, Erg2)
+'/comp': comp() #Auswahlseite für Wettbewerbe
+'/comp/<compid>': compsite(compid) #Startseite für Wettbewerb
+'/comp/<compid>/teams': compteams(compid) #Übersicht Teams/Spieler für Wettbewerb
+'/comp/<leagueid>/<spieltag>': league(leagueid, spieltag) #Tabellenansicht für Unterwb 'leagueid'
+
+'/team/<teamid>' teamsite(teamid) #Übersichtsseite für Team
+'/player/<playerid>': playersite(playerid) #Übersichtsseite für Spieler
+'/game/<gameid>': gamesite(gameid) #Übersichtsseite für Spiel
+
+'/login': login()
+'/logout': logout()
+
+
+
+
+
+
