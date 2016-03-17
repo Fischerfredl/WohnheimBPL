@@ -5,12 +5,13 @@ from queries import *
 from hashlib import sha1
 
 # configuration
-DATABASE = 'C:\\Users\\alfre\\Documents\\GitHub\\WohnheimBPL\\database.db'
+DATABASE = 'D:\\Dateien\\Dokumente\\GitHub\\WohnheimBPL\\database.db'
 DEBUG = True
 SECRET_KEY = 'development key'
-USERNAME = 'admin'
-PASSWORD = 'default'
-ADMINS = ['Alfred', 'Toaster']
+ADMINLOGIN = 'admin'
+ADMINPASS = 'password'
+MODLOGIN = 'mod'
+MODPASSWORD = 'password'
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -24,6 +25,66 @@ def init_db():
             db.cursor().executescript(f.read())
         db.commit()
 
+@app.route('/')
+@app.route('/home')
+def home():
+    return render_template('home.html')
+
+@app.route('/comp')
+def comp():
+    table = query_db('SELECT WbID, Name FROM Wettbewerb')
+    tablehead = ['WbID', 'Name']
+    return render_template('comp.html', table=table, tablehead=tablehead)
+
+@app.route('/comp/<int:compid>')
+def compsite(compid):
+    name = query_db('SELECT name FROM Wettbewerb WHERE WbID = ?', [compid], one=True)
+    if not name:
+        return render_template('notfound.html', entity='Wettbewerb')
+
+    return render_template('compsite.html', name=name, compid=compid)
+
+@app.route('/comp/<int:compid>/teams')
+def compteams(compid):
+    compname = query_db('SELECT name FROM Wettbewerb WHERE WbID = ?', [compid], one=True)
+    if not compname:
+        return render_template('notfound.html', entity='Wettbewerb')
+    query = query_db('SELECT DISTINCT (SELECT Name FROM Team WHERE Team.TeamID = tg.TeamID) AS teamn, \
+                     (SELECT Nickname FROM Spieler WHERE Spieler.SpielerID = tg.SpielerID) AS spielern \
+                     FROM Teilgenommen tg INNER JOIN Unterwettbewerb uwb ON tg.UnterwbID = uwb.UnterwbID \
+                     WHERE uwb.WbID = ?', [compid])
+    table = dict()
+    for row in query:
+        if row[0] not in table:
+            table[row[0]] = []
+        table[row[0]].append(row[1])
+
+    return render_template('compteams.html', compname=compname, table=table)
+
+@app.route('/comp/<int:compid>/<int:leagueid>')
+def league(compid, leagueid):
+    return
+
+@app.route('/team/<int:teamid>')
+def teamsite(teamid):
+    return
+
+@app.route('/player/<int:playerid>')
+def playersite(playerid):
+    return
+
+@app.route('/game/<gameid>')
+def gamesite(gameid):
+    return
+
+@app.route('/login')
+def login():
+    return
+
+@app.route('/logout')
+def logout():
+    return
+
 @app.before_request
 def before_request():
     g.db = connect_db()
@@ -34,73 +95,7 @@ def teardown_request(exception):
     if db is not None:
         db.close()
 
-@app.route('/')
-@app.route('/index')
-def index():
-    cur = g.db.execute("select uwb.UnterwbID, Wettbewerb.Name, uwb.Name, uwb.Start, uwb.Ende FROM Unterwettbewerb uwb INNER JOIN Wettbewerb ON uwb.WbID = Wettbewerb.WbID WHERE uwb.modus = 'liga'")
-    table = [dict(id=row[0], wbname=row[1], unterwb=row[2], start=row[3], ende=row[4]) for row in cur.fetchall()]
-    return render_template('tabellen.html', title='Wettbewerbe', table=table)
 
-@app.route('/user/<username>')
-def usersite(username):
-
-    return render_template
-
-@app.route('/Spieler')
-def spieler():
-    return render_template('tabellen.html', table=getSpieler(), title='Spieler')
-
-@app.route('/Teams')
-def teams():
-    return render_template('tabellen.html', table=getTeams(), title='Teams')
-
-@app.route('/<int:unterwb>/<int:spieltag>')
-def teamtabelle(unterwb, spieltag):
-    max_spieltag = g.db.execute("SELECT MAX(ls.Spieltag) FROM Ligaspiel ls INNER JOIN Spiel s ON s.SPielID = ls.SpielID WHERE s.UnterwbID = ?", [unterwb]).fetchall()[0][0]
-    return render_template('tabellen.html', title='Teamtabelle', max_spieltag=max_spieltag, table_st=getSpieltag(unterwb, spieltag), table_t=getTeamtabelle(unterwb, spieltag), spieler_t=getSpielertabelle(unterwb, spieltag), unterwb=unterwb, spieltag=spieltag)
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    error = None
-    if request.method == 'POST':
-        user = request.form['username']
-        userliste = []
-        for row in query_db("SELECT Nickname FROM Spieler"):
-            userliste.append(row[0])
-        if user not in userliste:
-            error = 'Invalid username'
-        elif sha1(request.form['password']).hexdigest() != getPassword(user):
-            error = 'Invalid password'
-        else:
-            session['logged_in'] = True
-            session['username'] = user
-            flash('You were logged in: %s' % user)
-            return redirect(url_for('index'))
-    return render_template('login.html', title='Login', error=error)
-
-@app.route('/anlegen', methods=['GET', 'POST'])
-def anlegen():
-    error = None
-    if request.method =='POST':
-        user = request.form['username']
-        password = request.form['password']
-        userliste = []
-        for row in query_db("SELECT Nickname FROM Spieler"):
-            userliste.append(row[0])
-        if user not in userliste:
-            error = 'Invalid username'
-        else:
-            setPassword(user, sha1(password).hexdigest())
-            flash('Password set for user %s' % user)
-            return redirect(url_for('index'))
-    return render_template('anlegen.html', title='Passwort anlegen', error=error)
-
-@app.route('/logout')
-def logout():
-    session.pop('logged_in', None)
-    session.pop('username', None)
-    flash('You were logged out')
-    return redirect(url_for('index'))
 
 if __name__ == '__main__':
     app.run()

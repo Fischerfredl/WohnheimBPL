@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{%  block content %}
+    <h1>This is the Team site for Competition: {{ compname }}</h1>
+    Angemeldete Teams
+    <table border = 1>
+    {% for key in table %}
+        <tr>
+            <td>{{ key }}</td>
+            <td>
+                {% for item in table[key] %}
+                    {{ item }}
+                {% endfor %}
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
+{% endblock %}
