@@ -18,17 +18,29 @@ Routes mit funktionen
 '/', '/home': home() #Startseite
 
 '/comp': comp() #Auswahlseite für Wettbewerbe
-'/comp/<compid>': compsite(compid) #Startseite für Wettbewerb
+'/comp/<compid>': compdetail(compid) #Startseite für Wettbewerb
 '/comp/<compid>/teams': compteams(compid) #Übersicht Teams/Spieler für Wettbewerb
 '/comp/<leagueid>/<spieltag>': league(leagueid, spieltag) #Tabellenansicht für Unterwb 'leagueid'
 
-'/team/<teamid>' teamsite(teamid) #Übersichtsseite für Team
-'/player/<playerid>': playersite(playerid) #Übersichtsseite für Spieler
-'/game/<gameid>': gamesite(gameid) #Übersichtsseite für Spiel
+'/team/<teamid>' teamdetail(teamid) #Übersichtsseite für Team
+'/player/<playerid>': playerdetail(playerid) #Übersichtsseite für Spieler
+'/game/<gameid>': gamedetail(gameid) #Übersichtsseite für Spiel
 
 '/login': login()
 '/logout': logout()
 
+Templates:
+comp.html
+compteams.html
+detailcomp.html
+detailgame.html
+detailplayer.html
+detailteam.html
+home.html
+layout.html
+league.html
+login.html
+logout.html
 
 
 
