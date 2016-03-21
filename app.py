@@ -9,9 +9,9 @@ DATABASE = 'D:\\Dateien\\Dokumente\\GitHub\\WohnheimBPL\\database.db'
 DEBUG = True
 SECRET_KEY = 'development key'
 ADMINLOGIN = 'admin'
-ADMINPASS = 'password'
+ADMINPASS = 'admin'
 MODLOGIN = 'mod'
-MODPASSWORD = 'password'
+MODPASSWORD = 'mod'
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -42,7 +42,7 @@ def compsite(compid):
     if not name:
         return render_template('notfound.html', entity='Wettbewerb')
 
-    return render_template('compsite.html', name=name, compid=compid)
+    return render_template('detailcomp.html', name=name, compid=compid)
 
 @app.route('/comp/<int:compid>/teams')
 def compteams(compid):
@@ -61,21 +61,33 @@ def compteams(compid):
 
     return render_template('compteams.html', compname=compname, table=table)
 
-@app.route('/comp/<int:compid>/<int:leagueid>')
+@app.route('/comp/<int:leagueid>/<int:spieltag>')
 def league(compid, leagueid):
-    return
+    leaguename = query_db('SELECT name FROM Unterwettbewerb WHERE UnterwbID = ?', [leagueid], one=True)
+    if not leaguename:
+        return render_template('notfound.html', entity='Unterwettbewerb')
+    return ('league.html', compid=compid, spieltag=spieltag)
 
 @app.route('/team/<int:teamid>')
 def teamsite(teamid):
-    return
+    teamname = query_db('SELECT name FROM Team WHERE TeamID = ?', [teamid], one=True)
+    if not teamname:
+        return render_template('not_found.html' entity='Team')
+    return render_template('detailteam.html', teamname=teamname)
 
 @app.route('/player/<int:playerid>')
 def playersite(playerid):
-    return
+    playername = query_db('SELECT nickname FROM Spieler WHERE SpielerID = ?', [playerid], one=True)
+    if not spielername:
+        return render_template('not_found.html' entity='Spieler')
+    return render_template('detailplayer.html', playername=playername)
 
 @app.route('/game/<gameid>')
 def gamesite(gameid):
-    return
+    team1 = query_db('SELECT (SELECT name FROM Team WHERE Team.TeamID = Spiel.Team1ID) FROM Spiel WHERE SpielID = ?', [gameid], one=True)
+    if not team1:
+        return render_template('not_found.html' entity='Spiel')
+    return render_template('detailgame.html')
 
 @app.route('/login')
 def login():
