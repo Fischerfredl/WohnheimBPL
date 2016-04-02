@@ -2,20 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0cd7d460-d8a3-43f2-8a93-08abcd06fdba" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/comp.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/compsite.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/compteams.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/home.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/notfound.html" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/templates/anlegen.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/templates/index.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/templates/login.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/templates/tabellen.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/templates/test.html" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app.py" afterPath="$PROJECT_DIR$/app.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/queries.py" afterPath="$PROJECT_DIR$/queries.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/base.html" afterPath="$PROJECT_DIR$/templates/base.html" />
     </list>
     <ignored path="WohnheimBPL.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -85,21 +73,68 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="app.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="app.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.47977942">
-              <caret line="59" column="36" selection-start-line="59" selection-start-column="36" selection-end-line="59" selection-end-column="36" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
-                <marker date="1458055115045" expanded="true" signature="858:891" placeholder="SELECT WbID,... Wettbewerb" />
-                <marker date="1458055115045" expanded="true" signature="1078:1120" placeholder="SELECT name Wettbewerb" />
-                <marker date="1458055115045" expanded="true" signature="1388:1430" placeholder="SELECT name Wettbewerb" />
-                <marker date="1458055115045" expanded="true" signature="1565:1736" placeholder="SELECT (SELE... " />
-                <marker date="1458055115045" expanded="true" signature="1565:1885" placeholder="SELECT teami... Teilgenommen" />
-                <marker date="1458055115045" expanded="true" signature="1565:1898" placeholder="SELECT (SELE... Teilgenommen" />
-                <marker date="1458055115045" expanded="true" signature="1582:1633" placeholder="SELECT Name Team" />
-                <marker date="1458055115045" expanded="true" signature="1669:1736" placeholder="SELECT Nickn... Spieler" />
+                <marker date="1459626065815" expanded="true" signature="828:861" placeholder="SELECT WbID,... Wettbewerb" />
+                <marker date="1459626065815" expanded="true" signature="996:1035" placeholder="SELECT * FRO... Wettbewerb" />
+                <marker date="1459626065815" expanded="true" signature="1143:1185" placeholder="SELECT Name Wettbewerb" />
+                <marker date="1459626065815" expanded="true" signature="1235:1609" placeholder="SELECT uwb.U... Unterwettbewerb" />
+                <marker date="1459626065815" expanded="true" signature="1652:1733" placeholder="SELECT Unter... Unterwettbewerb" />
+                <marker date="1459626065815" expanded="true" signature="1771:1847" placeholder="SELECT Unter... Unterwettbewerb" />
+                <marker date="1459626065815" expanded="true" signature="2093:2132" placeholder="SELECT * FRO... Wettbewerb" />
+                <marker date="1459626065815" expanded="true" signature="2240:2282" placeholder="SELECT Name Wettbewerb" />
+                <marker date="1459626065815" expanded="true" signature="2327:2660" placeholder="SELECT DISTI... Teilgenommen" />
+                <marker date="1459626065815" expanded="true" signature="2344:2395" placeholder="SELECT Name Team" />
+                <marker date="1459626065815" expanded="true" signature="2431:2498" placeholder="SELECT Nickn... Spieler" />
+                <marker date="1459626065815" expanded="true" signature="3045:3094" placeholder="SELECT * FRO... Unterwettbewerb" />
+                <marker date="1459626065815" expanded="true" signature="3202:3372" placeholder="SELECT MAX(S... Ligaspiel" />
+                <marker date="1459626065815" expanded="true" signature="3526:3597" placeholder="SELECT Name Unterwettbewerb" />
+                <marker date="1459626065815" expanded="true" signature="3645:3697" placeholder="SELECT WbID Unterwettbewerb" />
+                <marker date="1459626065815" expanded="true" signature="4319:4390" placeholder="SELECT * FRO... Unterwettbewerb" />
+                <marker date="1459626065815" expanded="true" signature="4503:4555" placeholder="SELECT Name Unterwettbewerb" />
+                <marker date="1459626065815" expanded="true" signature="4602:4654" placeholder="SELECT WbID Unterwettbewerb" />
+                <marker date="1459626065815" expanded="true" signature="4700:4745" placeholder="SELECT Spiel... Spiel" />
+                <marker date="1459626065815" expanded="true" signature="4938:5004" placeholder="SELECT * FRO... Unterwettbewerb" />
+                <marker date="1459626065815" expanded="true" signature="5111:5163" placeholder="SELECT name Unterwettbewerb" />
+                <marker date="1459626065815" expanded="true" signature="5207:5259" placeholder="SELECT WbID Unterwettbewerb" />
+                <marker date="1459626065815" expanded="true" signature="5302:5347" placeholder="SELECT Spiel... Spiel" />
+                <marker date="1459626065815" expanded="true" signature="5545:5578" placeholder="SELECT * FRO... Team" />
+                <marker date="1459626065815" expanded="true" signature="5680:5718" placeholder="SELECT TeamI... Team" />
+                <marker date="1459626065815" expanded="true" signature="5906:5946" placeholder="SELECT * FRO... Spieler" />
+                <marker date="1459626065815" expanded="true" signature="6035:6108" placeholder="SELECT Spiel... Spieler" />
+                <marker date="1459626065815" expanded="true" signature="6279:6316" placeholder="SELECT * FRO... Spiel" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="queries.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/queries.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="1.0067039">
+              <caret line="53" column="0" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
+              <folding>
+                <marker date="1459626065835" expanded="true" signature="210:231" placeholder="select * fro... Spieler" />
+                <marker date="1459626065835" expanded="true" signature="288:317" placeholder="select TeamI... Team" />
+                <marker date="1459626065835" expanded="true" signature="516:1087" placeholder="SELECT Spiel... Ligaspiel" />
+                <marker date="1459626065835" expanded="true" signature="542:673" placeholder="SELECT CASE " />
+                <marker date="1459626065835" expanded="true" signature="687:742" placeholder="SELECT Name Team" />
+                <marker date="1459626065835" expanded="true" signature="772:827" placeholder="SELECT Name Team" />
+                <marker date="1459626065835" expanded="true" signature="839:970" placeholder="SELECT CASE " />
+                <marker date="1459626065835" expanded="true" signature="1265:2893" placeholder="SELECT (SELE... TeamID" />
+                <marker date="1459626065835" expanded="true" signature="1273:1324" placeholder="SELECT Name Team" />
+                <marker date="1459626065835" expanded="true" signature="2064:2137" placeholder="SELECT DISTI... Teilgenommen" />
+                <marker date="1459626065835" expanded="true" signature="2158:2463" placeholder="SELECT Spiel... Ligaspiel" />
+                <marker date="1459626065835" expanded="true" signature="2470:2775" placeholder="SELECT Spiel... Ligaspiel" />
+                <marker date="1459626065835" expanded="true" signature="3070:3418" placeholder="SELECT (SELE... Ligaspieler" />
+                <marker date="1459626065835" expanded="true" signature="3078:3145" placeholder="SELECT Nickn... Spieler" />
+                <marker date="1459626065835" expanded="true" signature="3619:3666" placeholder="SELECT Passw... Spieler" />
+                <marker date="1459626065835" expanded="true" signature="3747:3797" placeholder="UPDATE Spiel... " />
               </folding>
             </state>
           </provider>
@@ -108,8 +143,8 @@
       <file leaf-file-name="compteams.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/compteams.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-6.5384617">
-              <caret line="10" column="30" selection-start-line="10" selection-start-column="30" selection-end-line="10" selection-end-column="30" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="10" column="16" selection-start-line="10" selection-start-column="16" selection-end-line="10" selection-end-column="16" />
               <folding />
             </state>
           </provider>
@@ -118,36 +153,9 @@
       <file leaf-file-name="comp.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/comp.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="20" selection-end-column="14" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="queries.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/queries.py">
-          <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="5" column="52" selection-start-line="5" selection-start-column="52" selection-end-line="5" selection-end-column="52" />
-              <folding>
-                <marker date="1458051372961" expanded="true" signature="210:231" placeholder="select * fro... Spieler" />
-                <marker date="1458051372961" expanded="true" signature="288:317" placeholder="select TeamI... Team" />
-                <marker date="1458051372961" expanded="true" signature="453:1006" placeholder="SELECT (SELE... Ligaspiel" />
-                <marker date="1458051372961" expanded="true" signature="461:592" placeholder="SELECT CASE " />
-                <marker date="1458051372961" expanded="true" signature="606:661" placeholder="SELECT Name Team" />
-                <marker date="1458051372961" expanded="true" signature="691:746" placeholder="SELECT Name Team" />
-                <marker date="1458051372961" expanded="true" signature="758:889" placeholder="SELECT CASE " />
-                <marker date="1458051372961" expanded="true" signature="1217:2845" placeholder="SELECT (SELE... TeamID" />
-                <marker date="1458051372961" expanded="true" signature="1225:1276" placeholder="SELECT Name Team" />
-                <marker date="1458051372961" expanded="true" signature="2016:2089" placeholder="SELECT DISTI... Teilgenommen" />
-                <marker date="1458051372961" expanded="true" signature="2110:2415" placeholder="SELECT Spiel... Ligaspiel" />
-                <marker date="1458051372961" expanded="true" signature="2422:2727" placeholder="SELECT Spiel... Ligaspiel" />
-                <marker date="1458051372961" expanded="true" signature="3141:3489" placeholder="SELECT (SELE... Ligaspieler" />
-                <marker date="1458051372961" expanded="true" signature="3149:3216" placeholder="SELECT Nickn... Spieler" />
-                <marker date="1458051372961" expanded="true" signature="3690:3737" placeholder="SELECT Passw... Spieler" />
-                <marker date="1458051372961" expanded="true" signature="3818:3868" placeholder="UPDATE Spiel... " />
-              </folding>
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="12" selection-end-column="14" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -155,7 +163,7 @@
       <file leaf-file-name="compsite.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/compsite.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-2.6153846">
+            <state vertical-scroll-proportion="0.0">
               <caret line="4" column="53" selection-start-line="4" selection-start-column="53" selection-end-line="4" selection-end-column="53" />
               <folding />
             </state>
@@ -165,7 +173,7 @@
       <file leaf-file-name="home.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/home.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-1.9615384">
+            <state vertical-scroll-proportion="0.0">
               <caret line="3" column="13" selection-start-line="3" selection-start-column="12" selection-end-line="3" selection-end-column="13" />
               <folding />
             </state>
@@ -175,7 +183,7 @@
       <file leaf-file-name="base.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/base.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-9.153846">
+            <state vertical-scroll-proportion="0.0">
               <caret line="26" column="41" selection-start-line="26" selection-start-column="41" selection-end-line="26" selection-end-column="41" />
               <folding />
             </state>
@@ -216,11 +224,11 @@
         <option value="$PROJECT_DIR$/templates/home.html" />
         <option value="$PROJECT_DIR$/templates/base.html" />
         <option value="$PROJECT_DIR$/templates/notfound.html" />
-        <option value="$PROJECT_DIR$/queries.py" />
         <option value="$PROJECT_DIR$/templates/comp.html" />
         <option value="$PROJECT_DIR$/templates/compsite.html" />
-        <option value="$PROJECT_DIR$/app.py" />
         <option value="$PROJECT_DIR$/templates/compteams.html" />
+        <option value="$PROJECT_DIR$/app.py" />
+        <option value="$PROJECT_DIR$/queries.py" />
       </list>
     </option>
   </component>
@@ -282,6 +290,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -334,8 +344,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -588,25 +596,25 @@
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16684435" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1684435" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12100213" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23240589" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3802817" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39934534" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3802817" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289689" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39934534" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -627,27 +635,130 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/app.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
+            <marker date="1459626065815" expanded="true" signature="828:861" placeholder="SELECT WbID,... Wettbewerb" />
+            <marker date="1459626065815" expanded="true" signature="996:1035" placeholder="SELECT * FRO... Wettbewerb" />
+            <marker date="1459626065815" expanded="true" signature="1143:1185" placeholder="SELECT Name Wettbewerb" />
+            <marker date="1459626065815" expanded="true" signature="1235:1609" placeholder="SELECT uwb.U... Unterwettbewerb" />
+            <marker date="1459626065815" expanded="true" signature="1652:1733" placeholder="SELECT Unter... Unterwettbewerb" />
+            <marker date="1459626065815" expanded="true" signature="1771:1847" placeholder="SELECT Unter... Unterwettbewerb" />
+            <marker date="1459626065815" expanded="true" signature="2093:2132" placeholder="SELECT * FRO... Wettbewerb" />
+            <marker date="1459626065815" expanded="true" signature="2240:2282" placeholder="SELECT Name Wettbewerb" />
+            <marker date="1459626065815" expanded="true" signature="2327:2660" placeholder="SELECT DISTI... Teilgenommen" />
+            <marker date="1459626065815" expanded="true" signature="2344:2395" placeholder="SELECT Name Team" />
+            <marker date="1459626065815" expanded="true" signature="2431:2498" placeholder="SELECT Nickn... Spieler" />
+            <marker date="1459626065815" expanded="true" signature="3045:3094" placeholder="SELECT * FRO... Unterwettbewerb" />
+            <marker date="1459626065815" expanded="true" signature="3202:3372" placeholder="SELECT MAX(S... Ligaspiel" />
+            <marker date="1459626065815" expanded="true" signature="3526:3597" placeholder="SELECT Name Unterwettbewerb" />
+            <marker date="1459626065815" expanded="true" signature="3645:3697" placeholder="SELECT WbID Unterwettbewerb" />
+            <marker date="1459626065815" expanded="true" signature="4319:4390" placeholder="SELECT * FRO... Unterwettbewerb" />
+            <marker date="1459626065815" expanded="true" signature="4503:4555" placeholder="SELECT Name Unterwettbewerb" />
+            <marker date="1459626065815" expanded="true" signature="4602:4654" placeholder="SELECT WbID Unterwettbewerb" />
+            <marker date="1459626065815" expanded="true" signature="4700:4745" placeholder="SELECT Spiel... Spiel" />
+            <marker date="1459626065815" expanded="true" signature="4938:5004" placeholder="SELECT * FRO... Unterwettbewerb" />
+            <marker date="1459626065815" expanded="true" signature="5111:5163" placeholder="SELECT name Unterwettbewerb" />
+            <marker date="1459626065815" expanded="true" signature="5207:5259" placeholder="SELECT WbID Unterwettbewerb" />
+            <marker date="1459626065815" expanded="true" signature="5302:5347" placeholder="SELECT Spiel... Spiel" />
+            <marker date="1459626065815" expanded="true" signature="5545:5578" placeholder="SELECT * FRO... Team" />
+            <marker date="1459626065815" expanded="true" signature="5680:5718" placeholder="SELECT TeamI... Team" />
+            <marker date="1459626065815" expanded="true" signature="5906:5946" placeholder="SELECT * FRO... Spieler" />
+            <marker date="1459626065815" expanded="true" signature="6035:6108" placeholder="SELECT Spiel... Spieler" />
+            <marker date="1459626065815" expanded="true" signature="6279:6316" placeholder="SELECT * FRO... Spiel" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/compteams.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="10" column="16" selection-start-line="10" selection-start-column="16" selection-end-line="10" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/comp.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="12" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/queries.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="5" column="52" selection-start-line="5" selection-start-column="52" selection-end-line="5" selection-end-column="52" />
+          <folding>
+            <marker date="1459626065835" expanded="true" signature="210:231" placeholder="select * fro... Spieler" />
+            <marker date="1459626065835" expanded="true" signature="288:317" placeholder="select TeamI... Team" />
+            <marker date="1459626065835" expanded="true" signature="516:1087" placeholder="SELECT Spiel... Ligaspiel" />
+            <marker date="1459626065835" expanded="true" signature="542:673" placeholder="SELECT CASE " />
+            <marker date="1459626065835" expanded="true" signature="687:742" placeholder="SELECT Name Team" />
+            <marker date="1459626065835" expanded="true" signature="772:827" placeholder="SELECT Name Team" />
+            <marker date="1459626065835" expanded="true" signature="839:970" placeholder="SELECT CASE " />
+            <marker date="1459626065835" expanded="true" signature="1265:2893" placeholder="SELECT (SELE... TeamID" />
+            <marker date="1459626065835" expanded="true" signature="1273:1324" placeholder="SELECT Name Team" />
+            <marker date="1459626065835" expanded="true" signature="2064:2137" placeholder="SELECT DISTI... Teilgenommen" />
+            <marker date="1459626065835" expanded="true" signature="2158:2463" placeholder="SELECT Spiel... Ligaspiel" />
+            <marker date="1459626065835" expanded="true" signature="2470:2775" placeholder="SELECT Spiel... Ligaspiel" />
+            <marker date="1459626065835" expanded="true" signature="3070:3418" placeholder="SELECT (SELE... Ligaspieler" />
+            <marker date="1459626065835" expanded="true" signature="3078:3145" placeholder="SELECT Nickn... Spieler" />
+            <marker date="1459626065835" expanded="true" signature="3619:3666" placeholder="SELECT Passw... Spieler" />
+            <marker date="1459626065835" expanded="true" signature="3747:3797" placeholder="UPDATE Spiel... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/compsite.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="4" column="53" selection-start-line="4" selection-start-column="53" selection-end-line="4" selection-end-column="53" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/home.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="3" column="13" selection-start-line="3" selection-start-column="12" selection-end-line="3" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="26" column="41" selection-start-line="26" selection-start-column="41" selection-end-line="26" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/queries.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1458051372961" expanded="true" signature="210:231" placeholder="select * fro... Spieler" />
-            <marker date="1458051372961" expanded="true" signature="288:317" placeholder="select TeamI... Team" />
-            <marker date="1458051372961" expanded="true" signature="453:1006" placeholder="SELECT (SELE... Ligaspiel" />
-            <marker date="1458051372961" expanded="true" signature="461:592" placeholder="SELECT CASE " />
-            <marker date="1458051372961" expanded="true" signature="606:661" placeholder="SELECT Name Team" />
-            <marker date="1458051372961" expanded="true" signature="691:746" placeholder="SELECT Name Team" />
-            <marker date="1458051372961" expanded="true" signature="758:889" placeholder="SELECT CASE " />
-            <marker date="1458051372961" expanded="true" signature="1217:2845" placeholder="SELECT (SELE... TeamID" />
-            <marker date="1458051372961" expanded="true" signature="1225:1276" placeholder="SELECT Name Team" />
-            <marker date="1458051372961" expanded="true" signature="2016:2089" placeholder="SELECT DISTI... Teilgenommen" />
-            <marker date="1458051372961" expanded="true" signature="2110:2415" placeholder="SELECT Spiel... Ligaspiel" />
-            <marker date="1458051372961" expanded="true" signature="2422:2727" placeholder="SELECT Spiel... Ligaspiel" />
-            <marker date="1458051372961" expanded="true" signature="3141:3489" placeholder="SELECT (SELE... Ligaspieler" />
-            <marker date="1458051372961" expanded="true" signature="3149:3216" placeholder="SELECT Nickn... Spieler" />
-            <marker date="1458051372961" expanded="true" signature="3690:3737" placeholder="SELECT Passw... Spieler" />
-            <marker date="1458051372961" expanded="true" signature="3818:3868" placeholder="UPDATE Spiel... " />
+            <marker date="1459626065835" expanded="true" signature="210:231" placeholder="select * fro... Spieler" />
+            <marker date="1459626065835" expanded="true" signature="288:317" placeholder="select TeamI... Team" />
+            <marker date="1459626065835" expanded="true" signature="516:1087" placeholder="SELECT Spiel... Ligaspiel" />
+            <marker date="1459626065835" expanded="true" signature="542:673" placeholder="SELECT CASE " />
+            <marker date="1459626065835" expanded="true" signature="687:742" placeholder="SELECT Name Team" />
+            <marker date="1459626065835" expanded="true" signature="772:827" placeholder="SELECT Name Team" />
+            <marker date="1459626065835" expanded="true" signature="839:970" placeholder="SELECT CASE " />
+            <marker date="1459626065835" expanded="true" signature="1265:2893" placeholder="SELECT (SELE... TeamID" />
+            <marker date="1459626065835" expanded="true" signature="1273:1324" placeholder="SELECT Name Team" />
+            <marker date="1459626065835" expanded="true" signature="2064:2137" placeholder="SELECT DISTI... Teilgenommen" />
+            <marker date="1459626065835" expanded="true" signature="2158:2463" placeholder="SELECT Spiel... Ligaspiel" />
+            <marker date="1459626065835" expanded="true" signature="2470:2775" placeholder="SELECT Spiel... Ligaspiel" />
+            <marker date="1459626065835" expanded="true" signature="3070:3418" placeholder="SELECT (SELE... Ligaspieler" />
+            <marker date="1459626065835" expanded="true" signature="3078:3145" placeholder="SELECT Nickn... Spieler" />
+            <marker date="1459626065835" expanded="true" signature="3619:3666" placeholder="SELECT Passw... Spieler" />
+            <marker date="1459626065835" expanded="true" signature="3747:3797" placeholder="UPDATE Spiel... " />
           </folding>
         </state>
       </provider>
@@ -712,13 +823,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="9" column="9" selection-start-line="0" selection-start-column="0" selection-end-line="106" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
-            <marker date="1458048744019" expanded="true" signature="971:1141" placeholder="select uwb.U... Unterwettbewerb" />
-            <marker date="1458048744019" expanded="true" signature="1766:1874" placeholder="SELECT MAX(l... Ligaspiel" />
-            <marker date="1458048744019" expanded="true" signature="2367:2395" placeholder="SELECT Nickn... Spieler" />
-            <marker date="1458048744019" expanded="true" signature="3134:3162" placeholder="SELECT Nickn... Spieler" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -726,13 +830,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.62846583">
           <caret line="20" column="14" selection-start-line="0" selection-start-column="0" selection-end-line="20" selection-end-column="14" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/base.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-9.153846">
+        <state vertical-scroll-proportion="0.0">
           <caret line="26" column="41" selection-start-line="26" selection-start-column="41" selection-end-line="26" selection-end-column="41" />
           <folding />
         </state>
@@ -740,7 +843,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/home.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.9615384">
+        <state vertical-scroll-proportion="0.0">
           <caret line="3" column="13" selection-start-line="3" selection-start-column="12" selection-end-line="3" selection-end-column="13" />
           <folding />
         </state>
@@ -750,7 +853,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -758,38 +860,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-1.3076923">
           <caret line="2" column="41" selection-start-line="2" selection-start-column="41" selection-end-line="2" selection-end-column="41" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/queries.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="5" column="52" selection-start-line="5" selection-start-column="52" selection-end-line="5" selection-end-column="52" />
-          <folding>
-            <marker date="1458051372961" expanded="true" signature="210:231" placeholder="select * fro... Spieler" />
-            <marker date="1458051372961" expanded="true" signature="288:317" placeholder="select TeamI... Team" />
-            <marker date="1458051372961" expanded="true" signature="453:1006" placeholder="SELECT (SELE... Ligaspiel" />
-            <marker date="1458051372961" expanded="true" signature="461:592" placeholder="SELECT CASE " />
-            <marker date="1458051372961" expanded="true" signature="606:661" placeholder="SELECT Name Team" />
-            <marker date="1458051372961" expanded="true" signature="691:746" placeholder="SELECT Name Team" />
-            <marker date="1458051372961" expanded="true" signature="758:889" placeholder="SELECT CASE " />
-            <marker date="1458051372961" expanded="true" signature="1217:2845" placeholder="SELECT (SELE... TeamID" />
-            <marker date="1458051372961" expanded="true" signature="1225:1276" placeholder="SELECT Name Team" />
-            <marker date="1458051372961" expanded="true" signature="2016:2089" placeholder="SELECT DISTI... Teilgenommen" />
-            <marker date="1458051372961" expanded="true" signature="2110:2415" placeholder="SELECT Spiel... Ligaspiel" />
-            <marker date="1458051372961" expanded="true" signature="2422:2727" placeholder="SELECT Spiel... Ligaspiel" />
-            <marker date="1458051372961" expanded="true" signature="3141:3489" placeholder="SELECT (SELE... Ligaspieler" />
-            <marker date="1458051372961" expanded="true" signature="3149:3216" placeholder="SELECT Nickn... Spieler" />
-            <marker date="1458051372961" expanded="true" signature="3690:3737" placeholder="SELECT Passw... Spieler" />
-            <marker date="1458051372961" expanded="true" signature="3818:3868" placeholder="UPDATE Spiel... " />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/compsite.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.6153846">
+        <state vertical-scroll-proportion="0.0">
           <caret line="4" column="53" selection-start-line="4" selection-start-column="53" selection-end-line="4" selection-end-column="53" />
           <folding />
         </state>
@@ -797,34 +873,79 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/comp.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="20" selection-end-column="14" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="12" selection-end-column="14" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/compteams.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.5384617">
-          <caret line="10" column="30" selection-start-line="10" selection-start-column="30" selection-end-line="10" selection-end-column="30" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="10" column="16" selection-start-line="10" selection-start-column="16" selection-end-line="10" selection-end-column="16" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.47977942">
-          <caret line="59" column="36" selection-start-line="59" selection-start-column="36" selection-end-line="59" selection-end-column="36" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
-            <marker date="1458055115045" expanded="true" signature="858:891" placeholder="SELECT WbID,... Wettbewerb" />
-            <marker date="1458055115045" expanded="true" signature="1078:1120" placeholder="SELECT name Wettbewerb" />
-            <marker date="1458055115045" expanded="true" signature="1388:1430" placeholder="SELECT name Wettbewerb" />
-            <marker date="1458055115045" expanded="true" signature="1565:1736" placeholder="SELECT (SELE... " />
-            <marker date="1458055115045" expanded="true" signature="1565:1885" placeholder="SELECT teami... Teilgenommen" />
-            <marker date="1458055115045" expanded="true" signature="1565:1898" placeholder="SELECT (SELE... Teilgenommen" />
-            <marker date="1458055115045" expanded="true" signature="1582:1633" placeholder="SELECT Name Team" />
-            <marker date="1458055115045" expanded="true" signature="1669:1736" placeholder="SELECT Nickn... Spieler" />
+            <marker date="1459626065815" expanded="true" signature="828:861" placeholder="SELECT WbID,... Wettbewerb" />
+            <marker date="1459626065815" expanded="true" signature="996:1035" placeholder="SELECT * FRO... Wettbewerb" />
+            <marker date="1459626065815" expanded="true" signature="1143:1185" placeholder="SELECT Name Wettbewerb" />
+            <marker date="1459626065815" expanded="true" signature="1235:1609" placeholder="SELECT uwb.U... Unterwettbewerb" />
+            <marker date="1459626065815" expanded="true" signature="1652:1733" placeholder="SELECT Unter... Unterwettbewerb" />
+            <marker date="1459626065815" expanded="true" signature="1771:1847" placeholder="SELECT Unter... Unterwettbewerb" />
+            <marker date="1459626065815" expanded="true" signature="2093:2132" placeholder="SELECT * FRO... Wettbewerb" />
+            <marker date="1459626065815" expanded="true" signature="2240:2282" placeholder="SELECT Name Wettbewerb" />
+            <marker date="1459626065815" expanded="true" signature="2327:2660" placeholder="SELECT DISTI... Teilgenommen" />
+            <marker date="1459626065815" expanded="true" signature="2344:2395" placeholder="SELECT Name Team" />
+            <marker date="1459626065815" expanded="true" signature="2431:2498" placeholder="SELECT Nickn... Spieler" />
+            <marker date="1459626065815" expanded="true" signature="3045:3094" placeholder="SELECT * FRO... Unterwettbewerb" />
+            <marker date="1459626065815" expanded="true" signature="3202:3372" placeholder="SELECT MAX(S... Ligaspiel" />
+            <marker date="1459626065815" expanded="true" signature="3526:3597" placeholder="SELECT Name Unterwettbewerb" />
+            <marker date="1459626065815" expanded="true" signature="3645:3697" placeholder="SELECT WbID Unterwettbewerb" />
+            <marker date="1459626065815" expanded="true" signature="4319:4390" placeholder="SELECT * FRO... Unterwettbewerb" />
+            <marker date="1459626065815" expanded="true" signature="4503:4555" placeholder="SELECT Name Unterwettbewerb" />
+            <marker date="1459626065815" expanded="true" signature="4602:4654" placeholder="SELECT WbID Unterwettbewerb" />
+            <marker date="1459626065815" expanded="true" signature="4700:4745" placeholder="SELECT Spiel... Spiel" />
+            <marker date="1459626065815" expanded="true" signature="4938:5004" placeholder="SELECT * FRO... Unterwettbewerb" />
+            <marker date="1459626065815" expanded="true" signature="5111:5163" placeholder="SELECT name Unterwettbewerb" />
+            <marker date="1459626065815" expanded="true" signature="5207:5259" placeholder="SELECT WbID Unterwettbewerb" />
+            <marker date="1459626065815" expanded="true" signature="5302:5347" placeholder="SELECT Spiel... Spiel" />
+            <marker date="1459626065815" expanded="true" signature="5545:5578" placeholder="SELECT * FRO... Team" />
+            <marker date="1459626065815" expanded="true" signature="5680:5718" placeholder="SELECT TeamI... Team" />
+            <marker date="1459626065815" expanded="true" signature="5906:5946" placeholder="SELECT * FRO... Spieler" />
+            <marker date="1459626065815" expanded="true" signature="6035:6108" placeholder="SELECT Spiel... Spieler" />
+            <marker date="1459626065815" expanded="true" signature="6279:6316" placeholder="SELECT * FRO... Spiel" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/queries.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.0067039">
+          <caret line="53" column="0" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
+          <folding>
+            <marker date="1459626065835" expanded="true" signature="210:231" placeholder="select * fro... Spieler" />
+            <marker date="1459626065835" expanded="true" signature="288:317" placeholder="select TeamI... Team" />
+            <marker date="1459626065835" expanded="true" signature="516:1087" placeholder="SELECT Spiel... Ligaspiel" />
+            <marker date="1459626065835" expanded="true" signature="542:673" placeholder="SELECT CASE " />
+            <marker date="1459626065835" expanded="true" signature="687:742" placeholder="SELECT Name Team" />
+            <marker date="1459626065835" expanded="true" signature="772:827" placeholder="SELECT Name Team" />
+            <marker date="1459626065835" expanded="true" signature="839:970" placeholder="SELECT CASE " />
+            <marker date="1459626065835" expanded="true" signature="1265:2893" placeholder="SELECT (SELE... TeamID" />
+            <marker date="1459626065835" expanded="true" signature="1273:1324" placeholder="SELECT Name Team" />
+            <marker date="1459626065835" expanded="true" signature="2064:2137" placeholder="SELECT DISTI... Teilgenommen" />
+            <marker date="1459626065835" expanded="true" signature="2158:2463" placeholder="SELECT Spiel... Ligaspiel" />
+            <marker date="1459626065835" expanded="true" signature="2470:2775" placeholder="SELECT Spiel... Ligaspiel" />
+            <marker date="1459626065835" expanded="true" signature="3070:3418" placeholder="SELECT (SELE... Ligaspieler" />
+            <marker date="1459626065835" expanded="true" signature="3078:3145" placeholder="SELECT Nickn... Spieler" />
+            <marker date="1459626065835" expanded="true" signature="3619:3666" placeholder="SELECT Passw... Spieler" />
+            <marker date="1459626065835" expanded="true" signature="3747:3797" placeholder="UPDATE Spiel... " />
           </folding>
         </state>
       </provider>

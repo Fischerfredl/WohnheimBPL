@@ -52,8 +52,6 @@ WHERE s.UnterwbID = ? AND lsp.Spieltag <= ? \
 GROUP BY ls.SpielerID ORDER BY treffer DESC, Spiele ASC", [unterwb, spieltag])
     return [dict(name=row[0], treffer=row[1], spiele=row[2], schnitt=round(float(row[1])/row[2], 2)) for row in cur.fetchall()]
 
-
-
 def getPassword(nickname):
     return query_db("SELECT Passwort FROM Spieler WHERE Nickname = ?", [nickname], one=True)
 
