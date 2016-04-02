@@ -13,18 +13,19 @@ def getTeams():
     cur = g.db.execute("select TeamID, Name from Team")
     return [dict(ID=row[0], Name=row[1]) for row in cur.fetchall()]
 
-def getSpieltag(unterwb, spieltag):
-    cur = g.db.execute(" \
- SELECT (SELECT CASE WHEN T1Tref = 6 THEN CASE WHEN T2Tref = 5 THEN 'OTS' ELSE 'G' END ELSE CASE WHEN T1Tref = 5 THEN 'OTN' ELSE 'V' END END) AS Erg1, \
+#returns Ligaspiele: SpielID, Erg1, Team1, T1Tref, T2Tref, T2, Erg2
+def getLigaSpiele(unterwb, spieltag):
+    return query_db("SELECT Spiel.SpielID, \
+ (SELECT CASE WHEN T1Tref = 6 THEN CASE WHEN T2Tref = 5 THEN 'OTS' ELSE 'G' END ELSE CASE WHEN T1Tref = 5 THEN 'OTN' ELSE 'V' END END) AS Erg1, \
 (SELECT Name FROM Team WHERE Team.TeamID = Spiel.Team1ID) AS T1, \
 T1Tref, T2Tref, \
 (SELECT Name From Team WHERE Team.TeamID = Spiel.Team2ID) AS T2, \
 (SELECT CASE WHEN T2Tref = 6 THEN CASE WHEN T1Tref = 5 THEN 'OTS' ELSE 'G' END ELSE CASE WHEN T2Tref = 5 THEN 'OTN' ELSE 'V' END END) AS Erg2 \
 FROM Ligaspiel Inner Join Spiel ON Ligaspiel.SpielID = Spiel.SpielID WHERE Spieltag = ? AND UnterwbID = ? ", [spieltag, unterwb])
-    return [dict(Erg1=row[0], T1=row[1], T1tref=row[2], T2tref=row[3], T2=row[4], Erg2=row[5]) for row in cur.fetchall()]
 
-def getTeamtabelle(unterwb, spieltag):
-    cur = g.db.execute("SELECT (SELECT Name FROM Team WHERE Team.TeamID = t2.TeamID) As Team, \
+#returns LigaTeamtabelle: Team, Spiele, Treffer, Kassiert, Diff, G, V, OTS, OTN, Punkte
+def getLigaTeamtabelle(unterwb, spieltag):
+    return query_db("SELECT (SELECT Name FROM Team WHERE Team.TeamID = t2.TeamID) As Team, \
 SUM(CASE WHEN t2.TeamID = t1.TeamID THEN 1 ELSE 0 END) Spiele, \
 SUM(CASE WHEN Treffer IS NULL THEN 0 ELSE Treffer END) Treffer, \
 SUM(CASE WHEN Kassiert IS NULL THEN 0 ELSE Kassiert END) Kassiert, \
@@ -40,8 +41,8 @@ FROM \
 ON t2.TeamID = t1.TeamID \
 GROUP BY t2.TeamID \
 ORDER BY Punkte DESC, Differenz DESC, Treffer DESC, Team ASC;", [unterwb, unterwb, spieltag, unterwb, spieltag])
-    return [dict(team=row[0], spiele=row[1], treffer=row[2], kassiert=row[3], diff=row[4], g=row[5], v=row[6], ots=row[7], otn=row[8], punkte=row[9])for row in cur.fetchall()]
 
+#returns Spielertabelle: Nickname, Treffer, Spiele, Diff
 def getSpielertabelle(unterwb, spieltag):
     cur = g.db.execute("SELECT (SELECT Nickname FROM Spieler WHERE Spieler.SpielerID = ls.SpielerID), \
 SUM(treffer) AS Treffer, \
@@ -50,6 +51,8 @@ FROM (Ligaspieler ls LEFT JOIN Spiel s ON ls.SpielID = s.SpielID) LEFT JOIN Liga
 WHERE s.UnterwbID = ? AND lsp.Spieltag <= ? \
 GROUP BY ls.SpielerID ORDER BY treffer DESC, Spiele ASC", [unterwb, spieltag])
     return [dict(name=row[0], treffer=row[1], spiele=row[2], schnitt=round(float(row[1])/row[2], 2)) for row in cur.fetchall()]
+
+
 
 def getPassword(nickname):
     return query_db("SELECT Passwort FROM Spieler WHERE Nickname = ?", [nickname], one=True)
