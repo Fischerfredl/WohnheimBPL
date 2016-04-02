@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{%  block content %}
+    <h1>Spielerseite für: {{ nickname }}</h1>
+    <ul>
+        <li>SpielerID: {{ info[0] }}</li>
+        <li>Vorname: {{ info[2] }}</li>
+        <li>Nachname: {{ info[3] }}</li>
+    </ul>
+{% endblock %}

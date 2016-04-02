@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{%  block content %}
+    <a href="{{ url_for('compdetail', compid=compid) }}"><- Zurück</a>
+    <h1>KO-Wettbewerb: {{ koname }}</h1>
+    SpieleIDs:
+    <ul>
+        {% for row in table %}
+            <li><a href="{{ url_for('detailgame', gameid=gameid) }}">{{ row[0] }}</a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}
