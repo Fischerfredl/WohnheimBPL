@@ -10,12 +10,8 @@ DEBUG = True
 SECRET_KEY = 'development key'
 # acc for administrator
 ADMINLOGIN = 'admin'
-<<<<<<< HEAD
 ADMINPASSWORD = 'password'
 # acc for tournament mods
-=======
-ADMINPASS = 'admin'
->>>>>>> origin/Fredl
 MODLOGIN = 'mod'
 MODPASSWORD = 'mod'
 
@@ -42,7 +38,6 @@ def comp():
     return render_template('comp.html', table=table)
 
 @app.route('/comp/<int:compid>')
-<<<<<<< HEAD
 def compdetail(compid):
     if not query_db('SELECT * FROM Wettbewerb WHERE WbID = ?', [compid], one=True):
         return error_handler('Wettbewerb nicht vorhanden')
@@ -57,15 +52,6 @@ def compdetail(compid):
     table_ko = query_db('SELECT UnterwbID, Name FROM Unterwettbewerb WHERE  Modus = "ko" AND WbID = ?', [compid])
 
     return render_template('compdetail.html', compid=compid, compname=compname,
-                           table_liga=table_liga, table_ko=table_ko)
-=======
-def compsite(compid):
-    name = query_db('SELECT name FROM Wettbewerb WHERE WbID = ?', [compid], one=True)
-    if not name:
-        return render_template('notfound.html', entity='Wettbewerb')
-
-    return render_template('detailcomp.html', name=name, compid=compid)
->>>>>>> origin/Fredl
 
 @app.route('/comp/<int:compid>/teams')
 def compteams(compid):
@@ -81,7 +67,6 @@ def compteams(compid):
         if row[0] not in table:
             table[row[0]] = []
         table[row[0]].append(row[1])
-<<<<<<< HEAD
     return render_template('compteams.html', compid=compid, compname=compname, table=table)
 
 # views for Unterwettbewerbe
@@ -146,38 +131,6 @@ def detailgame(gameid):
     return render_template('detailgame.html')
 
 # login function
-=======
-
-    return render_template('compteams.html', compname=compname, table=table)
-
-@app.route('/comp/<int:leagueid>/<int:spieltag>')
-def league(compid, leagueid):
-    leaguename = query_db('SELECT name FROM Unterwettbewerb WHERE UnterwbID = ?', [leagueid], one=True)
-    if not leaguename:
-        return render_template('notfound.html', entity='Unterwettbewerb')
-    return ('league.html', compid=compid, spieltag=spieltag)
-
-@app.route('/team/<int:teamid>')
-def teamsite(teamid):
-    teamname = query_db('SELECT name FROM Team WHERE TeamID = ?', [teamid], one=True)
-    if not teamname:
-        return render_template('not_found.html' entity='Team')
-    return render_template('detailteam.html', teamname=teamname)
-
-@app.route('/player/<int:playerid>')
-def playersite(playerid):
-    playername = query_db('SELECT nickname FROM Spieler WHERE SpielerID = ?', [playerid], one=True)
-    if not spielername:
-        return render_template('not_found.html' entity='Spieler')
-    return render_template('detailplayer.html', playername=playername)
-
-@app.route('/game/<gameid>')
-def gamesite(gameid):
-    team1 = query_db('SELECT (SELECT name FROM Team WHERE Team.TeamID = Spiel.Team1ID) FROM Spiel WHERE SpielID = ?', [gameid], one=True)
-    if not team1:
-        return render_template('not_found.html' entity='Spiel')
-    return render_template('detailgame.html')
->>>>>>> origin/Fredl
 
 @app.route('/login')
 def login():
