@@ -51,7 +51,7 @@ def compdetail(compid):
     table_turnier = query_db('SELECT UnterwbID, Name FROM Unterwettbewerb WHERE  Modus = "turnier" AND WbID = ?', [compid])
     table_ko = query_db('SELECT UnterwbID, Name FROM Unterwettbewerb WHERE  Modus = "ko" AND WbID = ?', [compid])
 
-    return render_template('compdetail.html', compid=compid, compname=compname,
+    return render_template('compdetail.html', compid=compid, compname=compname, table_liga=table_liga, table_ko=table_ko)
 
 @app.route('/comp/<int:compid>/teams')
 def compteams(compid):
