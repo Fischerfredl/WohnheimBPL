@@ -1,70 +1,29 @@
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-| ROUTE                               | FUNCTION                      | RETURNS                           | TEMPLATE              | FORMS 
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-| /home                               | home()                        |                                   | home.html             |    
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-| /comp                               | comp()                        | table, tablehead                  | comp.html             |
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-| /comp/<int:compid>                  | compdetail(compid)            | name, compid                      | detailcomp.html       |
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-| /comp/<int:compid>/teams            | compteams(compid)             | compname, table                   | compteams.html        |
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-| /comp/<int:leagueid>/<int:spieltag> | league(leagueid, spieltag)    | compid, spieltag                  | league.html           |
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-| /team/<teamname>                    | teamdetail(teamname)          | teamname                          | detailteam.html       |
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-| /player/<playername>                | playerdetail(playername)      | playername                        | detailplayer.html     |
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-| /game/<int:gameid>                  | gamedetail(gameid)            |                                   | detailgame.html       |
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-| /login                              | login()                       |                                   | login.html            | username, password
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-| /logout                             | logout()                      |                                   | logout.html           |
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-| /playersettings                     | playersettings()              |                                   | playersettings.html   | 
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-| /teamsettings                       | teamsettings()                |                                   | teamsettings.html     |
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-Routes mit funktionen
-'/', '/home': home() #Startseite
-
-'/comp': comp() #Auswahlseite für Wettbewerbe
-'/comp/<compid>': compdetail(compid) #Startseite für Wettbewerb
-'/comp/<compid>/teams': compteams(compid) #Übersicht Teams/Spieler für Wettbewerb
-'/comp/<leagueid>/<spieltag>': league(leagueid, spieltag) #Tabellenansicht für Unterwb 'leagueid'
-
-'/team/<teamid>' teamdetail(teamid) #Übersichtsseite für Team
-'/player/<playerid>': playerdetail(playerid) #Übersichtsseite für Spieler
-'/game/<gameid>': gamedetail(gameid) #Übersichtsseite für Spiel
-
-'/login': login()
-'/logout': logout()
-
-Templates:
-comp.html
-compteams.html
-detailcomp.html
-detailgame.html
-detailplayer.html
-detailteam.html
-home.html
-layout.html
-league.html
-login.html
-logout.html
-
-
 Tabellen:
 Spieler (SpielerID, Name, Vorname, Nickname)
 Team (TeamID, Name)
+
 Wettbewerb (WbID, Name)
 Unterwettbewerb (UnterwbID, WbID, modus, OTN, Start, Ende)
+
 Spiel (SpielID, UnterwbID, Team1ID, Team2ID, SiegerID, Gewertet, Datum)
+
 Turnierspiel (SpielID, Becherübrig)
 Ligaspiel (SpielID, Spieltag, T1Tref, T2Tref)
 Ligaspieler (SpielID, SpielerID, treffer)
 KOspiel (SpielID, NFWinnerID, NFLoserID, Bestofwhat, T1Erg, T2Erg)
+
 Teilgenommen (TeamID, SpielerID, UnterwbID)
 
+Beschreibung:
+Spieler, Teams und Wettbewerbe verknüpft in Teilgenommen.
+Unterwettbewerb: 
+-modus: 'liga', 'turnier' oder 'ko'
+-OTN: Overtime-berechnung für Punktetabelle 'ein' oder 'aus'
+Spiel:
+-SiegerID ist not null, wenn Spiel gespielt
+-Drei Typen: Turnnierspiel für Unterwb.modus = 'Turnier'; Ligaspiel für 'liga; KOspiel für 'ko'
 
+Funktionen:
+teamtabelle(Team, Spiele, Treffer, Kassiert, Differenz, G, V, OTS, OTN, Punkte)
+spielertabelle(Spieler, Treffer, Spiele, Schnitt)
+spieltag(Erg1, T1, T1Tref, T2Tref, T2, Erg2)
