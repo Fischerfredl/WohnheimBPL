@@ -1,22 +1,32 @@
+import os
 import sqlite3
+import platform
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
 from contextlib import closing
+
+from config import config_linux, config_windows
 from queries import *
 from hashlib import sha1
 
 # configuration
-DATABASE = '/home/avax/Projects/WohnheimBPL/database.db'
-DEBUG = True
-SECRET_KEY = 'development key'
+#DATABASE = '/home/avax/Projects/WohnheimBPL/database.db'
+#DEBUG = True
+#SECRET_KEY = 'development key'
 # acc for administrator
-ADMINLOGIN = 'admin'
-ADMINPASSWORD = 'password'
+#ADMINLOGIN = 'admin'
+#ADMINPASSWORD = 'password'
 # acc for tournament mods
-MODLOGIN = 'mod'
-MODPASSWORD = 'mod'
+#MODLOGIN = 'mod'
+#MODPASSWORD = 'mod'
 
 app = Flask(__name__)
-app.config.from_object(__name__)
+
+if platform.system() == 'Linux':
+    app.config.from_object(config_linux)
+elif platform.system() == 'Windows':
+    app.config.from_object(config_windows)
+
+#app.config.from_object(__name__)
 
 # routing
 
