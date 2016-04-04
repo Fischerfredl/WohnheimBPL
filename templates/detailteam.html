@@ -2,4 +2,23 @@
 {%  block content %}
     <h1>Teamseite für: {{ teamname }}</h1>
     TeamID: {{ teamid }}
+    <br>
+    <br>
+    Teilgenommene Wettbewerbe:
+    <table border="1">
+        <tr>
+            <th>Wettbewerb</th>
+            <th>Platz</th>
+            <th>Spieler</th>
+        </tr>
+        {% for row in teaminfo %}
+            <tr>
+                <td><a href="{{ url_for('unterwettbewerb', unterwb=row[0]) }}">{{ row[1] }}</a></td>
+                <td>{{ row[2] }}</td>
+                <td>
+                    {% for spieler in row[3] %}<a href="{{ url_for('detailplayer', nickname=spieler[0]) }}">{{ spieler[0] }}</a> |{% endfor %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
 {% endblock %}

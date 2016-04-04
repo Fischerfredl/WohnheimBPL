@@ -333,8 +333,9 @@ INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (5, 29, 47);
 INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (5, 4, 7);
 INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (5, 4, 9);
 INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (5, 4, 50);
-INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (5, 31, 51);
-INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (5, 31, 52);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (5, 32, 1);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (5, 32, 48);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (5, 32, 62);
 
 INSERT INTO Spiel(SpielID, UnterwbID, Team1ID, Team2ID, SiegerID, Gewertet, Datum) VALUES (1, 1, 10, 6, 10, 1, '2014-12-01');
 INSERT INTO Spiel(SpielID, UnterwbID, Team1ID, Team2ID, SiegerID, Gewertet, Datum) VALUES (2, 1, 7, 8, 7, 1, '2014-12-01');

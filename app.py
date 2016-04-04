@@ -42,16 +42,8 @@ def compdetail(compid):
     if not query_db('SELECT * FROM Wettbewerb WHERE WbID = ?', [compid], one=True):
         return error_handler('Wettbewerb nicht vorhanden')
     compname = query_db('SELECT Name FROM Wettbewerb WHERE WbID = ?', [compid], one=True)
-    table_liga = query_db('SELECT uwb.UnterwbID, Name, MAX(Spieltag) \
-                          FROM Unterwettbewerb uwb Inner Join \
-                          (Spiel Inner Join Ligaspiel ON Spiel.SpielID = Ligaspiel.SpielID) AS sp \
-                          ON uwb.UnterwbID = sp.UnterwbID \
-                          WHERE  Modus = "liga" AND uwb.WbID = ? \
-                          GROUP BY Name', [compid])
-    table_turnier = query_db('SELECT UnterwbID, Name FROM Unterwettbewerb WHERE  Modus = "turnier" AND WbID = ?', [compid])
-    table_ko = query_db('SELECT UnterwbID, Name FROM Unterwettbewerb WHERE  Modus = "ko" AND WbID = ?', [compid])
-    return render_template('compdetail.html', compid=compid, compname=compname,
-                           table_liga=table_liga, table_ko=table_ko)
+    table_unterwb = query_db("SELECT UnterwbID, Name, Modus FROM Unterwettbewerb WHERE WbID = ?", [compid])
+    return render_template('compdetail.html', compid=compid, compname=compname, table_unterwb=table_unterwb)
 
 @app.route('/comp/<int:compid>/teams')
 def compteams(compid):
@@ -71,20 +63,48 @@ def compteams(compid):
 
 # views for Unterwettbewerbe
 
+@app.route('/comp/unterwb/<int:unterwb>')
+def unterwettbewerb(unterwb):
+    if not query_db('SELECT * FROM Unterwettbewerb WHERE UnterwbID = ?', [unterwb], one=True):
+        return error_handler('Unterwettbewerb nicht vorhanden')
+    modus = query_db('SELECT Modus FROM Unterwettbewerb WHERE UnterwbID = ?', [unterwb], one=True)
+    if modus == 'liga':
+        return redirect(url_for('league', leagueid=unterwb, spieltag=getCurrentSpieltag(unterwb)))
+    elif modus == 'turnier':
+        return redirect(url_for('gruppe', groupid=unterwb))
+    else:
+        return redirect(url_for('ko', koid=unterwb))
+
+@app.route('/comp/unterwb/<int:unterwb>/teams')
+def unterwbteams(unterwb):
+    if not query_db('SELECT * FROM Unterwettbewerb WHERE UnterwbID = ?', [unterwb], one=True):
+        return error_handler('Unterwettbewerb nicht vorhanden')
+    unterwbname = query_db('SELECT Name FROM Unterwettbewerb WHERE UnterwbID = ?', [unterwb], one=True)
+    query = query_db('SELECT DISTINCT (SELECT Name FROM Team WHERE Team.TeamID = tg.TeamID) AS teamn, \
+                     (SELECT Nickname FROM Spieler WHERE Spieler.SpielerID = tg.SpielerID) AS spielern \
+                     FROM Teilgenommen tg \
+                     WHERE UnterwbID = ?', [unterwb])
+    table = dict()
+    for row in query:
+        if row[0] not in table:
+            table[row[0]] = []
+        table[row[0]].append(row[1])
+    return render_template('unterwbteams.html', unterwbid=unterwb, unterwbname=unterwbname, table=table)
+
 @app.route('/comp/liga/<int:leagueid>/<int:spieltag>')
 def league(leagueid, spieltag):
     if not query_db('SELECT * FROM Unterwettbewerb WHERE UnterwbID = ?', [leagueid], one=True):
         return error_handler('Liga nicht vorhanden')
-    max_spieltag = query_db('SELECT MAX(Spieltag) \
-                            FROM  Ligaspiel Inner Join Spiel ON Ligaspiel.SpielID = Spiel.SpielID \
-                            WHERE UnterwbID = ?', [leagueid], one=True)
+    max_spieltag = getMaxSpieltag(leagueid)
     if spieltag<1 or spieltag >max_spieltag:
         return error_handler('Spieltag existiert nicht')
-    leaguename = query_db('SELECT Name FROM Unterwettbewerb WHERE Modus = "liga" AND UnterwbID = ?', [leagueid], one=True)
+    leaguename = query_db("SELECT Name FROM Unterwettbewerb WHERE Modus = 'liga' AND UnterwbID = ?", [leagueid], one=True)
     compid = query_db('SELECT WbID FROM Unterwettbewerb WHERE UnterwbID = ?', [leagueid], one=True)
     table_teamtabelle = getLigaTeamtabelle(leagueid, spieltag)
     table_spielertabelle = getSpielertabelle(leagueid, spieltag)
-    table_spiele = getLigaSpiele(leagueid, spieltag)
+    table_spiele = []
+    for spielid in query_db('SELECT Spiel.SpielID FROM Spiel Inner Join Ligaspiel ON Spiel.SpielID = Ligaspiel.SpielID WHERE Spiel.UnterwbID = ? AND Ligaspiel.Spieltag = ?', [leagueid, spieltag]):
+        table_spiele.append(getSpielErgebnis(spielid[0]))
     return render_template('league.html', leagueid=leagueid, leaguename=leaguename, compid=compid,
                            spieltag=spieltag, max_spieltag=max_spieltag,
                            table_teamtabelle=table_teamtabelle, table_spielertabelle=table_spielertabelle,
@@ -105,8 +125,10 @@ def ko(koid):
         return error_handler('KO-Wettbewerb nicht vorhanden')
     koname = query_db('SELECT name FROM Unterwettbewerb WHERE UnterwbID = ?', [koid], one=True)
     compid = query_db('SELECT WbID FROM Unterwettbewerb WHERE UnterwbID = ?', [koid], one=True)
-    table = query_db('SELECT SpielID FROM Spiel WHERE UnterwbID = ?', [koid])
-    return render_template('ko.html', koid=koid, koname=koname, compid=compid, table=table)
+    table_spiele = []
+    for spielid in query_db('SELECT SpielID FROM Spiel WHERE UnterwbID = ?', [koid]):
+        table_spiele.append(getSpielErgebnis(spielid[0]))
+    return render_template('ko.html', koid=koid, koname=koname, compid=compid, table_spiele=table_spiele)
 
 # detail sites
 
@@ -115,20 +137,25 @@ def detailteam(teamname):
     if not query_db('SELECT * FROM Team WHERE Name = ?', [teamname], one=True):
         return error_handler('Team nicht vorhanden')
     teamid = query_db('SELECT TeamID FROM Team WHERE Name = ?', [teamname], one=True)
-    return render_template('detailteam.html', teamname=teamname, teamid=teamid)
+    teaminfo = getTeaminfo(teamname)
+    return render_template('detailteam.html', teamname=teamname, teamid=teamid, teaminfo=teaminfo)
 
 @app.route('/player/<nickname>')
 def detailplayer(nickname):
     if not query_db('SELECT * FROM Spieler WHERE Nickname = ?', [nickname]):
         return error_handler('Spieler gibbet nich')
-    info = query_db('SELECT SpielerID, Nickname, Vorname, Name FROM Spieler WHERE Nickname = ?', [nickname])[0]
-    return render_template('detailplayer.html', nickname=nickname, info=info)
+    data = query_db('SELECT SpielerID, Nickname, Vorname, Name FROM Spieler WHERE Nickname = ?', [nickname])[0]
+    spielerinfo = getSpielerinfo(nickname)
+    return render_template('detailplayer.html', nickname=nickname, data=data, spielerinfo=spielerinfo)
 
-@app.route('/game/<gameid>')
+@app.route('/game/<int:gameid>')
 def detailgame(gameid):
     if not query_db('SELECT * FROM Spiel WHERE SpielID = ?', [gameid]):
         return error_handler('Spiel gibbet nich')
-    return render_template('detailgame.html')
+    modus = query_db('SELECT (SELECT Modus FROM Unterwettbewerb WHERE Unterwettbewerb.UnterwbID = Spiel.UnterwbID) FROM Spiel Where SpielID = ?', [gameid], one=True)
+    data = getSpieldata(gameid)
+    ergebnis = [getSpielErgebnis(gameid)]
+    return render_template('detailgame.html', gameid=gameid, modus=modus, data=data, ergebnis=ergebnis)
 
 # login function
 
@@ -139,12 +166,6 @@ def login():
 @app.route('/logout')
 def logout():
     return
-
-# custom functions
-def query_db(query, args=(), one=False):
-    cur = g.db.execute(query, args)
-    rv = cur.fetchall()
-    return (rv[0][0] if rv else None) if one else rv
 
 # handle errors
 def error_handler(error):
@@ -169,4 +190,4 @@ def teardown_request(exception):
 
 # app from console
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0', port=5000)

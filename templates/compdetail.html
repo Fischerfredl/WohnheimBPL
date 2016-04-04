@@ -5,30 +5,14 @@
     Sieh dir die angemeldeten Teams und Spieler an:
     <a href="{{ url_for('compteams', compid=compid) }}">Link</a>
     <br><br>
-    {% if table_liga %}
-        Ligen:
+    {% if table_unterwb %}
+        Unterwettbewerbe
         <ul>
-            {% for row in table_liga %}
-                <li><a href="{{ url_for('league', leagueid=row[0], spieltag=row[2]) }}">{{ row[1] }}</a></li>
+            {% for row in table_unterwb %}
+                <li><a href="{{ url_for('unterwettbewerb', unterwb=row[0]) }}">{{ row[2] }}: {{ row[1] }}</a></li>
             {% endfor %}
         </ul>
     {% endif %}
-    {% if table_turnier %}
-        Turniergruppen:
-        <ul>
-            {% for row in table_turnier %}
-                <li><a href="{{ url_for('group', groupid=row[0]) }}">{{ row[1] }}</a></li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-    {% if table_ko %}
-        KO-Wettbewerbe:
-        <ul>
-            {%  for row in table_ko %}
-                <li><a href="{{ url_for('ko', koid=row[0]) }}">{{ row[1] }}</a></li>
-            {% endfor %}
-        </ul>
-    {% endif     %}
     <br><br>
 
 {% endblock %}
