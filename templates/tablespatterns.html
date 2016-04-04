@@ -1,0 +1,102 @@
+{% macro kospiele(table_spiele) %}
+    <table border="1">
+        <tr>
+            <th>SpielID</th>
+            <th>Team1</th>
+            <th>Erg1</th>
+            <th>Erg2</th>
+            <th>Team2</th>
+        </tr>
+        {% for row in table_spiele %}
+            <tr>
+                <td><a href="{{ url_for('detailgame', gameid=row[0]) }}">{{ row[0] }}</a></td>
+                <td><a href="{{ url_for('detailteam', teamname=row[1]) }}">{{ row[1] }}</a></td>
+                <td>{{ row[2] }}</td>
+                <td>{{ row[3] }}</td>
+                <td><a href="{{ url_for('detailteam', teamname=row[4]) }}">{{ row[4] }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endmacro %}
+{% macro ligaspiele(table_spiele) %}
+    <table border="1" width="700">
+        <tr>
+            <th>SpielID</th>
+            <th>Erg1</th>
+            <th>T1</th>
+            <th>T1Tref</th>
+            <th>T2Tref</th>
+            <th>T2</th>
+            <th>Erg2</th>
+            <th>Spieler</th>
+        </tr>
+        {% for row in table_spiele %}
+            <tr>
+                <td><a href="{{ url_for('detailgame', gameid=row[0]) }}">{{ row[0] }}</a></td>
+                <td>{{ row[1] }}</td>
+                <td><a href="{{ url_for('detailteam', teamname=row[2]) }}">{{ row[2] }}</a></td>
+                <td>{{ row[3] }}</td>
+                <td>{{ row[4] }}</td>
+                <td><a href="{{ url_for('detailteam', teamname=row[5]) }}">{{ row[5] }}</a></td>
+                <td>{{ row[6] }}</td>
+                <td>
+                        {% for item in row[8] %}
+                        <a href="{{ url_for('detailplayer', nickname=item[0]) }}">{{ item[0] }}</a>: {{ item[1] }}<br>
+                        {% endfor %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{%  endmacro %}
+{% macro teamtabelle(table_teamtabelle) %}
+    <table border="1" width="700">
+        <tr>
+            <th>Platz</th>
+            <th>Team</th>
+            <th>Spiele</th>
+            <th>Treffer</th>
+            <th>Kassiert</th>
+            <th>Diff</th>
+            <th>G</th>
+            <th>V</th>
+            <th>OTS</th>
+            <th>OTN</th>
+            <th>Punkte</th>
+        </tr>
+        {% set count = 1 %}
+        {% for row in table_teamtabelle %}
+            <tr>
+                <td>{{ count }}</td>
+                <td><a href="{{ url_for('detailteam', teamname=row[0]) }}">{{ row[0] }}</a></td>
+                <td>{{ row[1] }}</td>
+                <td>{{ row[2] }}</td>
+                <td>{{ row[3] }}</td>
+                <td>{{ row[4] }}</td>
+                <td>{{ row[5] }}</td>
+                <td>{{ row[6] }}</td>
+                <td>{{ row[7] }}</td>
+                <td>{{ row[8] }}</td>
+                <td>{{ row[9] }}</td>
+            </tr>
+            {% set count = count+1 %}
+        {% endfor %}
+    </table>
+{% endmacro %}
+{% macro spielertabelle(table_spielertabelle) %}
+    <table border="1">
+        <tr>
+            <th>Name</th>
+            <th>Treffer</th>
+            <th>Spiele</th>
+            <th>Schnitt</th>
+        </tr>
+        {% for row in table_spielertabelle  %}
+            <tr>
+				<td><a href="{{ url_for('detailplayer', nickname=row.name) }}">{{ row.name }}</a></td>
+				<td>{{ row.treffer }}</td>
+				<td>{{ row.spiele }}</td>
+                <td>{{ row.schnitt }}</td>
+			</tr>
+        {% endfor %}
+		</table>
+{% endmacro %}

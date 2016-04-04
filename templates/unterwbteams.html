@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{%  block content %}
+    <a href="{{ url_for('unterwettbewerb', unterwb=unterwbid) }}"><- Zurück</a>
+    <h1>Unterwettbewerb: {{ unterwbname }} Teamseite</h1>
+    Angemeldete Teams
+    <br><br>
+    <table border = 1>
+    {% for key in table %}
+        <tr>
+            <td><a href="{{ url_for('detailteam', teamname=key) }}">{{ key }}</a></td>
+            <td>
+                {% for item in table[key] %}
+                    <a href="{{ url_for('detailplayer', nickname=item) }}">{{ item }}</a> |
+                {% endfor %}
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
+    <br>
+{% endblock %}

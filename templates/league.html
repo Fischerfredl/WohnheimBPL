@@ -1,82 +1,20 @@
 {% extends "base.html" %}
+{%- from "tablespatterns.html" import ligaspiele, teamtabelle, spielertabelle with context  %}
 {%  block content %}
     <a href="{{ url_for('compdetail', compid=compid) }}"><- Zurück</a>
     <h1>Liga: {{ liganame }} Spieltag: {{ spieltag }}</h1>
+    Sieh dir die angemeldeten Teams und Spieler an:
+    <a href="{{ url_for('unterwbteams', unterwb=leagueid) }}">Link</a>
+    <br>
+    <br>
     <form action="{{ url_for('league', leagueid=leagueid, spieltag=spieltag-1) }}">
         <input type="submit" value="Spieltag zurück" {% if spieltag == 1 %}disabled{% endif %}>
     </form> <form action="{{ url_for('league', leagueid=leagueid, spieltag=spieltag+1) }}">
         <input type="submit" value="Spieltag weiter" {% if spieltag == max_spieltag %}disabled{% endif %}>
     </form>
-    <table border="1" width="700">
-        <tr>
-            <th>Platz</th>
-            <th>Team</th>
-            <th>Spiele</th>
-            <th>Treffer</th>
-            <th>Kassiert</th>
-            <th>Diff</th>
-            <th>G</th>
-            <th>V</th>
-            <th>OTS</th>
-            <th>OTN</th>
-            <th>Punkte</th>
-        </tr>
-        {% set count = 1 %}
-        {% for row in table_teamtabelle %}
-            <tr>
-                <td>{{ count }}</td>
-                <td><a href="{{ url_for('detailteam', teamname=row[0]) }}">{{ row[0] }}</a></td>
-                <td>{{ row[1] }}</td>
-                <td>{{ row[2] }}</td>
-                <td>{{ row[3] }}</td>
-                <td>{{ row[4] }}</td>
-                <td>{{ row[5] }}</td>
-                <td>{{ row[6] }}</td>
-                <td>{{ row[7] }}</td>
-                <td>{{ row[8] }}</td>
-                <td>{{ row[9] }}</td>
-            </tr>
-            {% set count = count+1 %}
-        {% endfor %}
-    </table>
+    {{ teamtabelle(table_teamtabelle) }}
     <br><br>
-    <table border="1">
-        <tr>
-            <th>SpielID</th>
-            <th>Erg1</th>
-            <th>T1</th>
-            <th>T1Tref</th>
-            <th>T2Tref</th>
-            <th>T2</th>
-            <th>Erg2</th>
-        </tr>
-        {% for row in table_spiele %}
-            <tr>
-                <td><a href="{{ url_for('detailgame', gameid=row[0]) }}">{{ row[0] }}</a></td>
-                <td>{{ row[1] }}</td>
-                <td><a href="{{ url_for('detailteam', teamname=row[2]) }}">{{ row[2] }}</a></td>
-                <td>{{ row[3] }}</td>
-                <td>{{ row[4] }}</td>
-                <td><a href="{{ url_for('detailteam', teamname=row[5]) }}">{{ row[5] }}</a></td>
-                <td>{{ row[6] }}</td>
-            </tr>
-        {% endfor %}
-    </table>
+    {{ ligaspiele(table_spiele) }}
     <br><br>
-    <table border="1">
-        <tr>
-            <th>Name</th>
-            <th>Treffer</th>
-            <th>Spiele</th>
-            <th>Schnitt</th>
-        </tr>
-        {% for row in table_spielertabelle  %}
-            <tr>
-				<td><a href="{{ url_for('detailplayer', nickname=row.name) }}">{{ row.name }}</a></td>
-				<td>{{ row.treffer }}</td>
-				<td>{{ row.spiele }}</td>
-                <td>{{ row.schnitt }}</td>
-			</tr>
-        {% endfor %}
-		</table>
+    {{ spielertabelle(table_spielertabelle) }}
 {% endblock %}
