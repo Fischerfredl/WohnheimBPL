@@ -13,6 +13,40 @@ if platform.system() == 'Linux':
 elif platform.system() == 'Windows':
     app.config.from_object(config_windows)
 
+
+# dev layout
+
+@app.route('/dev/home')
+def dev_home():
+    return render_template('dev/home.html')
+
+
+@app.route('/dev/comp')
+def dev_comp():
+    table = query_db('SELECT WbID, Name FROM Wettbewerb')
+    return render_template('dev/comp.html', table=table)
+
+
+@app.route('/dev/comp/<int:compid>')
+def dev_compdetail(compid):
+    if not query_db('SELECT * FROM Wettbewerb WHERE WbID = ?', [compid], one=True):
+        return error_handler('Wettbewerb nicht vorhanden')
+    compname = query_db('SELECT Name FROM Wettbewerb WHERE WbID = ?', [compid], one=True)
+    table_unterwb = query_db("SELECT UnterwbID, Name, Modus FROM Unterwettbewerb WHERE WbID = ?", [compid])
+    return render_template('dev/compdetail.html', compid=compid, compname=compname, table_unterwb=table_unterwb)
+
+
+@app.route('/dev/comp/unterwb/<int:unterwb>')
+def dev_unterwettbewerb(unterwb):
+    if not query_db('SELECT * FROM Unterwettbewerb WHERE UnterwbID = ?', [unterwb], one=True):
+        return error_handler('Unterwettbewerb nicht vorhanden')
+    modus = query_db('SELECT Modus FROM Unterwettbewerb WHERE UnterwbID = ?', [unterwb], one=True)
+    if modus == 'liga':
+        return redirect(url_for('league', leagueid=unterwb, spieltag=getCurrentSpieltag(unterwb)))
+    elif modus == 'turnier':
+        return redirect(url_for('gruppe', groupid=unterwb))
+    else:
+        return redirect(url_for('ko', koid=unterwb))
 # ----------------------------------------------------------------------------------------------------------------------
 #
 # Views
