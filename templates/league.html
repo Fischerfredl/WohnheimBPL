@@ -2,7 +2,7 @@
 {%- from "tablespatterns.html" import ligaspiele, teamtabelle, spielertabelle with context  %}
 {%  block content %}
     <a href="{{ url_for('compdetail', compid=compid) }}"><- Zurück</a>
-    <h1>Liga: {{ liganame }} Spieltag: {{ spieltag }}</h1>
+    <h1>Liga: {{ leaguename }} Spieltag: {{ spieltag }}</h1>
     Sieh dir die angemeldeten Teams und Spieler an:
     <a href="{{ url_for('unterwbteams', unterwb=leagueid) }}">Link</a>
     <br>

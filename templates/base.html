@@ -13,18 +13,18 @@
 
     <div id="nav">
         {% if not session.logged_in %}
-            <a href="{{ url_for('home') }}">Login</a>
+            <a href="{{ url_for('login') }}">Login</a>
         {% else %}
-            <a href="{{ url_for('home') }}">Logout</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
             <br>
             Logged in as <br>
             {{ session.username }}
             <hr>
-            <a href="{{ url_for(player, username=session.userid) }}">See Profile</a>
+            <a href="{{ url_for('detailplayer', nickname=session.username) }}">See Profile</a>
 
             {% if session.username == 'admin' %}
                 <hr>
-                <a href="{{ url_for('home') }}">User anlegen</a>
+                <a href="{{ url_for('home') }}">Adminbereich</a>
             {% endif %}
         {% endif %}
     </div>
