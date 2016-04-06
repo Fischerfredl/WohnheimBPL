@@ -476,4 +476,4 @@ def error_handler(error):
 # ----------------------------------------------------------------------------------------------------------------------
 
 if __name__ == '__main__':
-    app.run(host=IPADDR, port=PORT)
+    app.run(host=app.config['IPADDR'], port=app.config['PORT'])
