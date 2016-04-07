@@ -25,4 +25,14 @@
             </tr>
         {% endfor %}
     </table>
+    <br>
+    {% if session.username == nickname %}
+        <hr>
+        <h2>Persönlicher Bereich</h2>
+        <ul>
+        <li><a href="{{ url_for('playersettings', nickname=nickname, option='personal') }}">Daten ändern</a></li>
+        <li><a href="{{ url_for('playersettings', nickname=nickname, option='password') }}">Passwort ändern</a></li>
+        <li><a href="{{ url_for('playersettings', nickname=nickname, option='nickname') }}">Nickname ändern</a></li>
+        </ul>
+    {% endif %}
 {% endblock %}
