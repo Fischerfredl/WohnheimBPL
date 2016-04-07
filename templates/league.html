@@ -1,15 +1,10 @@
-{% extends "base.html" %}
+{% extends "unterwbdetail.html" %}
 {%- from "tablespatterns.html" import ligaspiele, teamtabelle, spielertabelle with context  %}
-{%  block content %}
-    <a href="{{ url_for('compdetail', compid=compid) }}"><- Zurück</a>
-    <h1>Liga: {{ leaguename }} Spieltag: {{ spieltag }}</h1>
-    Sieh dir die angemeldeten Teams und Spieler an:
-    <a href="{{ url_for('unterwbteams', unterwb=leagueid) }}">Link</a>
-    <br>
-    <br>
-    <form action="{{ url_for('league', leagueid=leagueid, spieltag=spieltag-1) }}">
+{%  block spiele %}
+    <h1>Spieltag: {{ spieltag }}</h1>
+    <form action="{{ url_for('league', leagueid=unterwbinfo[0], spieltag=spieltag - 1) }}">
         <input type="submit" value="Spieltag zurück" {% if spieltag == 1 %}disabled{% endif %}>
-    </form> <form action="{{ url_for('league', leagueid=leagueid, spieltag=spieltag+1) }}">
+    </form> <form action="{{ url_for('league', leagueid=unterwbinfo[0], spieltag=spieltag + 1) }}">
         <input type="submit" value="Spieltag weiter" {% if spieltag == max_spieltag %}disabled{% endif %}>
     </form>
     {{ teamtabelle(table_teamtabelle) }}

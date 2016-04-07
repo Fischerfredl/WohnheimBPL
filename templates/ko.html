@@ -1,12 +1,6 @@
-{% extends "base.html" %}
+{% extends "unterwbdetail.html" %}
 {%- from 'tablespatterns.html' import kospiele with context %}
-{%  block content %}
-    <a href="{{ url_for('compdetail', compid=compid) }}"><- Zurück</a>
-    <h1>KO-Wettbewerb: {{ koname }}</h1>
-    Sieh dir die angemeldeten Teams und Spieler an:
-    <a href="{{ url_for('unterwbteams', unterwb=koid) }}">Link</a>
-    <br>
-    <br>
+{%  block spiele %}
     Spiele:
     {{ kospiele(table_spiele) }}
 {% endblock %}
