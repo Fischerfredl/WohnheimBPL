@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block content %}
+    <a href="{{ url_for('admin') }}"><- Zurück</a>
+    {% if option == 'newplayer' %}
+        <h1>Neuen Spieler anlegen</h1>
+        <form action="{{ url_for('adminsettings', option='newplayer') }}" method="post">
+        <dl>
+            <dt>Nickname:
+            <dd><input type=text name=nickname>
+            <dt>Vorname:
+            <dd><input type=text name=vorname>
+            <dt>Nachname:
+            <dd><input type=text name=name>
+            <dd><input type=submit value=Submit>
+        </dl>
+        </form>
+
+    {% elif option == 'newteam' %}
+        <h1>Neues Team anlegen</h1>
+        <form action="{{ url_for('adminsettings', option='newteam') }}" method="post">
+        <dl>
+            <dt>Teamname:
+            <dd><input type=text name=name>
+            <dd><input type=submit value=Submit>
+        </dl>
+        </form>
+
+    {% elif option == 'resetpw' %}
+        <h1>Passwort zurücksetzen</h1>
+        {% if not dellist %}
+            Es gibt keine Spieler
+        {% else %}
+            <form action="{{ url_for('adminsettings', option='resetpw') }}" method="post">
+            <dl>
+                <dt>Spieler:
+                <dd><select type name=nickname>
+                {% for item in dellist %}
+                    <option value="{{ item }}">{{ item }}</option>
+                {% endfor %}
+                </select>
+                <dd><input type=submit value=Submit>
+            </dl>
+            </form>
+        {% endif %}
+    {% elif option == 'delplayer' %}
+        <h1>Spieler entfernen</h1>
+        {% if not dellist %}
+            Es gibt keine Spieler zu entfernen
+        {% else %}
+            <form action="{{ url_for('adminsettings', option='delplayer') }}" method="post">
+            <dl>
+                <dt>Spieler:
+                <dd><select type name=nickname>
+                {% for item in dellist %}
+                    <option value="{{ item }}">{{ item }}</option>
+                {% endfor %}
+                </select>
+                <dd><input type=submit value=Submit>
+            </dl>
+            </form>
+        {% endif %}
+    {% elif option == 'delteam' %}
+        <h1>Team entfernen</h1>
+        {% if not dellist %}
+            Es gibt keine Teams zu entfernen
+        {% else %}
+            <form action="{{ url_for('adminsettings', option='delteam') }}" method="post">
+            <dl>
+                <dt>Teams:
+                <dd><select type name=name>
+                {% for item in dellist %}
+                    <option value="{{ item }}">{{ item }}</option>
+                {% endfor %}
+                </select>
+                <dd><input type=submit value=Submit>
+            </dl>
+            </form>
+        {% endif %}
+    {% endif %}
+
+
+
+    {% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
+
+{% endblock %}

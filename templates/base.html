@@ -16,15 +16,16 @@
             <a href="{{ url_for('login') }}">Login</a>
         {% else %}
             <a href="{{ url_for('logout') }}">Logout</a>
-            <br>
-            Logged in as <br>
+            <hr>
+            Logged in as
             {{ session.username }}
             <hr>
-            <a href="{{ url_for('detailplayer', nickname=session.username) }}">See Profile</a>
-
             {% if session.username == 'admin' %}
-                <hr>
-                <a href="{{ url_for('home') }}">Adminbereich</a>
+                <a href="{{ url_for('admin') }}">Adminbereich</a>
+            {% elif session.username == 'mod' %}
+                <a href="{{ url_for('home') }}">Modbereich</a>
+            {% else %}
+                <a href="{{ url_for('detailplayer', nickname=session.username) }}">See Profile</a>
             {% endif %}
         {% endif %}
     </div>

@@ -6,7 +6,9 @@ from contextlib import closing
 from config import config_linux, config_windows
 from hashlib import sha1
 
+
 app = Flask(__name__)
+
 
 if platform.system() == 'Linux':
     app.config.from_object(config_linux)
@@ -140,7 +142,7 @@ def league(leagueid, spieltag):
 
 # ----------------------------------------------------------------------------------------------------------------------
 #
-# Route: DETAIL
+# Route: detail
 #
 # ----------------------------------------------------------------------------------------------------------------------
 
@@ -176,7 +178,7 @@ def detailgame(gameid):
 
 # ----------------------------------------------------------------------------------------------------------------------
 #
-# Route: Login Function
+# Route: login view
 #
 # ----------------------------------------------------------------------------------------------------------------------
 
@@ -208,9 +210,121 @@ def logout():
 
 # ----------------------------------------------------------------------------------------------------------------------
 #
+# admin view
+#
+# ----------------------------------------------------------------------------------------------------------------------
+
+@app.route('/admin')
+def admin():
+    if not verifylogin(user='admin'):
+        return error_handler('Not logged in as admin')
+    return render_template('admin.html')
+
+
+# allowed for option:
+# newplayer, newteam, resetpw, delplayer, delteam
+@app.route('/admin/settings/<option>', methods=['GET', 'POST'])
+def adminsettings(option):
+    if not verifylogin(user='admin'):
+        return error_handler('Not logged in as admin')
+    error = None
+    dellist = []
+    if request.method == 'POST':
+        if option == 'newplayer':
+            if not trynewplayer(request.form['nickname'], request.form['name'], request.form['vorname']):
+                error = 'Spieler konnte nicht angelegt werden'
+            else:
+                flash('Spieler angelegt. Nick: %s, Name: %s, Vorname: %s' %
+                      (request.form['nickname'], request.form['name'], request.form['vorname']))
+                return redirect(url_for('admin'))
+        elif option == 'newteam':
+            if not trynewteam(request.form['name']):
+                error = 'Team konnte nicht angelegt werden'
+            else:
+                flash('Team angelegt. Name: %s ' % request.form['name'])
+                return redirect(url_for('admin'))
+        elif option == 'delplayer':
+            if not trydelplayer(request.form['nickname']):
+                error = 'Spieler konnte nicht geloescht werden'
+            else:
+                flash('Spieler geloescht. Name: %s' % request.form['nickname'])
+                return redirect(url_for('admin'))
+        elif option == 'delteam':
+            if not trydelteam(request.form['name']):
+                error = 'Team konnte nicht geloescht werden'
+            else:
+                flash('Team geloescht. Name: %s' % request.form['name'])
+                return redirect(url_for('admin'))
+        elif option == 'resetpw':  # option == 'resetpw'
+            if not tryresetpw(request.form['nickname']):
+                error = 'Passwort konnte nicht zurueckgesetzt werden'
+            else:
+                flash('Passwort zurueckgesetzt. Spieler: %s' % request.form['nickname'])
+                return redirect(url_for('admin'))
+        else:
+            error_handler('Einstellungen gibbet nich')
+    else:  # request.method == 'GET'
+        if option == 'delplayer':
+            for row in query_db('SELECT nickname FROM Spieler s \
+                                WHERE s.SpielerID NOT IN (SELECT SpielerID FROM Teilgenommen)'):
+                dellist.append(row[0])
+        if option == 'delteam':
+            for row in query_db('SELECT name FROM Team t \
+                                WHERE t.TeamID NOT IN (SELECT TeamID FROM Teilgenommen)'):
+                dellist.append(row[0])
+        if option == 'resetpw':
+            dellist = getUsers()
+    return render_template('adminsettings.html', error=error, option=option, dellist=dellist)
+
+# ----------------------------------------------------------------------------------------------------------------------
+#
+# settings
+#
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+# allowed for otion
+# persona, password
+@app.route('/player/<nickname>/settings/<option>', methods=['GET', 'POST'])
+def playersettings(nickname, option):
+    if not query_db('SELECT * FROM Spieler WHERE nickname = ?', [nickname]):
+        error_handler('Spieler gibbet nich')
+    if not verifylogin(user=nickname):
+        error_handler('Nicht eingeloggt als %s' % nickname)
+    error = None
+    if request.method == 'POST':
+        if option == 'personal':
+            if not trychangepersonal(nickname, request.form['name'], request.form['vorname']):
+                error = 'Daten konnten nicht geaendert werden'
+            else:
+                flash('Daten geaendert. Spieler: %s, Name: %s, Vorname: %s' %
+                      (nickname, request.form['name'], request.form['vorname']))
+                return redirect(url_for('detailplayer', nickname=nickname))
+        elif option == 'password':
+            if not trychangepw(nickname, request.form['pwold'], request.form['pwnew']):
+                error = 'Passwort konnte nicht geaendert werden'
+            else:
+                flash('Passwort geaendert')
+                return redirect(url_for('detailplayer', nickname=nickname))
+        elif option == 'nickname':
+            if not trychangenick(nickname, request.form['password'], request.form['nicknew']):
+                return error_handler('Nick konnte nicht geaendert werden')
+            else:
+                flash('Nickname geaendert von %s in %s' % (nickname, request.form['nicknew']))
+                session['username'] = request.form['nicknew']
+                return redirect(url_for('detailplayer', nickname=request.form['nicknew']))
+        else:
+            return error_handler('Einstellung gibbet nich')
+    # else:  # request.method == 'GET'
+    return render_template('playersettings.html', error=error, option=option, nickname=nickname)
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+#
 # dev layout
 #
 # ----------------------------------------------------------------------------------------------------------------------
+
 
 @app.route('/dev/home')
 def dev_home():
@@ -252,6 +366,7 @@ def dev_unterwettbewerb(unterwb):
 #
 # ----------------------------------------------------------------------------------------------------------------------
 # ----------------------------------------------------------------------------------------------------------------------
+
 
 # returns LigaTeamtabelle - List with tuples: Team, Spiele, Treffer, Kassiert, Diff, G, V, OTS, OTN, Punkte
 def getLigaTeamtabelle(unterwb, spieltag):
@@ -439,6 +554,12 @@ def getUsers():
         userlist.append(item[0])
     return userlist
 
+def getTeams():
+    teamlist = []
+    for item in query_db('SELECT Name FROM Team'):
+        teamlist.append(item[0])
+    return teamlist
+
 
 def validatePassword(nickname, pass1):
     pass2 = query_db('SELECT Passwort FROM Spieler WHERE Nickname = ?', [nickname], one=True)
@@ -452,29 +573,128 @@ def setPassword(nickname, password):
     update_db("UPDATE Spieler SET Passwort = ? WHERE Nickname = ?", [sha1(password+'salt#!!!?1256').hexdigest(), nickname])
     return
 
+def verifylogin(user=None):
+    if not session['logged_in']:
+        return False
+    elif not user:
+        return True
+    elif session['username'] == user:
+        return True
+    else:
+        return False
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+# admin functions
+# ----------------------------------------------------------------------------------------------------------------------
+
+def trynewplayer(nickname, name, vorname):
+    if len(nickname) == 0 or nickname in getUsers():
+        return False
+    else:
+        update_db('INSERT INTO Spieler(SpielerID, Nickname, Name, Vorname) VALUES (?, ?, ?, ?)',
+                  [getSpielerID(), nickname, name, vorname])
+        if nickname not in getUsers():
+            return False
+        return True
+
+
+def trynewteam(name):
+    if len(name) == 0 or name in getTeams():
+        return False
+    else:
+        update_db('INSERT INTO Team(TeamID, Name) VALUES (?, ?)',
+                  [getTeamID(), name])
+        if name not in getTeams():
+            return False
+        return True
+
+
+def trydelplayer(nickname):
+    if nickname not in getUsers():
+        return False
+    update_db('DELETE FROM Spieler WHERE nickname = ?', [nickname])
+    if nickname in getUsers():
+        return False
+    return True
+
+
+def trydelteam(name):
+    if name not in getTeams():
+        return False
+    update_db('DELETE FROM Team WHERE name = ?', [name])
+    if name in getTeams():
+        return False
+    return True
+
+
+def tryresetpw(nickname):
+    if nickname not in getUsers():
+        return False
+    setPassword(nickname, app.config['DEFAULTPASS'])
+    if not validatePassword(nickname, app.config['DEFAULTPASS']):
+        return False
+    return True
+
+# ----------------------------------------------------------------------------------------------------------------------
+# player functions
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+def trychangepersonal(nickname, vorname, nachname):
+    if nickname not in getUsers():
+        return False
+    if not len(vorname) == 0:
+        update_db('UPDATE Spieler SET Vorname = ? WHERE Nickname = ?', [vorname, nickname])
+    if not len(nachname) == 0:
+        update_db('UPDATE Spieler SET Name = ? WHERE Nickname = ?', [nachname, nickname])
+    return True
+
+
+def trychangepw(nickname, pwold, pwnew):
+    if not validatePassword(nickname, pwold):
+        return False
+    if len(pwnew) < 3:
+        return False
+    setPassword(nickname, pwnew)
+    if not validatePassword(nickname, pwnew):
+        return False
+    return True
+
+
+def trychangenick(nickold, password, nicknew):
+    if not validatePassword(nickold, password):
+        return False
+    if nicknew in getUsers():
+        return False
+    update_db('UPDATE Spieler SET Nickname = ? WHERE Nickname = ?', [nicknew, nickold])
+    if nicknew not in getUsers():
+        return False
+    return True
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Get IDs
 # ----------------------------------------------------------------------------------------------------------------------
 
+
 def getSpielerID():
-    return query_db('SELECT MAX(SpielerID) FROM Spieler')[0]+1
+    return query_db('SELECT MAX(SpielerID) FROM Spieler', one=True)+1
 
 
 def getTeamID():
-    return query_db('SELECT MAX(TeamID) FROM Team')[0]+1
+    return query_db('SELECT MAX(TeamID) FROM Team', one=True)+1
 
 
 def getWettbewerbID():
-    return query_db('SELECT MAX(WettbewerbID) FROM Wettbewerb')[0]+1
+    return query_db('SELECT MAX(WettbewerbID) FROM Wettbewerb', one=True)+1
 
 
 def getUnterwettbewerbID():
-    return query_db('SELECT MAX(UnterwettbewerbID) FROM Unterwettbewerb')[0]+1
+    return query_db('SELECT MAX(UnterwettbewerbID) FROM Unterwettbewerb', one=True)+1
 
 
 def getSpielID():
-    return query_db('SELECT MAX(SpielID) FROM Spiel')[0]+1
+    return query_db('SELECT MAX(SpielID) FROM Spiel', one=True)+1
 
 
 # ----------------------------------------------------------------------------------------------------------------------
