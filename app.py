@@ -6,6 +6,7 @@ from contextlib import closing
 from config import config_linux, config_windows
 from hashlib import sha1
 from competition.views import competition
+from login.views import login
 
 app = Flask(__name__)
 
@@ -16,6 +17,7 @@ elif platform.system() == 'Windows':
     app.config.from_object(config_windows)
 
 app.register_blueprint(competition, url_prefix='/competition')
+app.register_blueprint(login)
 
 # ----------------------------------------------------------------------------------------------------------------------
 # ----------------------------------------------------------------------------------------------------------------------
@@ -52,25 +54,6 @@ def detailplayer(nickname):
 @app.route('/game/<int:gameid>')
 def detailgame(gameid):
     return 'Game: ' + gameid
-
-
-# ----------------------------------------------------------------------------------------------------------------------
-#
-# Route: login view
-#
-# ----------------------------------------------------------------------------------------------------------------------
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    return 'Login'
-
-
-@app.route('/logout')
-def logout():
-    session.pop('logged_in', None)
-    session.pop('username', None)
-    flash('You were logged out')
-    return redirect(url_for('home'))
 
 
 # ----------------------------------------------------------------------------------------------------------------------
