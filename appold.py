@@ -44,16 +44,16 @@ def detailteam(teamname):
         return error_handler('Team nicht vorhanden')
     teamid = query_db('SELECT TeamID FROM Team WHERE Name = ?', [teamname], one=True)
     teaminfo = getTeaminfo(teamname)
-    return render_template('detailteam.html', teamname=teamname, teamid=teamid, teaminfo=teaminfo)
+    return render_template('detail_team.html', teamname=teamname, teamid=teamid, teaminfo=teaminfo)
 
 
-@app.route('/player/<nickname>')
+@app.route('/user/<nickname>')
 def detailplayer(nickname):
     if not query_db('SELECT * FROM Spieler WHERE Nickname = ?', [nickname]):
         return error_handler('Spieler gibbet nich')
     data = query_db('SELECT SpielerID, Nickname, Vorname, Name FROM Spieler WHERE Nickname = ?', [nickname])[0]
     spielerinfo = getSpielerinfo(nickname)
-    return render_template('detailplayer.html', nickname=nickname, data=data, spielerinfo=spielerinfo)
+    return render_template('detail_player.html', nickname=nickname, data=data, spielerinfo=spielerinfo)
 
 
 @app.route('/game/<int:gameid>')
@@ -65,38 +65,6 @@ def detailgame(gameid):
     data = getSpieldata(gameid)
     ergebnis = [getSpielErgebnis(gameid)]
     return render_template('detailgame.html', gameid=gameid, modus=modus, data=data, ergebnis=ergebnis)
-
-
-# ----------------------------------------------------------------------------------------------------------------------
-#
-# Route: login view
-#
-# ----------------------------------------------------------------------------------------------------------------------
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    error = None
-    if request.method == 'POST':
-        user = request.form['username']
-        password = request.form['password']
-        if not validatePassword(user, password) and \
-                not(user == app.config['ADMINLOGIN'] and password == app.config['ADMINPASSWORD']) and \
-                not(user == app.config['MODLOGIN'] and password == app.config['ADMINPASSWORD']):
-            error = 'Invalid username or password'
-        else:
-            session['logged_in'] = True
-            session['username'] = user
-            flash('You were logged in: %s' % user)
-            return redirect(url_for('home'))
-    return render_template('login.html', error=error)
-
-
-@app.route('/logout')
-def logout():
-    session.pop('logged_in', None)
-    session.pop('username', None)
-    flash('You were logged out')
-    return redirect(url_for('home'))
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -176,7 +144,7 @@ def adminsettings(option):
 
 # allowed for otion
 # persona, password
-@app.route('/player/<nickname>/settings/<option>', methods=['GET', 'POST'])
+@app.route('/user/<nickname>/settings/<option>', methods=['GET', 'POST'])
 def playersettings(nickname, option):
     if not query_db('SELECT * FROM Spieler WHERE nickname = ?', [nickname]):
         error_handler('Spieler gibbet nich')
@@ -329,14 +297,6 @@ def getTeams():
     return teamlist
 
 
-def validatePassword(nickname, pass1):
-    pass2 = query_db('SELECT Passwort FROM Spieler WHERE Nickname = ?', [nickname], one=True)
-    if sha1(pass1+'salt#!!!?1256').hexdigest() == pass2:
-        return True
-    else:
-        return False
-
-
 def setPassword(nickname, password):
     update_db("UPDATE Spieler SET Passwort = ? WHERE Nickname = ?", [sha1(password+'salt#!!!?1256').hexdigest(), nickname])
     return
@@ -405,7 +365,7 @@ def tryresetpw(nickname):
     return True
 
 # ----------------------------------------------------------------------------------------------------------------------
-# player functions
+# user functions
 # ----------------------------------------------------------------------------------------------------------------------
 
 

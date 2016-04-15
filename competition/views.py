@@ -4,7 +4,7 @@ from functions import *
 # /overview
 # /<competitionid>
 # /division/<divisionid>
-# /division/<divisionid>/<matchday>
+# /division/<leagueidid>/<matchday>
 # /<competitionid>/teams
 # /division/<divisionid>/teams
 
@@ -67,3 +67,8 @@ def competition_signed_teams(competitionid):
 def division_signed_teams(divisionid):
     return render_template('competition_signed_teams.html', object=get_division_info(divisionid),
                            signed_teams=get_division_teams(divisionid))
+
+
+@competition.route('/game/<int:gameid>')
+def detailgame(gameid):
+    return render_template('detail_game.html', result=get_game_result(gameid), data=get_game_data(gameid))

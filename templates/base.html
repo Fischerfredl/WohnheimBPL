@@ -13,9 +13,9 @@
 
     <div id="nav">
         {% if not session.logged_in %}
-            <a href="{{ url_for('login') }}">Login</a>
+            <a href="{{ url_for('login.login') }}">Login</a>
         {% else %}
-            <a href="{{ url_for('logout') }}">Logout</a>
+            <a href="{{ url_for('login.logout') }}">Logout</a>
             <hr>
             Logged in as
             {{ session.username }}

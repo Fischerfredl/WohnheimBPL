@@ -1,12 +1,12 @@
 import os
 import sqlite3
 import platform
-from flask import Flask, request, session, g, redirect, url_for, render_template, flash
+from flask import Flask, g, render_template
 from contextlib import closing
 from config import config_linux, config_windows
-from hashlib import sha1
 from competition.views import competition
-from login.views import login
+from login.views import app_login
+from user.views import user
 
 app = Flask(__name__)
 
@@ -17,7 +17,8 @@ elif platform.system() == 'Windows':
     app.config.from_object(config_windows)
 
 app.register_blueprint(competition, url_prefix='/competition')
-app.register_blueprint(login)
+app.register_blueprint(app_login)
+app.register_blueprint(user)
 
 # ----------------------------------------------------------------------------------------------------------------------
 # ----------------------------------------------------------------------------------------------------------------------
@@ -32,28 +33,6 @@ app.register_blueprint(login)
 @app.route('/home')
 def home():
     return render_template('home.html')
-
-
-# ----------------------------------------------------------------------------------------------------------------------
-#
-# Route: detail
-#
-# ----------------------------------------------------------------------------------------------------------------------
-
-
-@app.route('/team/<teamname>')
-def detailteam(teamname):
-    return ' Team: ' + teamname
-
-
-@app.route('/player/<nickname>')
-def detailplayer(nickname):
-    return 'Player: ' + nickname
-
-
-@app.route('/game/<int:gameid>')
-def detailgame(gameid):
-    return 'Game: ' + gameid
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -82,7 +61,7 @@ def adminsettings(option):
 
 # allowed for otion
 # persona, password
-@app.route('/player/<nickname>/settings/<option>', methods=['GET', 'POST'])
+@app.route('/user/<nickname>/settings/<option>', methods=['GET', 'POST'])
 def playersettings(nickname, option):
     return 'Playersettings: ' + option + nickname
 

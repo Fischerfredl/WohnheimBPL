@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{%  block content %}
+    <h1>Spielerseite für: {{ data[1] }}</h1>
+    <ul>
+        <li>SpielerID: {{ data[0] }}</li>
+        <li>Vorname: {{ data[2] }}</li>
+        <li>Nachname: {{ data[3] }}</li>
+    </ul>
+    <br>
+    <br>
+    Teilgenommene Wettbewerbe:
+    <table border="1">
+        <tr>
+            <th>Wettbewerb</th>
+            <th>Platz</th>
+            <th>Team</th>
+        </tr>
+        {% for row in history %}
+            <tr>
+                <td><a href="{{ url_for('competition.division', divisionid=row[0]) }}">{{ row[1] }}</a></td>
+                <td>{{ row[2] }}</td>
+                <td>
+                    <a href="{{ url_for('user.detailteam', teamname=row[3]) }}">{{ row[3] }}</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <br>
+    {% if session.username == data[1] %}
+        <hr>
+        <h2>Persönlicher Bereich</h2>
+        <ul>
+        <li><a href="{{ url_for('playersettings', nickname=nickname, option='personal') }}">Daten ändern</a></li>
+        <li><a href="{{ url_for('playersettings', nickname=nickname, option='password') }}">Passwort ändern</a></li>
+        <li><a href="{{ url_for('playersettings', nickname=nickname, option='nickname') }}">Nickname ändern</a></li>
+        </ul>
+    {% endif %}
+{% endblock %}

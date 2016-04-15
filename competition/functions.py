@@ -58,6 +58,12 @@ def check_league_matchday(leagueid, matchday):
     return
 
 
+def check_game(gameid):
+    if not query_db('SELECT * FROM Spiel WHERE SpielID = ?', [gameid], one=True):
+        return abort(404, 'Spiel existiert nicht')
+    return
+
+
 def check_gamemode(gameid, modus):
     if modus != query_db('SELECT (SELECT Modus FROM Unterwettbewerb WHERE Unterwettbewerb.UnterwbID = Spiel.UnterwbID) \
                           FROM Spiel Where SpielID = ?', [gameid], one=True):
@@ -271,3 +277,25 @@ def get_ko_game_result(gameid):
                     (SELECT Name FROM Team WHERE Team.TeamID = Spiel.Team2ID) \
                     FROM Spiel Inner Join KOspiel ON Spiel.SpielID = KOspiel.SpielID \
                     WHERE Spiel.SpielID = ?', [gameid])[0]
+
+
+def get_game_result(gameid):
+    check_game(gameid)
+    modus = query_db('SELECT (SELECT Modus FROM Unterwettbewerb WHERE Unterwettbewerb.UnterwbID = Spiel.UnterwbID) \
+                     FROM Spiel Where SpielID = ?', [gameid], one=True)
+    if modus == 'liga':
+        return get_league_game_result(gameid)
+    elif modus == 'turnier':
+        return get_group_game_result(gameid)
+    else:  # modus == 'ko'
+        return get_ko_game_result(gameid)
+
+
+def get_game_data(gameid):
+    check_game(gameid)
+    return query_db('SELECT s.SpielID, s.UnterwbID, \
+                    uwb.name, uwb.modus, \
+                    Datum, Gewertet \
+                    FROM Spiel s Inner Join Unterwettbewerb uwb On s.UnterwbID = uwb.UnterwbID \
+                    WHERE SpielID = ?',
+                    [gameid])[0]
