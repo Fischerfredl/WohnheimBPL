@@ -7,6 +7,7 @@ from config import config_linux, config_windows
 from competition.views import competition
 from login.views import app_login
 from user.views import user
+from admin.views import admin
 
 app = Flask(__name__)
 
@@ -19,6 +20,7 @@ elif platform.system() == 'Windows':
 app.register_blueprint(competition, url_prefix='/competition')
 app.register_blueprint(app_login)
 app.register_blueprint(user)
+app.register_blueprint(admin, url_prefix='/admin')
 
 # ----------------------------------------------------------------------------------------------------------------------
 # ----------------------------------------------------------------------------------------------------------------------
@@ -34,23 +36,6 @@ app.register_blueprint(user)
 def home():
     return render_template('home.html')
 
-
-# ----------------------------------------------------------------------------------------------------------------------
-#
-# admin view
-#
-# ----------------------------------------------------------------------------------------------------------------------
-
-@app.route('/admin')
-def admin():
-    return 'Admin'
-
-
-# allowed for option:
-# newplayer, newteam, resetpw, delplayer, delteam
-@app.route('/admin/settings/<option>', methods=['GET', 'POST'])
-def adminsettings(option):
-    return 'Admin settings: ' + option
 
 # ----------------------------------------------------------------------------------------------------------------------
 #
