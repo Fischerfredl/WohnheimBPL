@@ -1,0 +1,6 @@
+{% extends "division.html" %}
+{%- from 'macros.html' import kospiele with context %}
+{%  block spiele %}
+    Spiele:
+    {{ kospiele(table_spiele) }}
+{% endblock %}

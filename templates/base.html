@@ -8,24 +8,24 @@
 <body>
     <div id="header">BPL:
         <a href="{{ url_for('home') }}">Home</a> |
-        <a href="{{ url_for('comp') }}">Wettbewerbe</a>
+        <a href="{{ url_for('competition.overview') }}">Wettbewerbe</a>
     </div>
 
     <div id="nav">
         {% if not session.logged_in %}
-            <a href="{{ url_for('login') }}">Login</a>
+            <a href="{{ url_for('login.login') }}">Login</a>
         {% else %}
-            <a href="{{ url_for('logout') }}">Logout</a>
+            <a href="{{ url_for('login.logout') }}">Logout</a>
             <hr>
             Logged in as
             {{ session.username }}
             <hr>
             {% if session.username == 'admin' %}
-                <a href="{{ url_for('admin') }}">Adminbereich</a>
+                <a href="{{ url_for('admin.adminhome') }}">Adminbereich</a>
             {% elif session.username == 'mod' %}
                 <a href="{{ url_for('home') }}">Modbereich</a>
             {% else %}
-                <a href="{{ url_for('detailplayer', nickname=session.username) }}">See Profile</a>
+                <a href="{{ url_for('user.detailplayer', nickname=session.username) }}">See Profile</a>
             {% endif %}
         {% endif %}
     </div>

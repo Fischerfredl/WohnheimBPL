@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{%  block content %}
+    {% if not object[2] %}
+        <a href="{{ url_for('competition.detail_competition', competitionid=object[0]) }}"><- Zurück</a>
+        <h1>Wettbewerb: {{ object[1] }} Teamseite</h1>
+    {% else %}
+        <a href="{{ url_for('competition.division', divisionid=object[0]) }}"><- Zurück</a>
+        <h1>Unterwettbewerb: {{ object[1] }} Teamseite</h1>
+    {% endif %}
+    Angemeldete Teams
+    <br><br>
+    <table border = 1>
+    {% for key in signed_teams %}
+        <tr>
+            <td><a href="{{ url_for('detailteam', teamname=key) }}">{{ key }}</a></td>
+            <td>
+                {% for item in signed_teams[key] %}
+                    <a href="{{ url_for('detailplayer', nickname=item) }}">{{ item }}</a> |
+                {% endfor %}
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+    <a href="{{ url_for('admin.adminhome') }}"><- Zurück</a>
+    <h1>Tabelle: {{ view }}</h1>
+
+    <table border="1">
+        {% for row in table %}
+            <tr>{% for item in row %}<td>{{ item }}</td>{% endfor %}</tr>
+        {% endfor %}
+    </table>
+{% endblock %}

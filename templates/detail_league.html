@@ -1,0 +1,16 @@
+{% extends "division.html" %}
+{%- from "macros.html" import ligaspiele, teamtabelle, spielertabelle with context  %}
+
+{%  block spiele %}
+    <h1>Spieltag: {{ spieltag }}</h1>
+    <form action="{{ url_for('competition.detail_league', leagueid=object[0], matchday=matchday - 1) }}">
+        <input type="submit" value="Spieltag zurück" {% if matchday == 1 %}disabled{% endif %}>
+    </form> <form action="{{ url_for('competition.detail_league', leagueid=object[0], matchday=matchday + 1) }}">
+        <input type="submit" value="Spieltag weiter" {% if matchday == matchday_max %}disabled{% endif %}>
+    </form>
+    {{ teamtabelle(table_teamtable) }}
+    <br><br>
+    {{ ligaspiele(table_games) }}
+    <br><br>
+    {{ spielertabelle(table_playertable) }}
+{% endblock %}
