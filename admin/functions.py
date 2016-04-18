@@ -1,18 +1,5 @@
-from functions_general import query_db, update_db, get_users, get_teams, abort
-from flask import flash, current_app
-from hashlib import sha1
-import random
-import string
-
-
-def get_new_id(entity):
-    return {
-        'player': query_db('SELECT MAX(SpielerID) FROM Spieler', one=True)+1,
-        'team': query_db('SELECT MAX(TeamID) FROM Team', one=True)+1,
-        'competition': query_db('SELECT MAX(WbID) FROM Wettbewerb', one=True)+1,
-        'division': query_db('SELECT MAX(UnterwbID) FROM Unterwettbewerb', one=True)+1,
-        'game': query_db('SELECT MAX(SpielID) FROM Spiel', one=True)+1
-    }[entity]
+from functions_general import query_db, update_db, get_users, get_teams, verify_password, set_new_password, get_new_id
+from flask import flash, abort
 
 
 def get_items(option):
@@ -20,7 +7,7 @@ def get_items(option):
     if option == 'del_player':
         for row in query_db('SELECT nickname FROM Spieler s \
                             WHERE s.SpielerID NOT IN (SELECT SpielerID FROM Teilgenommen)'):
-            itemlist.append(row[0] )
+            itemlist.append(row[0])
     elif option == 'del_team':
         for row in query_db('SELECT name FROM Team t \
                             WHERE t.TeamID NOT IN (SELECT TeamID FROM Teilgenommen)'):
@@ -98,13 +85,8 @@ def new_password(nickname):
         flash('Passwort nicht neu gesetzt')
         flash('Spieler nicht in Datenbank')
         return False
-    password = ''.join([random.choice(string.ascii_letters + string.digits) for n in xrange(8)])
-    update_db("UPDATE Spieler SET Passwort = ? WHERE Nickname = ?",
-              [sha1(password+current_app.config['SALT']).hexdigest(), nickname])
-    test1 = query_db('SELECT Passwort FROM Spieler WHERE Nickname = ?', [nickname])
-    test2 = sha1(password+current_app.config['SALT']).hexdigest()
-    if query_db('SELECT Passwort FROM Spieler WHERE Nickname = ?', [nickname], one=True) != \
-            sha1(password+current_app.config['SALT']).hexdigest():
+    password = set_new_password(nickname)
+    if not verify_password(nickname, password):
         flash('Passwort fehlerhaft neu gesetzt')
         flash('Fehler in der Datenbankanfrage')
         return False
@@ -113,18 +95,71 @@ def new_password(nickname):
     return True
 
 
-def get_table_body(view):
+def get_admin_table(view):
     if view == 'player':
-        return query_db('SELECT * FROM Spieler')
+        return [('ID', 'Nickname', 'Name', 'Vorname', 'Passworthash', 'Team')] + \
+               query_db('SELECT SpielerID, Nickname, Name, Vorname, Passwort, \
+                        (SELECT Name FROM Team WHERE Team.TeamID = Spieler.TeamID) \
+                        FROM Spieler')
     elif view == 'team':
-        return query_db('SELECT * FROM Team')
-    elif view == 'game':
-        return query_db('SELECT * FROM Spiel')
+        return [('ID', 'Name', 'Spieler')] + \
+               [row + ([item[0] for item in query_db('SELECT Nickname FROM Spieler WHERE TeamID = ?', [row[0]])], )
+                for row in query_db('SELECT TeamID, Name FROM Team')]
+    elif view == 'game_league':
+        return [('ID', 'Unterwb', 'Team1', 'Team2', 'Sieger', 'Gewertet', 'Datum', 'Spieltag', 'T1Tref', 'T2Tref')] + \
+               query_db('SELECT s.SpielID, \
+                        (SELECT Name FROM Unterwettbewerb WHERE Unterwettbewerb.UnterwbID = s.UnterwbID), \
+                        (SELECT Name FROM Team WHERE Team.TeamID = s.Team1ID), \
+                        (SELECT Name FROM Team WHERE Team.TeamID = s.Team2ID), \
+                        (SELECT Name FROM Team WHERE Team.TeamID = s.SiegerID), \
+                        Gewertet, \
+                        Datum, \
+                        Spieltag, \
+                        T1Tref, \
+                        T2Tref \
+                        FROM Spiel s Inner Join Ligaspiel ON s.SpielID = Ligaspiel.SpielID')
+    elif view == 'game_ko':
+        return [('ID', 'Unterwb', 'Team1', 'Team2', 'Sieger', 'Gewertet', 'Datum',
+                 'NFWin', 'NFLos', 'Bestof', 'T1Erg', 'T2Erg')] + \
+               query_db('SELECT s.SpielID, \
+                        (SELECT Name FROM Unterwettbewerb WHERE Unterwettbewerb.UnterwbID = s.UnterwbID), \
+                        (SELECT Name FROM Team WHERE Team.TeamID = s.Team1ID), \
+                        (SELECT Name FROM Team WHERE Team.TeamID = s.Team2ID), \
+                        (SELECT Name FROM Team WHERE Team.TeamID = s.SiegerID), \
+                        Gewertet, \
+                        Datum, \
+                        NFWinnerID, \
+                        NFLoserID, \
+                        Bestofwhat, \
+                        T1Erg,  \
+                        T2Erg \
+                        FROM Spiel s Inner Join KOspiel ON s.SpielID = KOspiel.SpielID')
+    elif view == 'game_group':
+        return [('ID', 'Unterwb', 'Team1', 'Team2', 'Sieger', 'Gewertet', 'Datum',
+                 'Becherueber')] + \
+               query_db('SELECT s.SpielID, \
+                        (SELECT Name FROM Unterwettbewerb WHERE Unterwettbewerb.UnterwbID = s.UnterwbID), \
+                        (SELECT Name FROM Team WHERE Team.TeamID = s.Team1ID), \
+                        (SELECT Name FROM Team WHERE Team.TeamID = s.Team2ID), \
+                        (SELECT Name FROM Team WHERE Team.TeamID = s.SiegerID), \
+                        Gewertet, \
+                        Datum, \
+                        Becherueber \
+                        FROM Spiel s Inner Join Turnierspiel ON s.SpielID = Turnierspiel.SpielID')
     elif view == 'competition':
-        return query_db('SELECT * FROM Wettbewerb')
+        return [('WbID', 'Name')] + query_db('SELECT * FROM Wettbewerb')
     elif view == 'division':
-        return query_db('SELECT * FROM Unterwettbewerb')
+        return [('ID', 'Wettbewerb', 'Name', 'Modus', 'OTN', 'Start', 'Ende')] + \
+               query_db('SELECT UnterwbID, \
+                        (SELECT Name FROM Wettbewerb WHERE Wettbewerb.WbID = Unterwettbewerb.WbID), \
+                        Name, Modus, OTN, Start, Ende \
+                        FROM Unterwettbewerb')
     elif view == 'participated':
-        return query_db('SELECT * FROM Teilgenommen')
+        return [('Unterwettbewerb', 'Team', 'Spieler')] + \
+               query_db('SELECT \
+                        (SELECT Name FROM Unterwettbewerb WHERE UnterwbID = tg.UnterwbID), \
+                        (SELECT Name FROM Team WHERE TeamID = tg.TeamID), \
+                        (SELECT Nickname FROM Spieler WHERE SpielerID = tg.SpielerID) \
+                        FROM Teilgenommen tg')
     else:
-        return abort(500, 'In admin functions get_table error')
+        return abort(500, 'Error in admin.functions get_table error')

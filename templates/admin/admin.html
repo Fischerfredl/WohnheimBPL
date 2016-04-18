@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>Admin page</h1>
+    Options:
+    <ul>
+        <li><a href="{{ url_for('admin.settings', option='new_player') }}">Neuen Spieler anlegen</a></li>
+        <li><a href="{{ url_for('admin.settings', option='new_team') }}">Neues Team anlegen</a></li>
+        <li><a href="{{ url_for('admin.settings', option='new_password') }}">Passwort zurücksetzen</a></li>
+        <li><a href="{{ url_for('admin.settings', option='del_player') }}">Spieler entfernen</a></li>
+        <li><a href="{{ url_for('admin.settings', option='del_team') }}">Team entfernen</a></li>
+    </ul>
+    Views:
+    <ul>
+    <li><a href="{{ url_for('admin.views', view='player') }}">Spieler</a></li>
+    <li><a href="{{ url_for('admin.views', view='team') }}">Team</a></li>
+    <li><a href="{{ url_for('admin.views', view='game_league') }}">Liga-Spiel</a></li>
+    <li><a href="{{ url_for('admin.views', view='game_ko') }}">KO-Spiel</a></li>
+    <li><a href="{{ url_for('admin.views', view='game_group') }}">Turnier-Spiel</a></li>
+    <li><a href="{{ url_for('admin.views', view='competition') }}">Wettbewerb</a></li>
+    <li><a href="{{ url_for('admin.views', view='division') }}">Unterwettbewerb</a></li>
+    <li><a href="{{ url_for('admin.views', view='participated') }}">Teilgenommen</a></li>
+    </ul>
+{% endblock %}

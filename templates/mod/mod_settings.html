@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+    <a href="{{ url_for('mod.home') }}"><- Zurück</a>
+    {% if option == 'new_competition' %}
+        <h1>Neuen Wettbewerb anlegen</h1>
+        <form action="{{ url_for('mod.settings', option=option) }}" method="post">
+        <dl>
+            <dt>Wettbewerbname:
+            <dd><input type=text name=name>
+            <dd><input type=submit value=Submit>
+        </dl>
+        </form>
+    {% endif %}
+{% endblock %}

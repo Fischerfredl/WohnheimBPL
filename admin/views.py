@@ -1,21 +1,21 @@
-from flask import Blueprint, render_template, url_for, flash, redirect, request, abort
-from functions_general import login_required
+from flask import Blueprint, render_template, url_for, redirect, request
+from decorators import login_admin_required
 from functions import *
 
 admin = Blueprint('admin', __name__, template_folder='templates')
 
 
 @admin.route('/')
-@login_required(user='admin')
-def adminhome():
-    return render_template('admin.html')
+@login_admin_required
+def home():
+    return render_template('admin/admin.html')
 
 
 # allowed for option:
 # new_player, new_team, new_password, del_player, del_team
 @admin.route('/settings/<option>', methods=['GET', 'POST'])
-@login_required(user='admin')
-def adminsettings(option):
+@login_admin_required
+def settings(option):
     if request.method == 'POST':
         if option == 'new_player':
             new_player(request.form['nickname'], request.form['name'], request.form['vorname'])
@@ -29,14 +29,14 @@ def adminsettings(option):
             new_password(request.form['nickname'])
         else:
             abort(404, 'Einstellungen gibbet nich')
-        return redirect(url_for('admin.adminhome'))
+        return redirect(url_for('admin.home'))
     else:  # request.method == 'GET'
-        return render_template('adminsettings.html', option=option, itemlist=get_items(option))
+        return render_template('admin/admin_settings.html', option=option, itemlist=get_items(option))
 
 
 # allowed for view:
 # player, team, game, competition, division, participated
 @admin.route('/view/<view>')
-@login_required(user='admin')
-def adminviews(view):
-    return render_template('admin_views.html', view=view, table=get_table_body(view))
+@login_admin_required
+def views(view):
+    return render_template('admin/admin_views.html', view=view, table=get_admin_table(view))

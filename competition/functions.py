@@ -33,37 +33,6 @@ from functions_general import query_db
 # ----------------------------------------------------------------------------------------------------------------------
 
 
-def check_competition(competitionid):
-    if not query_db('SELECT * FROM Wettbewerb WHERE WbID = ?', [competitionid], one=True):
-        return abort(404, 'Wettbewerb nicht vorhanden')
-    return
-
-
-def check_division(divisionid):
-    if not query_db('SELECT * FROM Unterwettbewerb WHERE UnterwbID = ?', [divisionid], one=True):
-        return abort(404, 'Unterwettbewerb nicht vorhanden')
-    return
-
-
-def check_league(leagueid):
-    if not query_db('SELECT * FROM Unterwettbewerb WHERE Modus = "liga" AND UnterwbID = ?', [leagueid], one=True):
-        return abort(404, 'Liga nicht vorhanden')
-    return
-
-
-def check_league_matchday(leagueid, matchday):
-    check_league(leagueid)
-    if matchday < 1 or matchday > get_league_matchday_max(leagueid):
-        abort(404, 'Spieltag existiert nicht')
-    return
-
-
-def check_game(gameid):
-    if not query_db('SELECT * FROM Spiel WHERE SpielID = ?', [gameid], one=True):
-        return abort(404, 'Spiel existiert nicht')
-    return
-
-
 def check_gamemode(gameid, modus):
     if modus != query_db('SELECT (SELECT Modus FROM Unterwettbewerb WHERE Unterwettbewerb.UnterwbID = Spiel.UnterwbID) \
                           FROM Spiel Where SpielID = ?', [gameid], one=True):
@@ -84,12 +53,10 @@ def get_competition_overview():
 
 
 def get_competition_divisions(competitionid):
-    check_competition(competitionid)
     return query_db('SELECT UnterwbID, Name, Modus FROM Unterwettbewerb WHERE WbID = ?', [competitionid])
 
 
 def get_competition_info(competitionid):
-    check_competition(competitionid)
     return query_db('SELECT WbID, Name FROM Wettbewerb WHERE WbID = ?', [competitionid])[0]
 
 
@@ -99,7 +66,6 @@ def get_competition_info(competitionid):
 
 
 def get_competition_teams(competitionid):
-    check_competition(competitionid)
     query = query_db('SELECT DISTINCT (SELECT Name FROM Team WHERE Team.TeamID = tg.TeamID) AS teamn, \
                      (SELECT Nickname FROM Spieler WHERE Spieler.SpielerID = tg.SpielerID) AS spielern \
                      FROM Teilgenommen tg INNER JOIN Unterwettbewerb uwb ON tg.UnterwbID = uwb.UnterwbID \
@@ -113,7 +79,6 @@ def get_competition_teams(competitionid):
 
 
 def get_division_teams(divisionid):
-    check_division(divisionid)
     query = query_db('SELECT DISTINCT (SELECT Name FROM Team WHERE Team.TeamID = tg.TeamID) AS teamn, \
                      (SELECT Nickname FROM Spieler WHERE Spieler.SpielerID = tg.SpielerID) AS spielern \
                      FROM Teilgenommen tg \
@@ -131,19 +96,16 @@ def get_division_teams(divisionid):
 
 
 def get_division_info(divisionid):
-    check_division(divisionid)
     return query_db('SELECT uwb.UnterwbID, uwb.Name, uwb.Modus, wb.WbID, wb.Name\
                      FROM Unterwettbewerb uwb Inner Join Wettbewerb wb ON uwb.WbID = wb.WbID \
                      WHERE UnterwbID = ?', [divisionid])[0]
 
 
 def get_division_mode(divisionid):
-    check_division(divisionid)
     return query_db('SELECT Modus FROM Unterwettbewerb WHERE UnterwbID = ?', [divisionid], one=True)
 
 
 def get_group_games_info(divisionid):
-    check_division(divisionid)
     gamelist = []
     for gameid in query_db('SELECT SpielID FROM Spiel WHERE UnterwbID = ?', [divisionid]):
         gamelist.append(get_group_game_result(gameid[0]))
@@ -151,7 +113,6 @@ def get_group_games_info(divisionid):
 
 
 def get_ko_games_info(divisionid):
-    check_division(divisionid)
     gamelist = []
     for gameid in query_db('SELECT SpielID FROM Spiel WHERE UnterwbID = ?', [divisionid]):
         gamelist.append(get_ko_game_result(gameid[0]))
@@ -163,7 +124,6 @@ def get_ko_games_info(divisionid):
 
 
 def get_league_games_info(leagueid, matchday):
-    check_league_matchday(leagueid, matchday)
     gamelist = []
     for spielid in query_db('SELECT Spiel.SpielID FROM Spiel Inner Join Ligaspiel ON Spiel.SpielID = Ligaspiel.SpielID \
                             WHERE Spiel.UnterwbID = ? AND Ligaspiel.Spieltag = ?', [leagueid, matchday]):
@@ -172,7 +132,6 @@ def get_league_games_info(leagueid, matchday):
 
 
 def get_league_teamtable(leagueid, matchday):
-    check_league_matchday(leagueid, matchday)
     return query_db("SELECT (SELECT Name FROM Team WHERE Team.TeamID = t2.TeamID) As Team, \
                       SUM(CASE WHEN t2.TeamID = t1.TeamID THEN 1 ELSE 0 END) Spiele, \
                       SUM(CASE WHEN Treffer IS NULL THEN 0 ELSE Treffer END) Treffer, \
@@ -204,7 +163,6 @@ def get_league_teamtable(leagueid, matchday):
 
 
 def get_league_playertable(leagueid, matchday):
-    check_league_matchday(leagueid, matchday)
     return [dict(name=row[0], treffer=row[1], spiele=row[2], schnitt=round(float(row[1])/row[2], 2)) for row in
             query_db("SELECT (SELECT Nickname FROM Spieler WHERE Spieler.SpielerID = ls.SpielerID), \
                     SUM(treffer) AS Treffer, \
@@ -216,14 +174,12 @@ def get_league_playertable(leagueid, matchday):
 
 
 def get_league_matchday_max(leagueid):
-    check_league(leagueid)
     return query_db('SELECT MAX(Spieltag) \
                     FROM Ligaspiel Inner Join Spiel ON Ligaspiel.SpielID = Spiel.SpielID \
                     WHERE UnterwbID = ?', [leagueid], one=True)
 
 
 def get_league_matchday_current(leagueid):
-    check_league(leagueid)
     maxst = get_league_matchday_max(leagueid)
     while maxst != 1:
         if query_db('SELECT SiegerID \
@@ -280,7 +236,6 @@ def get_ko_game_result(gameid):
 
 
 def get_game_result(gameid):
-    check_game(gameid)
     modus = query_db('SELECT (SELECT Modus FROM Unterwettbewerb WHERE Unterwettbewerb.UnterwbID = Spiel.UnterwbID) \
                      FROM Spiel Where SpielID = ?', [gameid], one=True)
     if modus == 'liga':
@@ -292,7 +247,6 @@ def get_game_result(gameid):
 
 
 def get_game_data(gameid):
-    check_game(gameid)
     return query_db('SELECT s.SpielID, s.UnterwbID, \
                     uwb.name, uwb.modus, \
                     Datum, Gewertet \

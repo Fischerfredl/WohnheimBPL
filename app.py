@@ -8,6 +8,7 @@ from competition.views import competition
 from login.views import app_login
 from user.views import user
 from admin.views import admin
+from mod.views import mod
 
 app = Flask(__name__)
 
@@ -17,10 +18,12 @@ if platform.system() == 'Linux':
 elif platform.system() == 'Windows':
     app.config.from_object(config_windows)
 
+app.register_blueprint(admin, url_prefix='/admin')
+app.register_blueprint(mod, url_prefix='/mod')
 app.register_blueprint(competition, url_prefix='/competition')
 app.register_blueprint(app_login)
 app.register_blueprint(user)
-app.register_blueprint(admin, url_prefix='/admin')
+
 
 # ----------------------------------------------------------------------------------------------------------------------
 # ----------------------------------------------------------------------------------------------------------------------
@@ -35,20 +38,6 @@ app.register_blueprint(admin, url_prefix='/admin')
 @app.route('/home')
 def home():
     return render_template('home.html')
-
-
-# ----------------------------------------------------------------------------------------------------------------------
-#
-# settings
-#
-# ----------------------------------------------------------------------------------------------------------------------
-
-
-# allowed for otion
-# persona, password
-@app.route('/user/<nickname>/settings/<option>', methods=['GET', 'POST'])
-def playersettings(nickname, option):
-    return 'Playersettings: ' + option + nickname
 
 
 # ----------------------------------------------------------------------------------------------------------------------

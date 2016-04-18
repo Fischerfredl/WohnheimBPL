@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
-    <a href="{{ url_for('detailplayer', nickname=nickname) }}"><- Zurück</a>
+    <a href="{{ url_for('user.detail_player', nickname=nickname) }}"><- Zurück</a>
     {% if option == 'personal' %}
         <h1>Persönliche Daten ändern</h1>
-        <form action="{{ url_for('playersettings', nickname=nickname, option='personal') }}" method="post">
+        <form action="{{ url_for('user.settings', nickname=nickname, option='personal') }}" method="post">
         <dl>
             <dt>Vorname:
             <dd><input type=text name=vorname>
@@ -14,7 +14,7 @@
         </form>
     {% elif option == 'password' %}
         <h1>Passwort ändern</h1>
-        <form action="{{ url_for('playersettings', nickname=nickname, option='password') }}" method="post">
+        <form action="{{ url_for('user.settings', nickname=nickname, option='password') }}" method="post">
         <dl>
             <dt>Nickname:
             <dd><input type=text name=nickname>
@@ -27,7 +27,7 @@
         </form>
     {% elif option == 'nickname' %}
         <h1>Passwort ändern</h1>
-        <form action="{{ url_for('playersettings', nickname=nickname, option='nickname') }}" method="post">
+        <form action="{{ url_for('user.settings', nickname=nickname, option='nickname') }}" method="post">
         <dl>
             <dt>Neuer Nickname:
             <dd><input type=text name=nicknew>

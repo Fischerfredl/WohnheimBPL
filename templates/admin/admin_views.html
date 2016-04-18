@@ -1,11 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
-    <a href="{{ url_for('admin.adminhome') }}"><- Zurück</a>
+    <a href="{{ url_for('admin.home') }}"><- Zurück</a>
     <h1>Tabelle: {{ view }}</h1>
-
     <table border="1">
         {% for row in table %}
+            {% if loop.index == 1 %}
+            <tr>{% for item  in row %}<th>{{ item }}</th>{% endfor %}</tr>
+            {% else %}
             <tr>{% for item in row %}<td>{{ item }}</td>{% endfor %}</tr>
+            {% endif %}
         {% endfor %}
     </table>
 {% endblock %}

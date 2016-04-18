@@ -12,10 +12,10 @@
     <table border = 1>
     {% for key in signed_teams %}
         <tr>
-            <td><a href="{{ url_for('detailteam', teamname=key) }}">{{ key }}</a></td>
+            <td><a href="{{ url_for('user.detail_team', teamname=key) }}">{{ key }}</a></td>
             <td>
                 {% for item in signed_teams[key] %}
-                    <a href="{{ url_for('detailplayer', nickname=item) }}">{{ item }}</a> |
+                    <a href="{{ url_for('user.detail_player', nickname=item) }}">{{ item }}</a> |
                 {% endfor %}
             </td>
         </tr>

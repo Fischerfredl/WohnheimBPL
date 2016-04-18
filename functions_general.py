@@ -1,5 +1,7 @@
-from flask import g, abort, session
-from functools import wraps
+from flask import g, current_app
+import random
+import string
+from hashlib import sha1
 
 
 def query_db(query, args=(), one=False):
@@ -14,30 +16,61 @@ def update_db(query, args=()):
     return
 
 
+def get_new_id(entity):
+    return {
+        'player': query_db('SELECT MAX(SpielerID) FROM Spieler', one=True)+1,
+        'team': query_db('SELECT MAX(TeamID) FROM Team', one=True)+1,
+        'competition': query_db('SELECT MAX(WbID) FROM Wettbewerb', one=True)+1,
+        'division': query_db('SELECT MAX(UnterwbID) FROM Unterwettbewerb', one=True)+1,
+        'game': query_db('SELECT MAX(SpielID) FROM Spiel', one=True)+1
+    }[entity]
+
+
 def get_users():
-    userlist = []
-    for user in query_db('SELECT Nickname FROM Spieler'):
-        userlist.append(user[0])
-    return userlist
+    entitylist = []
+    for entity in query_db('SELECT Nickname FROM Spieler'):
+        entitylist.append(entity[0])
+    return entitylist
 
 
 def get_teams():
-    teamlist = []
-    for team in query_db('SELECT Name FROM Team'):
-        teamlist.append(team[0])
-    return teamlist
+    entitylist = []
+    for entity in query_db('SELECT Name FROM Team'):
+        entitylist.append(entity[0])
+    return entitylist
+
+def get_competitions():
+    entitylist = []
+    for entity in query_db('SELECT Name FROM Wettbewerb'):
+        entitylist.append(entity[0])
+    return entitylist
 
 
-def login_required(user=None):
-    def decorator(f):
-        @wraps(f)
-        def decorated_function(*args, **kwargs):
-            if not user:
-                if not session['loged_in']:
-                    abort(403, 'Nicht eingeloggt')
-            else:
-                if session['username'] != user:
-                    abort(403, 'Nicht eingeloggt als user: %s' % user)
-            return f(*args, **kwargs)
-        return decorated_function
-    return decorator
+
+def set_new_password(nickname):
+    password = ''.join([random.choice(string.ascii_letters + string.digits) for n in xrange(8)])
+    set_password(nickname, password)
+    return password
+
+
+def set_password(nickname, password):
+    if not check_password(password):
+        return False
+    else:
+        update_db("UPDATE Spieler SET Passwort = ? WHERE Nickname = ?",
+              [sha1(password+current_app.config['SALT']).hexdigest(), nickname])
+        return True
+
+
+def verify_password(nickname, password):
+    if query_db('SELECT Passwort FROM Spieler WHERE Nickname = ?', [nickname], one=True) != \
+            sha1(password+current_app.config['SALT']).hexdigest():
+        return False
+    return True
+
+
+# to do: check for valid password
+def check_password(password):
+    if len(password) < 3:
+        return False
+    return True
