@@ -10,5 +10,22 @@
             <dd><input type=submit value=Submit>
         </dl>
         </form>
+    {% elif option == 'del_competition' %}
+        <h1>Wettbewerb löschen</h1>
+        {% if not itemlist %}
+            Es gibt keine Wettbewerbe zu löschen
+        {% else%}
+            <form action="{{ url_for('mod.settings', option='del_competition') }}" method="post">
+            <dl>
+                <dt>Teams:
+                <dd><select type name=competitionid>
+                {% for key in itemlist %}
+                    <option value="{{ key }}">{{ itemlist[key] }}</option>
+                {% endfor %}
+                </select>
+                <dd><input type=submit value=Submit>
+            </dl>
+            </form>
+        {% endif %}
     {% endif %}
 {% endblock %}

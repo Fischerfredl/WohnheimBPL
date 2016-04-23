@@ -9,10 +9,11 @@ def get_player_data(playername):
 
 def get_player_history(playername):
     history = []
-    for row in query_db('SELECT DISTINCT uwb.UnterwbID, Modus, uwb.Name, \
+    for row in query_db("SELECT DISTINCT uwb.UnterwbID, Modus, uwb.Name, \
                         (SELECT Name FROM Team WHERE Team.TeamID = tg.TeamID) \
                         FROM Teilgenommen tg Inner Join Unterwettbewerb uwb ON tg.UnterwbID = uwb.UnterwbID \
-                        WHERE SpielerID = (SELECT SpielerID FROM Spieler WHERE nickname = ?)', [playername]):
+                        WHERE SpielerID = (SELECT SpielerID FROM Spieler WHERE nickname = ?) \
+                        AND uwb.Modus != 'anmeldung' AND uwb.Modus != 'turnier'", [playername]):
         divisionid = row[0]
         divisionname = row[2]
         team = row[3]

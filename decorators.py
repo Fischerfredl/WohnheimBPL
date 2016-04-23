@@ -1,38 +1,48 @@
 from functools import wraps
-from flask import session, abort
+from flask import session, abort, current_app
 from functions_general import query_db
 
 
-def login_required(f):
+def login_required(user=None):
+    def inner_function(f):
+        if not user:
+            @wraps(f)
+            def decorated_function(*args, **kwargs):
+                if not session['logged_in']:
+                    abort(403, 'Nicht eingeloggt')
+                return f(*args, **kwargs)
+            return decorated_function
+        elif user == 'designated':
+            @wraps(f)
+            def decorated_function(*args, **kwargs):
+                nickname = kwargs['nickname']
+                if not session['logged_in']:
+                    abort(403, 'Nicht eingeloggt')
+                elif session['username'] != nickname:
+                    abort(403, 'Nicht eingeloggt als user: %s' % nickname)
+                return f(*args, **kwargs)
+            return decorated_function
+
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            if not session['logged_in']:
+                abort(403, 'Nicht eingeloggt')
+            elif session['username'] != user:
+                abort(403, 'Nicht eingeloggt als admin')
+            return f(*args, **kwargs)
+        return decorated_function
+    return inner_function
+
+
+def settings_permission_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        nickname = kwargs['nickname']
-        if not session['logged_in']:
-            abort(403, 'Nicht eingeloggt')
-        elif session['username'] != nickname:
-            abort(403, 'Nicht eingeloggt als user: %s' % nickname)
-        return f(*args, **kwargs)
-    return decorated_function
-
-
-def login_admin_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if not session['logged_in']:
-            abort(403, 'Nicht eingeloggt')
-        elif session['username'] != 'admin':
-            abort(403, 'Nicht eingeloggt als admin')
-        return f(*args, **kwargs)
-    return decorated_function
-
-
-def login_mod_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if not session['logged_in']:
-            abort(403, 'Nicht eingeloggt')
-        elif session['username'] != 'mod':
-            abort(403, 'Nicht eingeloggt als mod')
+        permission = current_app.config['SETTINGS'].get(kwargs['option'], None)
+        if not permission:
+            abort(404, 'Einstellung nicht gefunden')
+        if session.get('username', None) not in permission or \
+           'signed_user' in permission and not session['logged_in']:
+            abort(403, 'Fehlende Berechtigung fue diese Einstellungen')
         return f(*args, **kwargs)
     return decorated_function
 
@@ -110,4 +120,12 @@ def check_team(f):
     return decorated_function
 
 
-
+def check_competition_phase(phase):
+    def inner_function(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            if phase != query_db('SELECT Phase FROM Wettbewerb WHERE WbID = ?', [kwargs['competitionid']], one=True):
+                abort(404, 'Wettbewerb nicht in Anmeldephase')
+            return f(*args, **kwargs)
+        return decorated_function
+    return inner_function

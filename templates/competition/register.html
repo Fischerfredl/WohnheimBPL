@@ -1,0 +1,29 @@
+<!--
+variables:
+object: (WbId, Name)
+registration
+-->
+
+{% extends 'base.html' %}
+{% block content %}
+    <a href="{{ url_for('competition.detail_competition', competitionid=object[0]) }}"><- Zurück</a>
+    <h1>Anmeldung: {{ object[1] }}</h1>
+    {% if not registration %}
+        <form action="{{ url_for('competition.register', competitionid=object[0], nickname=session['username']) }}" method="post">
+            <dl>
+                <dt>Teams:
+                <dd><select type name=name>
+                {% for item in teamlist %}
+                    <option value="{{ item }}">{{ item }}</option>
+                {% endfor %}
+                </select>
+                <dd><input type=submit value=Submit>
+            </dl>
+            </form>
+
+    {% else %}
+    <a href="{{ url_for('competition.unregister', competitionid=object[0], nickname=session['username']) }}">
+    Abmelden vom Wettbewerb mit Team {{ registration }}
+    </a>
+    {% endif %}
+{% endblock %}

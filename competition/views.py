@@ -1,6 +1,10 @@
-from flask import Blueprint, render_template, redirect, url_for
+from flask import Blueprint, render_template, redirect, url_for, request
 from functions import *
-from decorators import check_game, check_competition, check_division, check_league, check_league_matchday
+from functions_general import get_teams
+from mod.functions import register_player, unregister_player, get_player_registration, get_registration_division
+from decorators import login_required, \
+    check_game, check_competition, check_division, check_league,  check_league_matchday, \
+    check_competition_phase, check_player
 
 # /overview
 # /<competitionid>
@@ -38,7 +42,7 @@ def detail_competition(competitionid):
 
 @competition.route('/division/<int:divisionid>')
 @check_division
-def division(divisionid):
+def detail_division(divisionid):
     modus = get_division_mode(divisionid)
     if modus == 'liga':
         return redirect(url_for('competition.detail_league',
@@ -46,12 +50,15 @@ def division(divisionid):
     elif modus == 'turnier':
         return render_template('competition/detail_group.html', object=get_division_info(divisionid),
                                table_spiele=get_group_games_info(divisionid))
-    else:  # modus == 'ko'
+    elif modus == 'ko':
         return render_template('competition/detail_ko.html', object=get_division_info(divisionid),
                                table_spiele=get_ko_games_info(divisionid))
+    else:  # modus = 'anmeldung'
+        return render_template('competition/register.html', object=get_division_info(divisionid))
 
 
 @competition.route('/division/<int:leagueid>/<int:matchday>')
+@check_league
 @check_league_matchday
 def detail_league(leagueid, matchday):
     return render_template('competition/detail_league.html', object=get_division_info(leagueid),
@@ -61,14 +68,14 @@ def detail_league(leagueid, matchday):
                            table_games=get_league_games_info(leagueid, matchday))
 
 
-@competition.route('/competition/<int:competitionid>/teams')
+@competition.route('/<int:competitionid>/teams')
 @check_competition
 def competition_signed_teams(competitionid):
     return render_template('competition/competition_signed_teams.html', object=get_competition_info(competitionid),
                            signed_teams=get_competition_teams(competitionid))
 
 
-@competition.route('/competition/division/<int:divisionid>/teams')
+@competition.route('/division/<int:divisionid>/teams')
 @check_division
 def division_signed_teams(divisionid):
     return render_template('competition/competition_signed_teams.html', object=get_division_info(divisionid),
@@ -79,3 +86,29 @@ def division_signed_teams(divisionid):
 @check_game
 def detail_game(gameid):
     return render_template('competition/detail_game.html', result=get_game_result(gameid), data=get_game_data(gameid))
+
+
+@competition.route('/register_player/<int:competitionid>/<nickname>/', methods=['GET', 'POST'])
+@check_player
+@login_required(user='designated')
+@check_competition
+@check_competition_phase('anmeldung')
+def register(competitionid, nickname):
+    if request.method == 'POST':
+        division = get_registration_division(competitionid)
+        register_player(nickname, division, request.form['name'])
+        return redirect(url_for('competition.detail_competition', competitionid=competitionid))
+    else:  # method = 'GET'
+        return render_template('competition/register.html', object=get_competition_info(competitionid),
+                               registration=get_player_registration(nickname, competitionid),
+                               teamlist=get_teams())
+
+
+@competition.route('/unregister_player/<int:competitionid>/<nickname>/')
+@check_player
+@login_required(user='designated')
+@check_competition
+@check_competition_phase('anmeldung')
+def unregister(competitionid, nickname):
+    unregister_player(nickname, competitionid)
+    return redirect(url_for('competition.detail_competition', competitionid=competitionid))

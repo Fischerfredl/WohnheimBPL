@@ -1,7 +1,8 @@
-from flask import g, current_app
+from flask import g, current_app, flash
 import random
 import string
 from hashlib import sha1
+import sqlite3
 
 
 def query_db(query, args=(), one=False):
@@ -11,9 +12,16 @@ def query_db(query, args=(), one=False):
 
 
 def update_db(query, args=()):
-    g.db.execute(query, args)
-    g.db.commit()
-    return
+    try:
+        g.db.execute(query, args)
+        g.db.commit()
+    except sqlite3.Error as er:
+        return 'SQL Error: '+er.message
+    return False
+
+
+def get_last_id():
+    query_db('SELECT last_insert_rowid()', one=True)
 
 
 def get_new_id(entity):
@@ -39,12 +47,12 @@ def get_teams():
         entitylist.append(entity[0])
     return entitylist
 
+
 def get_competitions():
     entitylist = []
     for entity in query_db('SELECT Name FROM Wettbewerb'):
         entitylist.append(entity[0])
     return entitylist
-
 
 
 def set_new_password(nickname):
@@ -58,7 +66,7 @@ def set_password(nickname, password):
         return False
     else:
         update_db("UPDATE Spieler SET Passwort = ? WHERE Nickname = ?",
-              [sha1(password+current_app.config['SALT']).hexdigest(), nickname])
+                  [sha1(password+current_app.config['SALT']).hexdigest(), nickname])
         return True
 
 

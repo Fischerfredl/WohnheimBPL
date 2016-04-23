@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+    <a href="{{ url_for('settings.home') }}"><- Zurück</a>
+    <h1>{{ header[option] }}</h1>
+    <form action="{{ url_for('settings.main', option=option) }}" method="post">
+    {% for item in form %}
+        {{ item.label }}:
+        {% if item.type == 'text' %}
+            <input type=text name={{ item.name }}>
+        {% elif item.type == 'select' %}
+            <select name=item.name>
+            {% for key in item.value %}
+                <option value=key">{{ item.value[key] }}</option>
+            {% endfor %}
+            </select>
+        {% endif %}
+        <br>
+    {% endfor %}
+    <input type="submit" value="submit">
+    </form>
+{% endblock %}

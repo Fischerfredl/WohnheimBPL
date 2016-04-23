@@ -10,38 +10,39 @@ DROP TABLE IF EXISTS Team;
 DROP TABLE IF EXISTS Spieler;
 
 CREATE TABLE Spieler (
-	SpielerID int NOT NULL PRIMARY KEY,
+	SpielerID INTEGER PRIMARY KEY,
 	Name varchar(20),
-	Vorname varchar(20) NOT NULL,
-	Nickname varchar(20) UNIQUE,
+	Vorname varchar(20),
+	Nickname varchar(20) NOT NULL UNIQUE,
 	Passwort varchar(40),
 	TeamID int,
 	CONSTRAINT fk_SpielerTeam FOREIGN KEY (TeamID) REFERENCES  Team(TeamID)
 );
 
 CREATE TABLE Team (
-	TeamID int NOT NULL PRIMARY KEY,
+	TeamID INTEGER PRIMARY KEY,
 	Name varchar(40) NOT NULL UNIQUE
 );
 
 CREATE TABLE Wettbewerb (
-	WbID int NOT NULL PRIMARY KEY,
-	Name varchar(40) NOT NULL UNIQUE
+	WbID INTEGER PRIMARY KEY,
+	Name varchar(40) NOT NULL UNIQUE,
+	Phase varchar(9) NOT NULL CHECK (Phase = 'anmeldung' OR Phase = 'laeuft' OR Phase = 'beendet') DEFAULT 'anmeldung'
 );
 
 CREATE TABLE Unterwettbewerb (
-	UnterwbID int NOT NULL PRIMARY KEY,
+	UnterwbID INTEGER PRIMARY KEY,
 	WbID int NOT NULL,
 	Name varchar(40),
-	Modus varchar(9) NOT NULL CHECK (Modus = 'turnier' OR Modus = 'liga' OR Modus = 'ko' OR 'anmeldung'),
-	OTN varchar(3) CHECK (OTN = 'ein' OR OTN = 'aus'),
+	Modus varchar(9) NOT NULL CHECK (Modus = 'turnier' OR Modus = 'liga' OR Modus = 'ko' OR Modus = 'anmeldung') DEFAULT 'anmeldung',
+	OTN varchar(3) CHECK (OTN = 'ein' OR OTN = 'aus') DEFAULT 'ein',
 	Start date,
 	Ende date,
   CONSTRAINT fk_WbUnterwb FOREIGN KEY (WbID) REFERENCES  Wettbewerb(WbID)
 );
 
 CREATE TABLE Spiel (
-	SpielID int NOT NULL PRIMARY KEY,
+	SpielID INTEGER PRIMARY KEY,
 	UnterwbID int NOT NULL,
 	Team1ID int,
 	Team2ID int,
@@ -194,9 +195,9 @@ INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (61, null
 INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (62, 'G', 'Chris', 'Chris G', null);
 INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (63, null, 'Chris', 'Chris', null);
 
-INSERT INTO  Wettbewerb(WbID, Name) VALUES (1, 'WS 14/15');
-INSERT INTO  Wettbewerb(WbID, Name) VALUES (2, 'SS 15');
-INSERT INTO  Wettbewerb(WbID, Name) VALUES (3, 'WS 15/16');
+INSERT INTO  Wettbewerb(WbID, Name, Phase) VALUES (1, 'WS 14/15', 'beendet');
+INSERT INTO  Wettbewerb(WbID, Name, Phase) VALUES (2, 'SS 15', 'beendet');
+INSERT INTO  Wettbewerb(WbID, Name, Phase) VALUES (3, 'WS 15/16', 'beendet');
 
 INSERT INTO Unterwettbewerb(UnterwbID, WbID, Name, Modus, OTN, Start, Ende) VALUES (1, 1, '14/15 liga', 'liga', 'ein', '2014-11-30', '2015-02-01');
 INSERT INTO Unterwettbewerb(UnterwbID, WbID, Name, Modus, OTN, Start, Ende) VALUES (2, 2, '15 liga', 'liga', 'ein', '2015-04-30', '2015-07-14');

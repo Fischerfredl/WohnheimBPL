@@ -1,10 +1,14 @@
+<!--
+variables:
+object (UntewbID, Name, Modus, WbID, WbName)
+-->
 {% extends "base.html" %}
 {% block content %}
     <a href="{{ url_for('competition.detail_competition', competitionid=object[3]) }}"><- Zurück</a>
     <h1>Unterwettbewerb: {{ object[1] }}</h1>
-    Sieh dir die angemeldeten Teams und Spieler an:
-    <a href="{{ url_for('competition.division_signed_teams', divisionid=object[0]) }}">Link</a>
-    <br>
-    <br>
-    {% block spiele %}{% endblock %}
+        Sieh dir die angemeldeten Teams und Spieler an:
+        <a href="{{ url_for('competition.division_signed_teams', divisionid=object[0]) }}">Link</a>
+        <br>
+        <br>
+        {% block spiele %}{% endblock %}
 {% endblock %}

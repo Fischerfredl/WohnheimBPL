@@ -21,7 +21,7 @@ def detail_team(teamname):
 
 @user.route('/user/<nickname>/settings/<option>', methods=['GET', 'POST'])
 @check_player
-@login_required
+@login_required(user='designated')
 def settings(nickname, option):
     if request.method == 'POST':
         if option == 'personal':

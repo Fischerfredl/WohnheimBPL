@@ -2,7 +2,7 @@
 {%- from 'macros.html' import kospiele, ligaspiele with context %}
 {%  block content %}
     <h1>Spiel: {{ gameid }}</h1>
-    Unterwettbewerb: <a href="{{ url_for('competition.division', divisionid=data[1]) }}">{{ data[2] }}</a><br>
+    Unterwettbewerb: <a href="{{ url_for('competition.detail_division', divisionid=data[1]) }}">{{ data[2] }}</a><br>
     {% if data[3] == 'liga' %}
         Spieltag: <a href="{{ url_for('competition.detail_league', leagueid=data[1], matchday=result[7]) }}">{{ result[7] }}</a><br>
     {%  endif %}

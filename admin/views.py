@@ -1,12 +1,12 @@
 from flask import Blueprint, render_template, url_for, redirect, request
-from decorators import login_admin_required
+from decorators import login_required
 from functions import *
 
 admin = Blueprint('admin', __name__, template_folder='templates')
 
 
 @admin.route('/')
-@login_admin_required
+@login_required(user='admin')
 def home():
     return render_template('admin/admin.html')
 
@@ -14,7 +14,7 @@ def home():
 # allowed for option:
 # new_player, new_team, new_password, del_player, del_team
 @admin.route('/settings/<option>', methods=['GET', 'POST'])
-@login_admin_required
+@login_required(user='admin')
 def settings(option):
     if request.method == 'POST':
         if option == 'new_player':
@@ -37,6 +37,6 @@ def settings(option):
 # allowed for view:
 # player, team, game, competition, division, participated
 @admin.route('/view/<view>')
-@login_admin_required
+@login_required(user=admin)
 def views(view):
     return render_template('admin/admin_views.html', view=view, table=get_admin_table(view))

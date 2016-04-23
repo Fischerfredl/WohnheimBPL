@@ -8,7 +8,7 @@ from functions_general import query_db
 # check_league_matchday(leagueid, matchday)
 # get_competition_overview() - [(WbID, WbName)]
 # get_competition_divisions(competitionid) - [(UnterwbID, Unterwbname, Modus)]
-# get_competition_info(competitionid) - (WbId, Name)
+# get_competition_info(competitionid) - (WbId, Name, Phase)
 # get_competition_teams(competitionid)
 # get_division_teams(divisionid)
 # get_division_info(divisionid) - (UntewbID, Name, Modus, WbID, WbName)
@@ -57,7 +57,7 @@ def get_competition_divisions(competitionid):
 
 
 def get_competition_info(competitionid):
-    return query_db('SELECT WbID, Name FROM Wettbewerb WHERE WbID = ?', [competitionid])[0]
+    return query_db('SELECT WbID, Name, Phase FROM Wettbewerb WHERE WbID = ?', [competitionid])[0]
 
 
 # ----------------------------------------------------------------------------------------------------------------------
