@@ -2,7 +2,7 @@
 {%- from "macros.html" import ligaspiele, teamtabelle, spielertabelle with context  %}
 
 {%  block spiele %}
-    <h1>Spieltag: {{ spieltag }}</h1>
+    <h1>Spieltag: {{ matchday }}</h1>
     <form action="{{ url_for('competition.detail_league', leagueid=object[0], matchday=matchday - 1) }}">
         <input type="submit" value="Spieltag zurück" {% if matchday == 1 %}disabled{% endif %}>
     </form> <form action="{{ url_for('competition.detail_league', leagueid=object[0], matchday=matchday + 1) }}">

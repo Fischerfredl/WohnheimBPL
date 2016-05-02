@@ -1,4 +1,4 @@
-DATABASE = 'C:\\Users\\alfre\\Documents\\GitHub\\WohnheimBPL\\database.db'
+DATABASE = 'D:\\Dateien\\Dokumente\\GitHub\\WohnheimBPL\\database.db'
 DEBUG = True
 SECRET_KEY = '=R(Db4%ijH3GZd)1cmirMy7sP(%V95=h'
 SALT = 'salt!!!#22*'
@@ -8,11 +8,11 @@ PORT = 5000
 
 # acc for administrator
 ADMINLOGIN = 'admin'
-ADMINPASSWORD = 'password'
+ADMINPASSWORD = 'super-secure-password'
 
 # acc for tournament mods
 MODLOGIN = 'mod'
-MODPASSWORD = 'password'
+MODPASSWORD = 'super-secure-password'
 
 # Settings {option: permissions}
 SETTINGS = {

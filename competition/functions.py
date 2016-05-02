@@ -187,7 +187,7 @@ def get_league_matchday_current(leagueid):
                     WHERE Spieltag = ? AND UnterwbID = ? AND SiegerID not null',
                     [maxst, leagueid], one=True):
             return maxst
-        maxst -= maxst
+        maxst -= 1
     return 1
 
 

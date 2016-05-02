@@ -6,31 +6,30 @@ IPADDR = '0.0.0.0'
 PORT = 5000
 
 
-
 # acc for administrator
 ADMINLOGIN = 'admin'
-ADMINPASSWORD = 'password'
+ADMINPASSWORD = 'super-secure-password'
 
 # acc for tournament mods
 MODLOGIN = 'mod'
-MODPASSWORD = 'password'
+MODPASSWORD = 'super-secure-password'
 
 # Settings {option: permissions}
 SETTINGS = {
-    'new_player': [ADMINLOGIN, MODLOGIN, 'unsigned_user'],
-    'new_team': [ADMINLOGIN, MODLOGIN, 'signed_user'],
-    'del_player': [ADMINLOGIN, MODLOGIN],
-    'del_team': [ADMINLOGIN, MODLOGIN],
-    'create_competition': [MODLOGIN],
-    'make_competition': [MODLOGIN],
-    'advance_competition': [MODLOGIN],
-    'close_competition': [MODLOGIN],
-    'reopen_competition': [MODLOGIN],
-    'delete_competition': [MODLOGIN],
+    'player_new': [ADMINLOGIN, MODLOGIN],
+    'player_del': [ADMINLOGIN, MODLOGIN],
+    'player_edit': ['signed_user'],
+    'player_reset_password': [ADMINLOGIN, MODLOGIN],
+    'player_set_password': ['signed_user'],
+    'team_new': [ADMINLOGIN, MODLOGIN, 'signed_user'],
+    'team_del': [ADMINLOGIN, MODLOGIN],
+    'team_edit': ['signed_user'],
+    'competition_create': [MODLOGIN],
+    'competition_make': [MODLOGIN],
+    'competition_advance': [MODLOGIN],
+    'competition_close': [MODLOGIN],
+    'competition_reopen': [MODLOGIN],
+    'competition_delete': [MODLOGIN],
     'player_assign_team': [MODLOGIN],
-    'edit_game': [MODLOGIN, 'signed_player'],
-    'edit_player': [ADMINLOGIN, MODLOGIN, 'signed_player'],
-    'edit_player_reset_password': [ADMINLOGIN, MODLOGIN],
-    'edit_player_set_password': [ADMINLOGIN, MODLOGIN, 'signed_player'],
-    'edit_team': [ADMINLOGIN, MODLOGIN, 'signed_player']
+    'game_edit': [MODLOGIN, 'signed_user']
     }
