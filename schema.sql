@@ -198,12 +198,15 @@ INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (63, null
 INSERT INTO  Wettbewerb(WbID, Name, Phase) VALUES (1, 'WS 14/15', 'beendet');
 INSERT INTO  Wettbewerb(WbID, Name, Phase) VALUES (2, 'SS 15', 'beendet');
 INSERT INTO  Wettbewerb(WbID, Name, Phase) VALUES (3, 'WS 15/16', 'beendet');
+INSERT INTO  Wettbewerb(WbID, Name, Phase) VALUES (4, 'SS 16', 'beendet');
 
 INSERT INTO Unterwettbewerb(UnterwbID, WbID, Name, Modus, OTN, Start, Ende) VALUES (1, 1, '14/15 liga', 'liga', 'ein', '2014-11-30', '2015-02-01');
 INSERT INTO Unterwettbewerb(UnterwbID, WbID, Name, Modus, OTN, Start, Ende) VALUES (2, 2, '15 liga', 'liga', 'ein', '2015-04-30', '2015-07-14');
 INSERT INTO Unterwettbewerb(UnterwbID, WbID, Name, Modus, OTN, Start, Ende) VALUES (3, 3, '15/16 REL', 'liga', 'ein', '2015-11-01', '2015-12-22');
 INSERT INTO Unterwettbewerb(UnterwbID, WbID, Name, Modus, OTN, Start, Ende) VALUES (4, 3, '15/16 TSL', 'liga', 'ein', '2015-11-01', '2015-12-22');
 INSERT INTO Unterwettbewerb(UnterwbID, WbID, Name, Modus, OTN, Start, Ende) VALUES (5, 3, '15/16 Play-Offs', 'ko', 'ein', '2016-01-10', '2016-01-26');
+INSERT INTO Unterwettbewerb(UnterwbID, WbID, Name, Modus, OTN, Start, Ende) VALUES (6, 4, '15 REL', 'liga', 'ein', '2016-05-02', '2016-08-01');
+INSERT INTO Unterwettbewerb(UnterwbID, WbID, Name, Modus, OTN, Start, Ende) VALUES (7, 4, '15 TSL', 'liga', 'ein', '2016-05-02', '2016-08-01');
 
 INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (1, 1, 1);
 INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (1, 1, 2);

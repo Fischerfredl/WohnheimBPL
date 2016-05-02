@@ -6,12 +6,6 @@ from functions import *
 mod = Blueprint('mod', __name__, template_folder='templates')
 
 
-@mod.route('/')
-@login_required(user='mod')
-def home():
-    return render_template('mod/mod.html')
-
-
 # allowed for option:
 # new_competition, del_competition
 @mod.route('/settings/<option>', methods=['GET', 'POST'])

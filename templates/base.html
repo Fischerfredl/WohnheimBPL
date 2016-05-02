@@ -20,10 +20,8 @@
             Logged in as
             {{ session.username }}
             <hr>
-            {% if session.username == 'admin' %}
-                <a href="{{ url_for('admin.home') }}">Adminbereich</a>
-            {% elif session.username == 'mod' %}
-                <a href="{{ url_for('mod.home') }}">Modbereich</a>
+            {% if session.username == 'admin' or session.username == 'mod' %}
+                <a href="{{ url_for('settings.home') }}">Einstellungen</a><br>
             {% else %}
                 <a href="{{ url_for('user.detail_player', nickname=session.username) }}">See Profile</a>
             {% endif %}

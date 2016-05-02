@@ -1,10 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Einstellungen</h1>
+    <ul>
+    {% for option in options %}
+        <li><a href="{{ url_for('settings.main', option=option) }}">{{ header[option] }}</a></li>
+    {% endfor %}
+    </ul>
+    {% if session.username == 'admin' %}
+        Views:
+    <ul>
+    <li><a href="{{ url_for('table_views.views', view='player') }}">Spieler</a></li>
+    <li><a href="{{ url_for('table_views.views', view='team') }}">Team</a></li>
+    <li><a href="{{ url_for('table_views.views', view='game_league') }}">Liga-Spiel</a></li>
+    <li><a href="{{ url_for('table_views.views', view='game_ko') }}">KO-Spiel</a></li>
+    <li><a href="{{ url_for('table_views.views', view='game_group') }}">Turnier-Spiel</a></li>
+    <li><a href="{{ url_for('table_views.views', view='competition') }}">Wettbewerb</a></li>
+    <li><a href="{{ url_for('table_views.views', view='division') }}">Unterwettbewerb</a></li>
+    <li><a href="{{ url_for('table_views.views', view='participated') }}">Teilgenommen</a></li>
+    </ul>
+    {% endif %}
 
-</body>
-</html>
+{% endblock %}

@@ -7,10 +7,16 @@
         {{ item.label }}:
         {% if item.type == 'text' %}
             <input type=text name={{ item.name }}>
-        {% elif item.type == 'select' %}
-            <select name=item.name>
+        {% elif item.type == 'select_list' %}
+            <select name={{ item.name }}>
+            {% for row in item.value %}
+                <option value="{{ row }}">{{ row }}</option>
+            {% endfor %}
+            </select>
+        {% elif item.type == 'select_dict' %}
+            <select name={{ item.name }}>
             {% for key in item.value %}
-                <option value=key">{{ item.value[key] }}</option>
+                <option value="{{ key }}">{{ item.value[key] }}</option>
             {% endfor %}
             </select>
         {% endif %}

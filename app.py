@@ -10,6 +10,7 @@ from user.views import user
 from admin.views import admin
 from mod.views import mod
 from settings.views import settings
+from table_views.views import table_views
 
 app = Flask(__name__)
 
@@ -25,6 +26,7 @@ app.register_blueprint(competition, url_prefix='/competition')
 app.register_blueprint(app_login)
 app.register_blueprint(user)
 app.register_blueprint(settings, url_prefix='/settings')
+app.register_blueprint(table_views)
 
 
 # ----------------------------------------------------------------------------------------------------------------------

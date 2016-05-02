@@ -34,9 +34,4 @@ def settings(option):
         return render_template('admin/admin_settings.html', option=option, itemlist=get_items(option))
 
 
-# allowed for view:
-# player, team, game, competition, division, participated
-@admin.route('/view/<view>')
-@login_required(user=admin)
-def views(view):
-    return render_template('admin/admin_views.html', view=view, table=get_admin_table(view))
+
