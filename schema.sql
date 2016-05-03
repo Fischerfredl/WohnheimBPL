@@ -10,36 +10,39 @@ DROP TABLE IF EXISTS Team;
 DROP TABLE IF EXISTS Spieler;
 
 CREATE TABLE Spieler (
-	SpielerID int NOT NULL PRIMARY KEY,
+	SpielerID INTEGER PRIMARY KEY,
 	Name varchar(20),
-	Vorname varchar(20) NOT NULL,
-	Nickname varchar(20) UNIQUE,
-	Passwort varchar(40)
+	Vorname varchar(20),
+	Nickname varchar(20) NOT NULL UNIQUE,
+	Passwort varchar(40),
+	TeamID int,
+	CONSTRAINT fk_SpielerTeam FOREIGN KEY (TeamID) REFERENCES  Team(TeamID)
 );
 
 CREATE TABLE Team (
-	TeamID int NOT NULL PRIMARY KEY,
+	TeamID INTEGER PRIMARY KEY,
 	Name varchar(40) NOT NULL UNIQUE
 );
 
 CREATE TABLE Wettbewerb (
-	WbID int NOT NULL PRIMARY KEY,
-	Name varchar(40) NOT NULL UNIQUE
+	WbID INTEGER PRIMARY KEY,
+	Name varchar(40) NOT NULL UNIQUE,
+	Phase varchar(9) NOT NULL CHECK (Phase = 'anmeldung' OR Phase = 'laeuft' OR Phase = 'beendet') DEFAULT 'anmeldung'
 );
 
 CREATE TABLE Unterwettbewerb (
-	UnterwbID int NOT NULL PRIMARY KEY,
+	UnterwbID INTEGER PRIMARY KEY,
 	WbID int NOT NULL,
-	Name varchar(40) UNIQUE,
-	Modus varchar(7) NOT NULL CHECK (Modus = 'turnier' OR Modus = 'liga' OR Modus = 'ko'),
-	OTN varchar(3) NOT NULL CHECK (OTN = 'ein' OR OTN = 'aus'),
-	Start date NOT NULL,
+	Name varchar(40),
+	Modus varchar(9) NOT NULL CHECK (Modus = 'turnier' OR Modus = 'liga' OR Modus = 'ko' OR Modus = 'anmeldung') DEFAULT 'anmeldung',
+	OTN varchar(3) CHECK (OTN = 'ein' OR OTN = 'aus') DEFAULT 'ein',
+	Start date,
 	Ende date,
-  	CONSTRAINT fk_WbUnterwb FOREIGN KEY (WbID) REFERENCES  Wettbewerb(WbID)
+  CONSTRAINT fk_WbUnterwb FOREIGN KEY (WbID) REFERENCES  Wettbewerb(WbID)
 );
 
 CREATE TABLE Spiel (
-	SpielID int NOT NULL PRIMARY KEY,
+	SpielID INTEGER PRIMARY KEY,
 	UnterwbID int NOT NULL,
 	Team1ID int,
 	Team2ID int,
@@ -93,7 +96,7 @@ CREATE TABLE Teilgenommen (
     CONSTRAINT fk_TGUnterwb FOREIGN KEY (UnterwbID) REFERENCES Unterwettbewerb(UnterwbID),
     CONSTRAINT fk_TGTeam FOREIGN KEY (TeamID) REFERENCES Team(TeamID),
 	CONSTRAINT fk_TGSpieler FOREIGN KEY (SpielerID) REFERENCES Spieler(SpielerID)
-);                                      
+);
 
 INSERT INTO TEAM(TeamID, Name) VALUES (1, 'Fuckin Schnitzel');
 INSERT INTO TEAM(TeamID, Name) VALUES (2, 'Bauernpower');
@@ -128,79 +131,82 @@ INSERT INTO TEAM(TeamID, Name) VALUES (30, 'Die Bierpongbärchenbande');
 INSERT INTO TEAM(TeamID, Name) VALUES (31, 'El Machado');
 INSERT INTO TEAM(TeamID, Name) VALUES (32, 'Fuckin Nugget');
 
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (1, 'Mack', 'Tobias', 'Tibo');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (2, 'Bickl', 'Matthias', 'Schnitzel');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (3, 'Pflugrad', 'Peter', 'Peter');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (4, 'Wolf', 'Julian', 'Jule');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (5, 'Schön', 'Stefan', 'Schön');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (6, 'Andraschko', 'Christian', 'Bri');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (7, 'Ellinger', 'Tobias', 'Elli');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (8, 'Wagner', 'Vanessa', 'Vanessa');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (9, 'Eichhoff', 'Robert', 'Robert E.');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (10, 'Lacherstorfer', 'Jessica', 'Jessi');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (11, 'Baramidze', 'Nino', 'Nino');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (12, 'Reiche', 'Robert', 'Robert R.');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (13, 'Kriwan', 'Martin', 'Kriwan');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (14, 'Benischke', 'Florian', 'Flo');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (15, 'Martin', 'Thomas', 'Thomas M.');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (16, 'Aigner', 'Matthias', 'Matthias A.');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (17, 'Seidel', 'Susi', 'Susi');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (18, 'Rausch', 'Britta', 'Britta');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (19, 'Petzak', 'Tobias', 'Petzi');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (20, 'Melch', 'Alfred', 'Alfred');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (21, 'Muschiol', 'Maya', 'Maya');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (22, 'Kayaci', 'Esra', 'Esra');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (23, 'Häusler', 'Katharina', 'Kathi');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (24, 'Schmöger', 'Stefan', 'Schmögi');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (25, 'Kulot', 'David', 'David');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (26, 'Kempka', 'Martin', 'Martin Ke.');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (27, 'Nolde', 'Anna', 'Anna N.');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (28, 'Lipfert', 'Salome', 'Salome');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (29, 'Mantaj', 'Julian', 'Julian');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (30, null, 'Lena', 'Lena');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (31, null, 'Sebastian', 'Sebastian');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (32, 'Seemüller', 'Martin', 'Martin S.');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (33, 'Vesenberg', 'Dennis', 'Sir');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (34, 'Gassmann', 'Daniel', 'Gassi');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (35, null, 'Mario', 'Mario');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (36, 'Mayer', 'Phillip', 'PM');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (37, 'Huber', 'Jessi', 'Jessi H.');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (38, null, 'Philip', 'Philip');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (39, 'Mayer', 'Chris', 'CM');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (40, 'Meckes', 'Caro', 'Caro');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (41, 'Herre', 'Alexander', 'Toaster');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (42, 'Bittracher', 'Martin', 'Magic');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (43, 'Herrmann', 'Steffen', 'Steffen');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (44, 'Wagner', 'Sandro', 'Sandro');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (45, 'Rieder', 'Manuel', 'Manu');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (46, 'Frosch', 'Dennis', 'Frog');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (47, null, 'Natalie', 'Natalie');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (48, 'Otte', 'Felix', 'Felix');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (49, 'Wohllaib', 'Jacqueline', 'Shacky');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (50, 'Herbinger', 'Martin', 'Hoerby');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (51, null, 'Marcel', 'Marcel');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (52, null, 'Patrick', 'Patrick');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (53, 'Olschewski', 'Patrick', 'Paddy');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (54, null, 'Michael', 'Michael');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (55, 'Wassermann', 'Manuel', 'Manu W.');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (56, 'Hahn', 'Michael', 'Michi H.');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (57, 'Kerstiens', 'Franziska', 'Franzi');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (58, 'Eberle', 'Anna', 'Anna E.');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (59, 'J', 'Jannik', 'Jannik J');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (60, 'G', 'Johannes', 'Johannes G');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (61, null, 'Hana', 'Hana');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (62, 'G', 'Chris', 'Chris G');
-INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname) VALUES (63, null, 'Chris', 'Chris');
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (1, 'Mack', 'Tobias', 'Tibo', 1);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (2, 'Bickl', 'Matthias', 'Schnitzel', 1);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (3, 'Pflugrad', 'Peter', 'Peter', 2);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (4, 'Wolf', 'Julian', 'Jule', 2);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (5, 'Schön', 'Stefan', 'Schön', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (6, 'Andraschko', 'Christian', 'Bri', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (7, 'Ellinger', 'Tobias', 'Elli', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (8, 'Wagner', 'Vanessa', 'Vanessa', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (9, 'Eichhoff', 'Robert', 'Robert E.', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (10, 'Lacherstorfer', 'Jessica', 'Jessi', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (11, 'Baramidze', 'Nino', 'Nino', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (12, 'Reiche', 'Robert', 'Robert R.', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (13, 'Kriwan', 'Martin', 'Kriwan', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (14, 'Benischke', 'Florian', 'Flo', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (15, 'Martin', 'Thomas', 'Thomas M.', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (16, 'Aigner', 'Matthias', 'Matthias A.', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (17, 'Seidel', 'Susi', 'Susi', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (18, 'Rausch', 'Britta', 'Britta', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (19, 'Petzak', 'Tobias', 'Petzi', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (20, 'Melch', 'Alfred', 'Alfred', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (21, 'Muschiol', 'Maya', 'Maya', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (22, 'Kayaci', 'Esra', 'Esra', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (23, 'Häusler', 'Katharina', 'Kathi', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (24, 'Schmöger', 'Stefan', 'Schmögi', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (25, 'Kulot', 'David', 'David', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (26, 'Kempka', 'Martin', 'Martin Ke.', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (27, 'Nolde', 'Anna', 'Anna N.', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (28, 'Lipfert', 'Salome', 'Salome', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (29, 'Mantaj', 'Julian', 'Julian', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (30, null, 'Lena', 'Lena', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (31, null, 'Sebastian', 'Sebastian', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (32, 'Seemüller', 'Martin', 'Martin S.', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (33, 'Vesenberg', 'Dennis', 'Sir', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (34, 'Gassmann', 'Daniel', 'Gassi', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (35, null, 'Mario', 'Mario', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (36, 'Mayer', 'Phillip', 'PM', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (37, 'Huber', 'Jessi', 'Jessi H.', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (38, null, 'Philip', 'Philip', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (39, 'Mayer', 'Chris', 'CM', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (40, 'Meckes', 'Caro', 'Caro', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (41, 'Herre', 'Alexander', 'Toaster', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (42, 'Bittracher', 'Martin', 'Magic', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (43, 'Herrmann', 'Steffen', 'Steffen', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (44, 'Wagner', 'Sandro', 'Sandro', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (45, 'Rieder', 'Manuel', 'Manu', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (46, 'Frosch', 'Dennis', 'Frog', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (47, null, 'Natalie', 'Natalie', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (48, 'Otte', 'Felix', 'Felix', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (49, 'Wohllaib', 'Jacqueline', 'Shacky', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (50, 'Herbinger', 'Martin', 'Hoerby', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (51, null, 'Marcel', 'Marcel', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (52, null, 'Patrick', 'Patrick', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (53, 'Olschewski', 'Patrick', 'Paddy', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (54, null, 'Michael', 'Michael', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (55, 'Wassermann', 'Manuel', 'Manu W.', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (56, 'Hahn', 'Michael', 'Michi H.', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (57, 'Kerstiens', 'Franziska', 'Franzi', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (58, 'Eberle', 'Anna', 'Anna E.', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (59, 'J', 'Jannik', 'Jannik J', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (60, 'G', 'Johannes', 'Johannes G', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (61, null, 'Hana', 'Hana', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (62, 'G', 'Chris', 'Chris G', null);
+INSERT INTO Spieler(SpielerID, Name, Vorname, Nickname, TeamID) VALUES (63, null, 'Chris', 'Chris', null);
 
-INSERT INTO  Wettbewerb(WbID, Name) VALUES (1, 'WS 14/15');
-INSERT INTO  Wettbewerb(WbID, Name) VALUES (2, 'SS 15');
-INSERT INTO  Wettbewerb(WbID, Name) VALUES (3, 'WS 15/16');
+INSERT INTO  Wettbewerb(WbID, Name, Phase) VALUES (1, 'WS 14/15', 'beendet');
+INSERT INTO  Wettbewerb(WbID, Name, Phase) VALUES (2, 'SS 15', 'beendet');
+INSERT INTO  Wettbewerb(WbID, Name, Phase) VALUES (3, 'WS 15/16', 'beendet');
+INSERT INTO  Wettbewerb(WbID, Name, Phase) VALUES (4, 'SS 16', 'beendet');
 
 INSERT INTO Unterwettbewerb(UnterwbID, WbID, Name, Modus, OTN, Start, Ende) VALUES (1, 1, '14/15 liga', 'liga', 'ein', '2014-11-30', '2015-02-01');
 INSERT INTO Unterwettbewerb(UnterwbID, WbID, Name, Modus, OTN, Start, Ende) VALUES (2, 2, '15 liga', 'liga', 'ein', '2015-04-30', '2015-07-14');
 INSERT INTO Unterwettbewerb(UnterwbID, WbID, Name, Modus, OTN, Start, Ende) VALUES (3, 3, '15/16 REL', 'liga', 'ein', '2015-11-01', '2015-12-22');
 INSERT INTO Unterwettbewerb(UnterwbID, WbID, Name, Modus, OTN, Start, Ende) VALUES (4, 3, '15/16 TSL', 'liga', 'ein', '2015-11-01', '2015-12-22');
 INSERT INTO Unterwettbewerb(UnterwbID, WbID, Name, Modus, OTN, Start, Ende) VALUES (5, 3, '15/16 Play-Offs', 'ko', 'ein', '2016-01-10', '2016-01-26');
+INSERT INTO Unterwettbewerb(UnterwbID, WbID, Name, Modus, OTN, Start, Ende) VALUES (6, 4, '16 REL', 'liga', 'ein', '2016-05-02', '2016-08-01');
+INSERT INTO Unterwettbewerb(UnterwbID, WbID, Name, Modus, OTN, Start, Ende) VALUES (7, 4, '16 TSL', 'liga', 'ein', '2016-05-02', '2016-08-01');
 
 INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (1, 1, 1);
 INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (1, 1, 2);
@@ -1410,3 +1416,323 @@ INSERT INTO Kospiel(SpielID, NFWinnerID, NFLoserID, Bestofwhat, T1Erg, T2Erg) VA
 INSERT INTO Kospiel(SpielID, NFWinnerID, NFLoserID, Bestofwhat, T1Erg, T2Erg) VALUES (188, 190, null, 3, 1, 2);
 INSERT INTO Kospiel(SpielID, NFWinnerID, NFLoserID, Bestofwhat, T1Erg, T2Erg) VALUES (189, 190, null, 3, 2, 0);
 INSERT INTO Kospiel(SpielID, NFWinnerID, NFLoserID, Bestofwhat, T1Erg, T2Erg) VALUES (190, null, null, 5, 3, 0);
+
+INSERT INTO TEAM(TeamID, Name) VALUES (33, 'Mörderhupen');
+INSERT INTO TEAM(TeamID, Name) VALUES (34, 'El Papa');
+INSERT INTO TEAM(TeamID, Name) VALUES (35, 'Don Promillo');
+INSERT INTO TEAM(TeamID, Name) VALUES (36, 'Balls of Steel');
+INSERT INTO TEAM(TeamID, Name) VALUES (37, 'Jung, dynamisch und erfolglos');
+INSERT INTO TEAM(TeamID, Name) VALUES (38, 'Die Zwiebackpiraten');
+INSERT INTO TEAM(TeamID, Name) VALUES (39, 'Forever Beer');
+INSERT INTO TEAM(TeamID, Name) VALUES (40, 'Pong Voyage');
+INSERT INTO TEAM(TeamID, Name) VALUES (41, 'Die Strumpftruppler');
+
+INSERT INTO Spieler(SpielerID, Nickname) VALUES (64, 'Ellen');
+INSERT INTO Spieler(SpielerID, Nickname) VALUES (65, 'Pascal');
+INSERT INTO Spieler(SpielerID, Nickname) VALUES (66, 'Vanessa2');
+INSERT INTO Spieler(SpielerID, Nickname) VALUES (67, 'Sebastian2');
+INSERT INTO Spieler(SpielerID, Nickname) VALUES (68, 'Sophie');
+INSERT INTO Spieler(SpielerID, Nickname) VALUES (69, 'Susi2');
+INSERT INTO Spieler(SpielerID, Nickname) VALUES (70, 'Quirin');
+INSERT INTO Spieler(SpielerID, Nickname) VALUES (71, 'Konstantin');
+INSERT INTO Spieler(SpielerID, Nickname) VALUES (72, 'Daniel');
+
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (7, 33, 38);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (7, 33, 39);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (7, 33, 5);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (7, 34, 65);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (7, 34, 52);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (7, 34, 64);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (7, 35, 65);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (7, 35, 67);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (7, 35, 68);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (7, 36, 16);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (7, 36, 15);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (7, 37, 30);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (7, 37, 31);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (7, 37, 69);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (7, 26, 40);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (7, 26, 41);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (7, 38, 70);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (7, 38, 71);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (7, 38, 72);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (7, 39, 49);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (7, 39, 53);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (7, 39, 20);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (7, 40, 58);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (7, 40, 82);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (7, 41, 27);INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (7, 41, 34);
+
+
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (191, 7, 1, 26, 37);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (192, 7, 1, 35, 40);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (193, 7, 1, 41, 33);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (194, 7, 1, 39, 36);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (195, 7, 1, 1, 34);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (196, 7, 1, 39, 37);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (197, 7, 1, 26, 38);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (198, 7, 1, 35, 33);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (199, 7, 1, 34, 41);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (200, 7, 1, 1, 36);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (201, 7, 1, 41, 35);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (202, 7, 1, 26, 40);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (203, 7, 1, 1, 37);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (204, 7, 1, 39, 38);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (205, 7, 1, 34, 36);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (206, 7, 1, 34, 37);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (207, 7, 1, 26, 33);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (208, 7, 1, 39, 40);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (209, 7, 1, 1, 38);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (210, 7, 1, 36, 41);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (211, 7, 1, 1, 40);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (212, 7, 1, 26, 35);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (213, 7, 1, 39, 33);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (214, 7, 1, 34, 38);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (215, 7, 1, 36, 37);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (216, 7, 1, 36, 38);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (217, 7, 1, 37, 41);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (218, 7, 1, 1, 33);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (219, 7, 1, 34, 40);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (220, 7, 1, 39, 35);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (221, 7, 1, 1, 35);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (222, 7, 1, 41, 26);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (223, 7, 1, 36, 40);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (224, 7, 1, 33, 34);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (225, 7, 1, 37, 38);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (226, 7, 1, 37, 40);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (227, 7, 1, 39, 26);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (228, 7, 1, 33, 36);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (229, 7, 1, 35, 34);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (230, 7, 1, 38, 41);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (231, 7, 1, 35, 36);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (232, 7, 1, 1, 26);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (233, 7, 1, 33, 37);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (234, 7, 1, 38, 40);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (235, 7, 1, 41, 39);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (236, 7, 1, 1, 39);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (237, 7, 1, 40, 41);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (238, 7, 1, 33, 38);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (239, 7, 1, 35, 37);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (240, 7, 1, 26, 34);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (241, 7, 1, 39, 34);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (242, 7, 1, 35, 38);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (243, 7, 1, 26, 36);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (244, 7, 1, 33, 40);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (245, 7, 1, 41, 1);
+
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (191, 1);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (192, 1);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (193, 1);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (194, 1);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (195, 1);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (196, 2);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (197, 2);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (198, 2);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (199, 2);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (200, 2);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (201, 3);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (202, 3);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (203, 3);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (204, 3);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (205, 3);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (206, 4);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (207, 4);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (208, 4);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (209, 4);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (210, 4);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (211, 5);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (212, 5);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (213, 5);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (214, 5);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (215, 5);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (216, 6);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (217, 6);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (218, 6);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (219, 6);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (220, 6);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (221, 7);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (222, 7);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (223, 7);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (224, 7);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (225, 7);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (226, 8);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (227, 8);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (228, 8);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (229, 8);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (230, 8);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (231, 9);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (232, 9);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (233, 9);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (234, 9);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (235, 9);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (236, 10);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (237, 10);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (238, 10);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (239, 10);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (240, 10);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (241, 11);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (242, 11);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (243, 11);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (244, 11);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (245, 11);
+
+INSERT INTO TEAM(TeamID, Name) VALUES (42, 'M & M');
+INSERT INTO TEAM(TeamID, Name) VALUES (43, 'One Bierection');
+INSERT INTO TEAM(TeamID, Name) VALUES (44, 'Die BangBroz');
+INSERT INTO TEAM(TeamID, Name) VALUES (45, 'Oops i hit it again');
+INSERT INTO TEAM(TeamID, Name) VALUES (46, 'Kurz vor Knapp');
+INSERT INTO TEAM(TeamID, Name) VALUES (47, 'Sexy Magic Frogs');
+
+INSERT INTO Spieler(SpielerID, Nickname) VALUES (73, 'Thomas');
+INSERT INTO Spieler(SpielerID, Nickname) VALUES (74, 'Manuel');
+INSERT INTO Spieler(SpielerID, Nickname) VALUES (75, 'Robin');
+INSERT INTO Spieler(SpielerID, Nickname) VALUES (76, 'Kevin');
+INSERT INTO Spieler(SpielerID, Nickname) VALUES (77, 'Mona');
+INSERT INTO Spieler(SpielerID, Nickname) VALUES (78, 'Marlene');
+INSERT INTO Spieler(SpielerID, Nickname) VALUES (79, 'Nino2');
+INSERT INTO Spieler(SpielerID, Nickname) VALUES (80, 'Alex');
+INSERT INTO Spieler(SpielerID, Nickname) VALUES (81, 'Vali');
+INSERT INTO Spieler(SpielerID, Nickname) VALUES (82, 'Chris2');
+
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (6, 42, 21);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (6, 42, 26);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (6, 6, 13);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (6, 6, 74);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (6, 6, 73);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (6, 43, 75);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (6, 43, 76);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (6, 43, 77);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (6, 44, 25);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (6, 44, 48);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (6, 45, 18);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (6, 45, 10);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (6, 24, 59);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (6, 24, 78);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (6, 24, 60);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (6, 46, 79);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (6, 46, 80);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (6, 47, 46);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (6, 47, 42);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (6, 47, 47);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (6, 4, 9);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (6, 4, 43);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (6, 4, 7);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (6, 4, 8);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (6, 31, 51);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (6, 31, 63);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (6, 31, 81);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (6, 2, 3);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (6, 2, 4);
+INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (6, 2, 29);
+
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (246, 6, 1, 2 , 42);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (247, 6, 1, 43 , 4);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (248, 6, 1, 46 , 24);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (249, 6, 1, 45 , 47);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (250, 6, 1, 31 , 6);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (251, 6, 1, 43 , 42);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (252, 6, 1, 45 , 4);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (253, 6, 1, 6 , 2);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (254, 6, 1, 31 , 44);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (255, 6, 1, 46 , 47);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (256, 6, 1, 46 , 4);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (257, 6, 1, 45 , 42);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (258, 6, 1, 6 , 44);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (259, 6, 1, 31 , 24);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (260, 6, 1, 2 , 43);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (261, 6, 1, 31 , 47);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (262, 6, 1, 6 , 24);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (263, 6, 1, 44 , 2);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (264, 6, 1, 45 , 43);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (265, 6, 1, 46 , 42);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (266, 6, 1, 31 , 4);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (267, 6, 1, 2 , 45);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (268, 6, 1, 6 , 47);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (269, 6, 1, 44 , 24);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (270, 6, 1, 46 , 43);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (271, 6, 1, 46 , 45);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (272, 6, 1, 6 , 4);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (273, 6, 1, 24 , 2);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (274, 6, 1, 44 , 47);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (275, 6, 1, 31 , 42);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (276, 6, 1, 44 , 4);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (277, 6, 1, 24 , 47);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (278, 6, 1, 2 , 46);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (279, 6, 1, 42 , 6);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (280, 6, 1, 31 , 43);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (281, 6, 1, 43 , 6);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (282, 6, 1, 24 , 4);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (283, 6, 1, 31 , 45);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (284, 6, 1, 47 , 2);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (285, 6, 1, 42 , 44);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (286, 6, 1, 42 , 24);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (287, 6, 1, 31 , 46);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (288, 6, 1, 47 , 4);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (289, 6, 1, 43 , 44);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (290, 6, 1, 45 , 6);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (291, 6, 1, 46 , 6);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (292, 6, 1, 45 , 44);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (293, 6, 1, 4 , 2);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (294, 6, 1, 43 , 24);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (295, 6, 1, 42 , 47);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (296, 6, 1, 42 , 4);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (297, 6, 1, 45 , 24);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (298, 6, 1, 43 , 47);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (299, 6, 1, 46 , 44);
+INSERT INTO Spiel(SpielID, UnterwbID, Gewertet, Team1ID, Team2ID) VALUES (300, 6, 1, 2 , 31);
+
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (246, 1);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (247, 1);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (248, 1);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (249, 1);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (250, 1);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (251, 2);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (252, 2);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (253, 2);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (254, 2);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (255, 2);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (256, 3);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (257, 3);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (258, 3);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (259, 3);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (260, 3);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (261, 4);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (262, 4);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (263, 4);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (264, 4);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (265, 4);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (266, 5);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (267, 5);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (268, 5);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (269, 5);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (270, 5);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (271, 6);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (272, 6);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (273, 6);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (274, 6);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (275, 6);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (276, 7);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (277, 7);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (278, 7);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (279, 7);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (280, 7);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (281, 8);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (282, 8);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (283, 8);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (284, 8);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (285, 8);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (286, 9);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (287, 9);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (288, 9);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (289, 9);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (290, 9);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (291, 10);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (292, 10);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (293, 10);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (294, 10);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (295, 10);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (296, 11);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (297, 11);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (298, 11);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (299, 11);
+INSERT INTO Ligaspiel(SpielID, Spieltag) VALUES (300, 11);

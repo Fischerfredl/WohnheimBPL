@@ -1,0 +1,30 @@
+<!--
+variables:
+object (WbId, Name, Phase)
+table_divisions [(UnterwbID, Unterwbname, Modus)]
+-->
+
+{% extends "base.html" %}
+{%  block content %}
+    <a href="{{ url_for('competition.overview') }}"><- Zurück</a>
+    <h1>Wettbewerb: {{ compname }}</h1>
+    Sieh dir die angemeldeten Teams und Spieler an:
+    <a href="{{ url_for('competition.competition_signed_teams', competitionid=object[0]) }}">Link</a>
+    <br><br>
+    {% if object[2] != 'anmeldung' %}
+        {% if table_divisions %}
+            Unterwettbewerbe
+            <ul>
+                {% for row in table_divisions %}
+                    <li><a href="{{ url_for('competition.detail_division', divisionid=row[0]) }}">{{ row[2] }}: {{ row[1] }}</a></li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% else %}
+        {% if session['logged_in'] %}
+
+            <a href="{{  url_for('competition.register', competitionid=object[0], nickname=session['username'])}}">Hier gehts zur Anmeldung</a>
+    <br><br>
+            {% endif %}
+    {% endif %}
+{% endblock %}

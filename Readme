@@ -19,18 +19,84 @@ Routes mit funktionen
 '/login': login()
 '/logout': logout()
 
-Templates:
-comp.html
-compteams.html
-detailcomp.html
-detailgame.html
-detailplayer.html
-detailteam.html
-home.html
-layout.html
-league.html
+Blueprint splitup
+# /overview
+# /<competitionid>
+# /division/<divisionid>
+# /division/<divisionid>/<matchday>
+# /<competitionid>/teams
+# /division/<divisionid>/teams
+
+# competition
+# competition_overview.html
+# competition_signed_teams.html
+# detail_game.html
+# detail_group
+# detail_league.html
+# detail_ko.html
+# division.html
+# division_signed_teams.html
+# macros.html
+
+# check_competition(competitionid)
+# check_division(divisionid)
+# check_league(leagueid)
+# check_league_matchday(leagueid, matchday)
+# get_competition_overview() - [(WbID, WbName)]
+# get_competition_divisions(competitionid) - [(UnterwbID, Unterwbname, Modus)]
+# get_competition_info(competitionid) - (WbId, Name)
+# get_competition_teams(competitionid)
+# get_division_teams(divisionid)
+# get_division_info(divisionid) - (UntewbID, Name, Modus, WbID, WbName)
+# get_division_mode(divisionid)
+# get_group_games_info(divisionid)
+# get_ko_games_info(divisionid)
+# get_league_games_info(leagueid, matchday)
+# get_league_teamtable(leagueid) - [(Team, Spiele, Treffer, Kassiert, Diff, G, V, OTS, OTN, Punkte)]
+# get_league_playertable(leagueid) - [(Nickname, Treffer, Spiele, Diff)]
+# get_league_matchday_max(leagueid)
+# get_league_matchday_current(leagueid)
+# get_league_game_result(gameid) - (SpielID, Erg1, Team1, T1Tref, T2Tref, T2, Erg2, Spieltag,
+#                                   spielerlist[(spieler, treffer)]})
+# get_group_game_result(gameid) - (SpielID, Team1, Team2, Sieger, Becherueber)
+# get_ko_game_result(gameid) - (SpielID, Team1, Erg1, Erg2, Team2)
+
+
+admin: /admin/
+/
+/settings/<option>
+admin.html
+adminsettings.html
+
+
+details: /details/
+/player/<username>
+/team/<teamname>
+/game/<gameid>
+
+detail_player.html
+detail_team.html
+detail_game.html
+
+check_player(username)
+check_team(teamname)
+check_game(gameid)
+get_data_player(username)
+get_data_team(teamname)
+get_data_game(gameid)
+get_ranking_player(username)
+get_ranking_team(teamname)
+
+
+login: /
+/login
+/logout
+
 login.html
-logout.html
+
+validate_user(username, password)
+
+
 
 
 Tabellen:

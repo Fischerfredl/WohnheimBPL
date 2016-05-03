@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{%  block content %}
+    <h1>Teamseite für: {{ data[1] }}</h1>
+    TeamID: {{ data[0] }}
+    <br>
+    <br>
+    Teilgenommene Wettbewerbe:
+    <table border="1">
+        <tr>
+            <th>Wettbewerb</th>
+            <th>Platz</th>
+            <th>Spieler</th>
+        </tr>
+        {% for row in history %}
+            <tr>
+                <td><a href="{{ url_for('competition.detail_division', divisionid=row[0]) }}">{{ row[1] }}</a></td>
+                <td>{{ row[2] }}</td>
+                <td>
+                    {% for spieler in row[3] %}<a href="{{ url_for('user.detail_player', nickname=spieler[0]) }}">{{ spieler[0] }}</a> |{% endfor %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
