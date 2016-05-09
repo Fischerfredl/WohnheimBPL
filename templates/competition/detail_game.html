@@ -11,6 +11,9 @@
     <br>
     {% if data[3] == 'liga' %}
         {{ ligaspiele([result]) }}
+        <br>
+        <br>
+        Spiel bearbeiten: <a href="{{ url_for('settings.main', option='game_edit') }}">edit</a>
     {% endif %}
     {% if data[3] == 'turnier' %}
     {% endif %}
