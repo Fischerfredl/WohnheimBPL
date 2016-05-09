@@ -40,9 +40,10 @@ def settings_permission_required(f):
         permission = current_app.config['SETTINGS'].get(kwargs['option'], None)
         if not permission:
             abort(404, 'Einstellung nicht gefunden')
-        if session.get('username', None) not in permission or \
-           'signed_user' in permission and not session['logged_in']:
-            abort(403, 'Fehlende Berechtigung fue diese Einstellungen')
+        if 'signed_user' in permission and not session['logged_in']:
+            abort(403, 'Nicht eingeloggt')
+        if 'signed_user' not in permission and session.get('username', None) not in permission:
+            abort(403, 'Fehlende Berechtigung fuer diese Einstellungen')
         return f(*args, **kwargs)
     return decorated_function
 

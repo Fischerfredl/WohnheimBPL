@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, request
+from flask import Blueprint, render_template, redirect, url_for, request, session
 from functions import *
 from functions_general import get_teams
 from mod.functions import register_player, unregister_player, get_player_registration, get_registration_division
@@ -85,6 +85,7 @@ def division_signed_teams(divisionid):
 @competition.route('/game/<int:gameid>')
 @check_game
 def detail_game(gameid):
+    session['gameid'] = gameid
     return render_template('competition/detail_game.html', result=get_game_result(gameid), data=get_game_data(gameid))
 
 
