@@ -46,6 +46,8 @@ def main(option):
             player_assign_team()
         elif option == 'game_edit':
             game_edit()
+        elif option == 'sql_query':
+            sql_query()
     return render_template('settings/forms.html', option=option, header=get_header(), form=get_form(option))
 
 

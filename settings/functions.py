@@ -59,6 +59,8 @@ def get_form(option):
                           ('Spieler3 treffer', 'select_list', 'sp3tref', var),
                           ('Spieler4', 'select_list', 'sp4', get_players(result[5], divisionid)),
                           ('Spieler4 treffer', 'select_list', 'sp4tref', var)]
+    elif option == 'sql_query':
+        form_input = [('Query', 'text', 'query', '')]
     return [{'label': row[0], 'type': row[1], 'name': row[2], 'value': row[3]} for row in form_input]
 
 
@@ -79,7 +81,8 @@ def get_header():
         'player_edit': 'Spieler bearbeiten',
         'player_reset_password': 'Spieler: Passwort zuruecksetzen',
         'player_set_password': 'Passwort setzen',
-        'team_edit': 'Team bearbeiten'
+        'team_edit': 'Team bearbeiten',
+        'sql_query': 'SQL-Query'
     }
 
 
@@ -252,3 +255,13 @@ def game_edit():
 def get_players(teamname, divisionid):
     return [row[0] for row in query_db('SELECT (SELECT Nickname FROM Spieler WHERE Spieler.SpielerID = Teilgenommen.SpielerID) \
               FROM Teilgenommen WHERE TeamID = (SELECT TeamID FROM Team WHERE Name = ?) AND UnterwbID = ?', [teamname, divisionid])]
+
+
+def sql_query():
+    query = request.form['query']
+    error = update_db(query)
+    if error:
+        flash(error)
+    else:
+        flash('Erfolg')
+    return
