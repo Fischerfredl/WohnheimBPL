@@ -31,5 +31,6 @@ SETTINGS = {
     'competition_reopen': [MODLOGIN],
     'competition_delete': [MODLOGIN],
     'player_assign_team': [MODLOGIN],
-    'game_edit': [MODLOGIN, 'signed_user']
+    'game_edit': [MODLOGIN, 'signed_user'],
+    'sql_query': [ADMINLOGIN]
     }
