@@ -1,18 +1,30 @@
 {% extends 'base.html' %}
 {% block content %}
-    <a href="{{ url_for('settings.home') }}"><- Zurück</a>
+    {% if session['username'] in ['admin', 'mod'] %}
+    <a href="{{ url_for('settings.home') }}"><button id="back">Zurück</button></a>
+        {% else %}
+        <a href="{{ url_for('home') }}"><- Zurück</a>
+    {% endif %}
+
+
     <h1>{{ header[option] }}</h1>
     <form action="{{ url_for('settings.main', option=option) }}" method="post">
+    {% if form %}
     {% for item in form %}
         {{ item.label }}:
         {% if item.type == 'text' %}
             <input type=text name={{ item.name }}>
         {% elif item.type == 'select_list' %}
+            {% if item.value %}
             <select name={{ item.name }}>
             {% for row in item.value %}
                 <option value="{{ row }}">{{ row }}</option>
             {% endfor %}
+
             </select>
+            {% else %}
+                Für diese Option steht kein Objekt zur Wahl.
+            {% endif %}
         {% elif item.type == 'select_dict' %}
             <select name={{ item.name }}>
             {% for key in item.value %}
@@ -22,6 +34,12 @@
         {% endif %}
         <br>
     {% endfor %}
-    <input type="submit" value="submit">
+        {% if hide_submit == 0 %}
+            <br>
+            <input type="submit" value="submit">
+        {% endif %}
+    {% else %}
+        Nicht implementiert
+    {% endif %}
     </form>
 {% endblock %}

@@ -1,25 +1,136 @@
+body {
+    min-width: 846px;
+    font-family: 'Consolas', 'Monaco', 'Bitstream Vera Sans Mono', monospace
+}
+
+h1 {
+    font-size: 22px;
+    -webkit-margin-before: 0.2em;
+}
+
 #header {
-    background-color:#FF9C4A;
-    color:white;
+    background-image: url(header-background.png);
+    color:black;
     padding:5px;
+    height: 90px
 }
+
+#header-logo {
+    float: left;
+    margin: 5px 5px 5px 27px;
+}
+
+#header-title {
+    float: left;
+    width: 500px;
+    margin: 30px 0px 0px 125px;
+}
+
+#header-right {
+    float: left;
+    margin-top: 30px
+}
+
+#h-button {
+    width: 100px;
+}
+
 #nav {
-    line-height:30px;
     background-color:#eeeeee;
-    height:300px;
-    width:100px;
+    height:auto;
+    min-width: 150px;
+    width: 150px;
     float:left;
-    padding:5px;
+    padding: 10px;
+    border: solid #ed1b24;
+    border-radius: 14px;
+    box-shadow: 0 0 8px 8px #c0c0c0;
+    margin-right: 20px;
+    margin-left: 20px;
+    margin-bottom: 32px;
 }
+
+#nav-title {
+
+}
+
+#nav ul {
+    margin: 0px;
+    -webkit-padding-start: 15px;
+    list-style-type: none;
+
+}
+
 #section {
-    width:500px;
-    float:left;
-    padding:10px;
+    display: inline-flex;
+    margin-top: 20px;
 }
+
+#content {
+    min-width: 600px;
+    width: 600px;
+    padding:10px;
+    border: solid #ed1b24;
+    border-radius: 14px;
+    box-shadow: 0 0 8px 8px #c0c0c0;
+    margin: 0px 10px 32px 10px;
+}
+
+#messages {
+    background-color:#eeeeee;
+    height:auto;
+    min-width: 150px;
+    padding: 10px;
+    border: solid #ed1b24;
+    border-radius: 14px;
+    box-shadow: 0 0 8px 8px #c0c0c0;
+    margin-right: 20px;
+    margin-left: 20px;
+    margin-bottom: 32px;
+}
+
+#messages ul{
+    -webkit-padding-start: 14px;
+}
+
+#back {
+    float: right;
+}
+
 #footer {
-    background-color:#FF9C4A;
+    background-color:#ed1b24;
     color: white;
     clear: both;
-    text-align: left;
+    text-align: center;
     padding: 5px;
+
+}
+
+#legend {
+    float: right
+}
+#teamtext {
+    float: left
+}
+#details-button {
+    text-align: center;
+}
+
+#standings {
+    display: flex;
+}
+
+#leaguegames {
+    margin-bottom: 10px;
+}
+
+#teamtable {
+    float: left;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+#playertable {
+    float: left;
+    margin-bottom: 10px;
 }

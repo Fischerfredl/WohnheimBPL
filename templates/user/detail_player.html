@@ -6,14 +6,12 @@
         <li>Vorname: {{ data[2] }}</li>
         <li>Nachname: {{ data[3] }}</li>
     </ul>
-    <br>
-    <br>
     Teilgenommene Wettbewerbe:
     <table border="1">
         <tr>
             <th>Wettbewerb</th>
             <th>Platz</th>
-            <th>Team</th>
+            <th width="220">Team</th>
         </tr>
         {% for row in history %}
             <tr>

@@ -100,6 +100,9 @@ def new_nickname(nickold, password, nicknew):
         flash('Neuer Nick nicht gesetzt')
         flash('Nick existiert bereits')
         return False
+    if nicknew == 'mod' or nicknew == 'admin':
+        flash('Nickname %s ungueltig')
+        return False
     update_db('UPDATE Spieler SET Nickname = ? WHERE Nickname = ?', [nicknew, nickold])
     if nicknew not in get_users():
         flash('Neuer Nick nicht gesetzt')

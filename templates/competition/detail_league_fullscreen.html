@@ -2,24 +2,24 @@
 {%- from "macros.html" import ligaspiele, teamtabelle, spielertabelle, teamtabelle_small, ligaspiele_small, spielertabelle_small with context  %}
 
 {%  block spiele %}
+
     <h1>
-        <a href="{{ url_for('competition.detail_league', leagueid=object[0], matchday=matchday - 1) }}">
+        <a href="{{ url_for('competition.detail_league_fullscreen', leagueid=object[0], matchday=matchday - 1) }}">
             <button type="submit" value="Spieltag zurück" {% if matchday == 1 %}disabled{% endif %}><</button></a>
         Spieltag: {{ matchday }}
-        <a href="{{ url_for('competition.detail_league', leagueid=object[0], matchday=matchday + 1) }}">
+        <a href="{{ url_for('competition.detail_league_fullscreen', leagueid=object[0], matchday=matchday + 1) }}">
             <button type="submit" value="Spieltag zurück" {% if matchday == matchday_max %}disabled{% endif %}>></button></a>
     </h1>
 
-    <div id="leaguegames">{{ ligaspiele_small(table_games) }}</div>
     <br>
-    <hr>
     <div id="standings">
-    <div id="teamtable">{{ teamtabelle_small(table_teamtable) }}</div>
-    <div id="playertable">{{ spielertabelle_small(table_playertable_small) }}</div>
+    <div id="teamtable">{{ teamtabelle(table_teamtable) }}</div>
+    <div id="playertable">{{ spielertabelle(table_playertable) }}</div>
+    <div id="leaguegames">{{ ligaspiele(table_games) }}</div>
     </div>
     <hr>
     <div id="details-button">
-    <a href="{{ url_for('competition.detail_league_fullscreen', leagueid=object[0], matchday=matchday) }}"><button>Details</button></a>
+    <a href="{{ url_for('competition.detail_league', leagueid=object[0], matchday=matchday) }}"><button>Smaller View</button></a>
     </div>
 
 {% endblock %}

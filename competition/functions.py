@@ -1,5 +1,5 @@
-from flask import abort
-from functions_general import query_db
+from flask import abort, session, flash, g
+from functions_general import query_db, update_db
 
 
 # check_competition(competitionid)
@@ -49,6 +49,22 @@ def check_gamemode(gameid, modus):
 
 
 def get_competition_overview():
+    nav = dict()
+    for row in query_db("SELECT WbID, UnterwbID FROM Unterwettbewerb"):
+        if row[0] not in nav:
+            nav[row[0]] = []
+        nav[row[0]].append(row[1])
+    nav_compinfo = dict()
+    for row in query_db("SELECT WbID, Name, Phase FROM Wettbewerb"):
+        nav_compinfo[row[0]] = [row[1], row[2]]
+    nav_divinfo = dict()
+    for row in query_db("SELECT UnterwbID, Name, Modus FROM Unterwettbewerb"):
+        nav_divinfo[row[0]] = [row[1], row[2]]
+
+    session['nav'] = nav
+    session['nav_compinfo'] = nav_compinfo
+    session['nav_divinfo'] = nav_divinfo
+
     return query_db('SELECT WbID, Name FROM Wettbewerb')
 
 
@@ -253,3 +269,78 @@ def get_game_data(gameid):
                     FROM Spiel s Inner Join Unterwettbewerb uwb On s.UnterwbID = uwb.UnterwbID \
                     WHERE SpielID = ?',
                     [gameid])[0]
+
+
+def get_game_show_edit(gameid):
+    players = []
+    div_id = get_game_data(gameid)[1]
+
+    team_ids = query_db("SELECT Team1ID, Team2ID FROM Spiel WHERE SpielID = ?", [gameid])[0]
+
+    for row in query_db("SELECT (SELECT Nickname FROM Spieler WHERE Spieler.SpielerID = Teilgenommen.SpielerID) FROM Teilgenommen WHERE UnterwbID = ? AND (TeamID = ? OR TeamID = ?)",
+                        [div_id, team_ids[0], team_ids[1]]):
+        players.append(row[0])
+
+    if session.get('username') != 'mod' and session.get('username') not in players:
+        return False
+
+    phase = query_db("SELECT (SELECT Phase FROM Wettbewerb WHERE Wettbewerb.WbID = Unterwettbewerb.WbID) FROM Unterwettbewerb WHERE UnterwbID = ?", [div_id], one=True)
+    if phase != 'laeuft':
+        return False
+
+    if query_db("SELECT SiegerID FROM Spiel WHERE SpielID = ?", [gameid], one=True):
+        return False
+
+    return True
+
+# ----------------------------------------------------------------------------------------------------------------------
+#
+# MOD Functions
+#
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+def get_registration_division(competitionid):
+    return query_db('SELECT UnterwbID FROM Unterwettbewerb WHERE WbID = ?', [competitionid], one=True)
+
+
+def get_player_registration(nickname, competitionid):
+    divisionid = get_registration_division(competitionid)
+    return query_db('SELECT \
+                    (SELECT Name FROM Team WHERE Team.TeamID = tg.TeamID) \
+                    FROM Teilgenommen tg \
+                    WHERE tg.SpielerID = (SELECT SpielerID FROM Spieler WHERE Nickname = ?) AND UnterwbID = ?',
+                    [nickname, divisionid], one=True)
+
+
+def register_player(nickname, divisionid, teamname):
+    if get_player_registration(nickname, divisionid):
+        flash('Spieler nicht angemeldet')
+        flash('Spieler bereits fuer Unterwettbewerb registriert')
+        return False
+    playerid = query_db('SELECT SpielerID FROM Spieler WHERE Nickname = ?', [nickname], one=True)
+    teamid = query_db('SELECT TeamID FROM Team WHERE name = ?', [teamname], one=True)
+    update_db('INSERT INTO Teilgenommen(UnterwbID, SpielerID, TeamID) VALUES (?, ?, ?)', [divisionid, playerid, teamid])
+    competitionid = query_db('SELECT WbID FROM Unterwettbewerb WHERE UnterwbID = ?', [divisionid], one=True)
+    if not get_player_registration(nickname, competitionid):
+        flash('Spieler nicht angemeldet')
+        flash('Fehler in Datenbankanfrage')
+        return False
+    flash('Spieler %s angemeldet' % nickname)
+    flash('Team: %s' % teamname)
+    return True
+
+
+def unregister_player(nickname, competitionid):
+    divisionid = get_registration_division(competitionid)
+    if not get_player_registration(nickname, competitionid):
+        flash('Spieler nicht abgemeldet')
+        flash('Spieler war nicht eingetragen')
+        return False
+    playerid = query_db('SELECT SpielerID FROM Spieler WHERE Nickname = ?', [nickname], one=True)
+    update_db('DELETE FROM Teilgenommen WHERE UnterwbID = ? AND SpielerID = ?', [divisionid, playerid])
+    if get_player_registration(nickname, competitionid):
+        flash('Spieler nicht abgemeldet')
+        flash('Fehler in Datenbankabfrage')
+        return False
+    return True

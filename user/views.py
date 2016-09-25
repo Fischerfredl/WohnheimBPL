@@ -10,13 +10,15 @@ user = Blueprint('user', __name__, template_folder='templates')
 @check_player
 def detail_player(nickname):
     return render_template('user/detail_player.html',
-                           data=get_player_data(nickname), history=get_player_history(nickname))
+                           data=get_player_data(nickname), history=get_player_history(nickname),
+                           page_title='Spieler: %s' % nickname)
 
 
 @user.route('/team/<teamname>')
 @check_team
 def detail_team(teamname):
-    return render_template('user/detail_team.html', data=get_team_data(teamname), history=get_team_history(teamname))
+    return render_template('user/detail_team.html', data=get_team_data(teamname), history=get_team_history(teamname),
+                           page_title='Team: %s' % teamname)
 
 
 @user.route('/user/<nickname>/settings/<option>', methods=['GET', 'POST'])
@@ -35,4 +37,5 @@ def settings(nickname, option):
             abort(404, 'Einstellung gibbet nich')
         return redirect(url_for('user.detail_player', nickname=nickname))
     # else:  # request.method == 'GET'
-    return render_template('user/user_settings.html', option=option, nickname=nickname)
+    return render_template('user/user_settings.html', option=option, nickname=nickname,
+                           page_title='Einstellungen')

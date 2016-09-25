@@ -7,22 +7,17 @@ signed_teams dict('teamname': (spieler))
 {% extends "base.html" %}
 {%  block content %}
     {% if object[2] == 'turnier' or object[2] == 'liga' or object[2] == 'ko' %}
-        <a href="{{ url_for('competition.detail_division', divisionid=object[0]) }}"><- Zurück</a>
-        <h1>Unterwettbewerb: {{ object[1] }} Teamseite</h1>
-
+        <a href="{{ url_for('competition.detail_division', divisionid=object[0]) }}"><button id="back">Zurück</button></a>
     {% elif object[2] == 'anmeldung' %}
-        <a href="{{ url_for('competition.detail_competition', competitionid=object[0]) }}"><- Zurück</a>
-        <h1>Anmeldung: {{ object[1] }} Teamseite</h1>
+        <a href="{{ url_for('competition.detail_competition', competitionid=object[0]) }}"><button id="back">Zurück</button></a>
     {% else %}
-        <a href="{{ url_for('competition.detail_competition', competitionid=object[0]) }}"><- Zurück</a>
-        <h1>Wettbewerb: {{ object[1] }} Teamseite</h1>
+        <a href="{{ url_for('competition.detail_competition', competitionid=object[0]) }}"><button id="back">Zurück</button></a>
         {% endif %}
-    Angemeldete Teams
-    <br><br>
+    <h1>Angemeldete Teams</h1>
     <table border = 1>
     {% for key in signed_teams %}
         <tr>
-            <td><a href="{{ url_for('user.detail_team', teamname=key) }}">{{ key }}</a></td>
+            <td width="220"><a href="{{ url_for('user.detail_team', teamname=key) }}">{{ key }}</a></td>
             <td>
                 {% for item in signed_teams[key] %}
                     <a href="{{ url_for('user.detail_player', nickname=item) }}">{{ item }}</a> |
@@ -31,4 +26,6 @@ signed_teams dict('teamname': (spieler))
         </tr>
     {% endfor %}
     </table>
+    <br>
+
 {% endblock %}

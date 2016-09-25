@@ -5,14 +5,10 @@ competition_overview [(WbID, WbName)]
 
 {% extends "base.html" %}
 {%  block content %}
-    <a href="{{ url_for('home') }}"><- Zurück</a>
-    <h1>Wettbewerbe</h1>
-    Wähle einen Wettbewerb
-    <ul>
-    {% for row in competition_overview %}
-        <li>
-            <a href='{{  url_for('competition.detail_competition', competitionid=row[0]) }}'>{{ row[1] }}</a>
-        </li>
-    {% endfor %}
-    </ul>
+    <h1>BLLV WHA Bierpongliga</h1>
+    <div id="welcome">
+    Willkommen auf der Webseite der Bierpongliga des BLLV Wohnheim Augsburg Haunstetten. Für mehr Infos siehe hier. (Kommt)
+    </div>
+    <br>
+    <-- Wähle einen Wettbewerb (Navigation)
 {% endblock %}

@@ -11,7 +11,8 @@ table_views = Blueprint('table_views', __name__, template_folder='templates')
 @table_views.route('/view/<view>')
 @login_required(user='admin')
 def views(view):
-    return render_template('table_views/main.html', view=view, table=get_admin_table(view))
+    return render_template('table_views/main.html', view=view, table=get_admin_table(view),
+                           page_title='Tabelle: %s' % view)
 
 
 def get_admin_table(view):

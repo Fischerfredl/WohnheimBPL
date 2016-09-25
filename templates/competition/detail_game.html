@@ -1,19 +1,23 @@
 {% extends "base.html" %}
-{%- from 'macros.html' import kospiele, ligaspiele with context %}
+{%- from 'macros.html' import kospiele, ligaspiele_info with context %}
 {%  block content %}
-    <h1>Spiel: {{ gameid }}</h1>
-    Unterwettbewerb: <a href="{{ url_for('competition.detail_division', divisionid=data[1]) }}">{{ data[2] }}</a><br>
+    Unterwettbewerb: <a href="{{ url_for('competition.detail_division', divisionid=data[1]) }}">{{ data[2] }}</a>
     {% if data[3] == 'liga' %}
+        <a href="{{ url_for('competition.detail_league', leagueid=data[1], matchday=result[7]) }}"><button id="back">Zurück</button></a>
+        <br>
         Spieltag: <a href="{{ url_for('competition.detail_league', leagueid=data[1], matchday=result[7]) }}">{{ result[7] }}</a><br>
     {%  endif %}
-    Datum: {{ data[3] }}<br>
-    Gewertet: {{ data[4] }}<br>
+    Datum: {{ data[4] }}<br>
+    Gewertet: {{ data[5] }}<br>
     <br>
     {% if data[3] == 'liga' %}
-        {{ ligaspiele([result]) }}
+        {{ ligaspiele_info([result]) }}
         <br>
-        <br>
-        Spiel bearbeiten: <a href="{{ url_for('settings.main', option='game_edit') }}">edit</a>
+        {% if show_edit %}
+            <hr>
+            <h1>Persönlicher bereich</h1>
+            Spiel bearbeiten: <a href="{{ url_for('settings.main', option='game_edit') }}">edit</a>
+        {% endif %}
     {% endif %}
     {% if data[3] == 'turnier' %}
     {% endif %}

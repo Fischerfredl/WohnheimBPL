@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-    <a href="{{ url_for('settings.home') }}"><- Zurück</a>
+    <a href="{{ url_for('settings.home') }}"><button id="back">Zurück</button></a>
     <h1>Tabelle: {{ view }}</h1>
     <table border="1">
         {% for row in table %}

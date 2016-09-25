@@ -3,19 +3,19 @@ DATABASE = 'D:\\Dateien\\Dokumente\\GitHub\\WohnheimBPL\\database.db'
 # Laptop:
 # DATABASE = 'C:\\Users\\alfre\\Documents\\GitHub\\WohnheimBPL\\database.db'
 DEBUG = True
-SECRET_KEY = '=R(Db4%ijH3GZd)1cmirMy7sP(%V95=h'
-SALT = 'salt!!!#22*'
+SECRET_KEY = 'initialKey'
+SALT = 'initialSalt'
 IPADDR = '0.0.0.0'
 PORT = 5000
 
 
 # acc for administrator
 ADMINLOGIN = 'admin'
-ADMINPASSWORD = 'super-secure-password'
+ADMINPASSWORD = 'initialPassword'
 
 # acc for tournament mods
 MODLOGIN = 'mod'
-MODPASSWORD = 'super-secure-password'
+MODPASSWORD = 'initialPassword'
 
 # Settings {option: permissions}
 SETTINGS = {
@@ -32,8 +32,16 @@ SETTINGS = {
     'competition_advance': [MODLOGIN],
     'competition_close': [MODLOGIN],
     'competition_reopen': [MODLOGIN],
+    'competition_reset': [MODLOGIN],
     'competition_delete': [MODLOGIN],
+    'competition_player_assign': [MODLOGIN],
+    'competition_player_unassign': [MODLOGIN],
     'player_assign_team': [MODLOGIN],
     'game_edit': [MODLOGIN, 'signed_user'],
-    'sql_query': [ADMINLOGIN]
+    'sql_query': [ADMINLOGIN],
+    'set_adminpassword': [ADMINLOGIN],
+    'set_modpassword': [ADMINLOGIN],
+    'set_secret_key': [ADMINLOGIN],
+    'set_salt': [ADMINLOGIN],
+    'division_rename': [MODLOGIN]
     }

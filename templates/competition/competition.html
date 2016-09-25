@@ -6,8 +6,8 @@ table_divisions [(UnterwbID, Unterwbname, Modus)]
 
 {% extends "base.html" %}
 {%  block content %}
-    <a href="{{ url_for('competition.overview') }}"><- Zurück</a>
-    <h1>Wettbewerb: {{ compname }}</h1>
+    <a href="{{ url_for('competition.overview') }}"><button id="back">Zurück</button></a>
+    <h1>Übersicht zum Wettbewerb {{ object[1] }}</h1>
     Sieh dir die angemeldeten Teams und Spieler an:
     <a href="{{ url_for('competition.competition_signed_teams', competitionid=object[0]) }}">Link</a>
     <br><br>
@@ -16,15 +16,14 @@ table_divisions [(UnterwbID, Unterwbname, Modus)]
             Unterwettbewerbe
             <ul>
                 {% for row in table_divisions %}
-                    <li><a href="{{ url_for('competition.detail_division', divisionid=row[0]) }}">{{ row[2] }}: {{ row[1] }}</a></li>
+                    <li><a href="{{ url_for('competition.detail_division', divisionid=row[0]) }}">{{ row[1] }}</a></li>
                 {% endfor %}
             </ul>
         {% endif %}
     {% else %}
-        {% if session['logged_in'] %}
+        {% if session['logged_in'] and session['username'] not in ['mod', 'admin'] %}
 
             <a href="{{  url_for('competition.register', competitionid=object[0], nickname=session['username'])}}">Hier gehts zur Anmeldung</a>
-    <br><br>
             {% endif %}
     {% endif %}
 {% endblock %}

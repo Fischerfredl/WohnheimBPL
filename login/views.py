@@ -18,7 +18,7 @@ def login():
             session['username'] = user
             flash('You were logged in: %s' % user)
             return redirect(url_for('home'))
-    return render_template('login.html', error=error)
+    return render_template('login.html', error=error, page_title='Login')
 
 
 @app_login.route('/logout')

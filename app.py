@@ -1,14 +1,13 @@
 import os
 import sqlite3
 import platform
-from flask import Flask, g, render_template
+from flask import Flask, g, render_template, redirect, url_for, session
 from contextlib import closing
 from config import config_linux, config_windows
+from functions_general import query_db
 from competition.views import competition
 from login.views import app_login
 from user.views import user
-from admin.views import admin
-from mod.views import mod
 from settings.views import settings
 from table_views.views import table_views
 
@@ -20,8 +19,6 @@ if platform.system() == 'Linux':
 elif platform.system() == 'Windows':
     app.config.from_object(config_windows)
 
-app.register_blueprint(admin, url_prefix='/admin')
-app.register_blueprint(mod, url_prefix='/mod')
 app.register_blueprint(competition, url_prefix='/competition')
 app.register_blueprint(app_login)
 app.register_blueprint(user)
@@ -41,8 +38,11 @@ app.register_blueprint(table_views)
 @app.route('/')
 @app.route('/home')
 def home():
-    return render_template('home.html')
+    return redirect(url_for('competition.overview'))
 
+@app.route('/about')
+def about():
+    return render_template('about.html', page_title='About')
 
 # ----------------------------------------------------------------------------------------------------------------------
 # ----------------------------------------------------------------------------------------------------------------------
@@ -67,6 +67,21 @@ def init_db():
 @app.before_request
 def before_request():
     g.db = connect_db()
+    nav = dict()
+    for row in query_db("SELECT WbID, UnterwbID FROM Unterwettbewerb"):
+        if row[0] not in nav:
+            nav[row[0]] = []
+        nav[row[0]].append(row[1])
+    nav_compinfo = dict()
+    for row in query_db("SELECT WbID, Name, Phase FROM Wettbewerb"):
+        nav_compinfo[row[0]] = [row[1], row[2]]
+    nav_divinfo = dict()
+    for row in query_db("SELECT UnterwbID, Name, Modus FROM Unterwettbewerb"):
+        nav_divinfo[row[0]] = [row[1], row[2]]
+
+    session['nav'] = nav
+    session['nav_compinfo'] = nav_compinfo
+    session['nav_divinfo'] = nav_divinfo
 
 
 @app.teardown_request
