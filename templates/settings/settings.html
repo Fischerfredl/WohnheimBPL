@@ -18,6 +18,11 @@
     <li><a href="{{ url_for('table_views.views', view='division') }}">Unterwettbewerb</a></li>
     <li><a href="{{ url_for('table_views.views', view='participated') }}">Teilgenommen</a></li>
     </ul>
+        Datenbank backup
+        <ul>
+        <li><a href="{{ url_for('settings.getdb') }}">Datenbank herunterladen</a></li>
+        <li><a href="{{ url_for('settings.postdb') }}">Datenbank upload</a></li>
+        </ul>
     {% endif %}
 
 {% endblock %}

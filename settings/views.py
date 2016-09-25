@@ -1,6 +1,7 @@
-from flask import Blueprint, render_template, request, abort
+from flask import Blueprint, render_template, request, abort, send_from_directory
 from decorators import settings_permission_required, login_required
 from functions import *
+import os
 
 settings = Blueprint('settings', __name__, template_folder='templates')
 
@@ -83,3 +84,31 @@ def main(option):
                            hide_submit=hide_submit, page_title='Einstellungen: %s' % get_header()[option])
 
 
+@settings.route('/getdb')
+@login_required(user='admin')
+def getdb():
+    return send_from_directory(current_app.config['DATABASE']+'/..', 'database.db', as_attachment=True)
+
+
+@settings.route('/postdb', methods=['GET', 'POST'])
+@login_required(user='admin')
+def postdb():
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        # if user does not select file, browser also
+        # submit a empty part without filename
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and '.' in file.filename and file.filename.rsplit('.', 1)[1] in ['db']:
+            filename = 'database.db'
+            file.save(os.path.join(current_app.config['DATABASE']+'/..', filename))
+            flash('Database upload complete')
+            return redirect(url_for('settings.home'))
+        else:
+            flash('Keine .db Datei ausgewaehlt')
+    return render_template('settings/db_upload.html', page_title='Database upload')
