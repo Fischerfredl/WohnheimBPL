@@ -1,5 +1,50 @@
 {% extends "base.html" %}
 {% block content %}
-    Für mehr Infos trete der Facebook-Gruppe <a href="https://www.facebook.com/groups/872977896075167/" target="_blank">BLLV WHA Bierpongmeisterschaft</a> bei.
+
+        <h2>About</h2>
+    <p id="about">Dies ist die offizielle Seite zur BLLV WHA Bierpongliga.
+        Hier kannst du dir die Ergebnisse der vergangenen Wettbewerbe ansehen, sowie die immer aktuellen Ergebnisse und Tabellen zu laufenden Wettbewerben ansehen.
+        Außerdem kannst du dich über das Portal an Wettbewerben anmelden.</p>
+
+    <h2>User-Account</h2>
+    <p id="about">Alle Teilnehmer der Bierpongliga besitzen einen User-Account. Um dich anzumelden frage den Peter oder mich (Alfred Melch; Kontakt siehe unten) nach deinem Passwort.
+    Falls du dich neu zu einer Liga anmelden möchtest, erstellen wir dir gerne einen User-Account.</p>
+
+    <h2>Vorteile</h2>
+    <p id="about">Mit deinem User-Account kannst du:
+    <ul>
+        <li>Persönliche Daten bearbeiten (Vor- bzw. Nachname)</li>
+        <li>Deinen Nicknamen ändern</li>
+        <li>Dich selbstständig zu Wettbewerben anmelden</li>
+        <li>Spielergebnisse eintragen</li>
+    </ul></p>
+
+    <h2>Wettbewerbe</h2>
+    <p id="about">Für jede Saison wird ein Wettbewerb angelegt (Siehe Navigation). In diesem sind die verschiedenen Unterwettbewerbe organisiert (Im Falle von mehreren Ligen bzw. Play-Offs).
+    Ist ein Wettbewerb zur Anmeldung freigegeben, wird er auf der Home-Page aufgeführt.</p>
+
+    <h2>Ligamodus</h2>
+    <p id="about">Ein Sieg bringt der Mannschaft drei Punkte ein. Eine Niederlage bringt keine Punkte. Sollten beide Teams lediglich einen
+    Becher übrig haben geht das Spiel in die Overtime (siehe Spielablauf\Unentschieden). Beide Teams bekommen einen
+    Punkt. Das Spiel wird bis zum Ende weitergespielt, wobei sich der Sieger des Spiels einen Zusatzpunkt erspielen kann.
+    (Sieger 2 Punkte, Verlierer 1 Punkt)
+    <ul>
+        <li>Sieg: 3 Punkte</li>
+        <li>Niederlage: 0 Punkte</li>
+        <li>Overtime-Spiel-Sieg: 2 Punkte</li>
+        <li>Overtime-Spiel-Niederlage: 1 Punkt</li>
+        </ul>
+    Bei Punktegleichstand entscheidet die Becherdifferenz. Bei gleicher Becherdifferenz die Anzahl getroffener Becher. Sollte
+    auch die Anzahl übereinstimmen wird der direkte Vergleich herangezogen</p>
+
+    <h2>Regelwerk</h2>
+    <p id="about">Das aktuelle Regelwerk kann <a href="{{ url_for('settings.regelwerk') }}">hier</a> heruntergeladen werden</p>
+
+    <h2>Facebook</h2>
+    <p id="about">
+    Für aktuelle Informationen trete der Facebook-Gruppe <a href="https://www.facebook.com/groups/872977896075167/" target="_blank">BLLV WHA Bierpongmeisterschaft</a> bei.</p>
+
+    <h2>Webhost</h2>
+    <p id="about">An dieser stelle ein herzliches Dankeschön an Basti Abwandner, der mir das Hosting dieser Website ermöglicht hat.</p>
 
 {% endblock %}

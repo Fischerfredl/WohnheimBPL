@@ -8,6 +8,12 @@ h1 {
     -webkit-margin-before: 0.2em;
 }
 
+h2 {
+    font-size: 18px;
+    -webkit-margin-before: 0.4em;
+    -webkit-margin-after: 0em;
+}
+
 #header {
     background-image: url(header-background.png);
     color:black;
@@ -59,6 +65,10 @@ h1 {
     -webkit-padding-start: 15px;
     list-style-type: none;
 
+}
+
+#content ul {
+        -webkit-margin-before: 0.2em;
 }
 
 #section {
@@ -133,4 +143,8 @@ h1 {
 #playertable {
     float: left;
     margin-bottom: 10px;
+}
+
+#about {
+    -webkit-margin-before: 0em;
 }

@@ -112,3 +112,32 @@ def postdb():
         else:
             flash('Keine .db Datei ausgewaehlt')
     return render_template('settings/db_upload.html', page_title='Database upload')
+
+
+@settings.route('/regelwerk')
+def regelwerk():
+    return send_from_directory('static', 'regelwerk.pdf', as_attachment=True)
+
+
+@settings.route('/postregelwerk', methods=['GET', 'POST'])
+@login_required(user='admin')
+def postregelwerk():
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        # if user does not select file, browser also
+        # submit a empty part without filename
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and '.' in file.filename and file.filename.rsplit('.', 1)[1] in ['pdf']:
+            filename = 'regelwerk.pdf'
+            file.save(os.path.join(current_app.config['DATABASE']+'/../static', filename))
+            flash('Regelwerk upload complete')
+            return redirect(url_for('settings.home'))
+        else:
+            flash('Keine .pdf Datei ausgewaehlt')
+    return render_template('settings/regelwerk_upload.html', page_title='Regelwerk upload')

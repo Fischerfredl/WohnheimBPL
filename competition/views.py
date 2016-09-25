@@ -29,7 +29,8 @@ competition = Blueprint('competition', __name__, template_folder='competition/te
 
 @competition.route('/overview')
 def overview():
-    return render_template('competition/competition_overview.html', competition_overview=get_competition_overview(),
+    anmeldung = query_db("SELECT WbID, Name From Wettbewerb WHERE Phase = 'anmeldung'")
+    return render_template('competition/competition_overview.html', competition_overview=get_competition_overview(), anmeldung=anmeldung,
                            page_title='Home')
 
 
