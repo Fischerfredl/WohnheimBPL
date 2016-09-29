@@ -1,4 +1,4 @@
-import os
+from os import environ
 import sqlite3
 import platform
 from flask import Flask, g, render_template, redirect, url_for, session
@@ -100,5 +100,11 @@ def teardown_request(exception):
 # ----------------------------------------------------------------------------------------------------------------------
 # ----------------------------------------------------------------------------------------------------------------------
 
+
 if __name__ == '__main__':
-    app.run(host=app.config['IPADDR'], port=app.config['PORT'])
+    HOST = environ.get('SERVER_HOST', 'localhost')
+    try:
+        PORT = int(environ.get('SERVER_PORT', '5555'))
+    except ValueError:
+        PORT = 5555
+    app.run(HOST, PORT)
