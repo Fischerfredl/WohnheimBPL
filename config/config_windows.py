@@ -1,5 +1,5 @@
 # PC:
-DATABASE = 'database.db'
+DATABASE = 'D:\\Dateien\\Dokumente\\GitHub\\WohnheimBPL\\database.db'
 # Laptop:
 # DATABASE = 'C:\\Users\\alfre\\Documents\\GitHub\\WohnheimBPL\\database.db'
 DEBUG = True
