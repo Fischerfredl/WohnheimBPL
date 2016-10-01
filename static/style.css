@@ -14,6 +14,30 @@ h2 {
     -webkit-margin-after: 0em;
 }
 
+/* unvisited link */
+a:link {
+    color: black;
+}
+
+/* visited link */
+a:visited {
+    color: black;
+}
+
+/* mouse over link */
+a:hover {
+    color: #ed1b24;
+}
+
+/* selected link */
+a:active {
+    color: blue;
+}
+
+table a:link {
+    text-decoration: none;
+}
+
 #header {
     background-image: url(header-background.png);
     color:black;
