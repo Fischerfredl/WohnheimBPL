@@ -10,10 +10,10 @@
         {% for row in table_spiele %}
             <tr>
                 <td><a href="{{ url_for('competition.detail_game', gameid=row[0]) }}">{{ row[0] }}</a></td>
-                <td><a href="{{ url_for('user.detail_team', teamname=row[1]) }}">{{ row[1] }}</a></td>
+                <td class="name"><a href="{{ url_for('user.detail_team', teamname=row[1]) }}">{{ row[1] }}</a></td>
                 <td>{{ row[2] }}</td>
                 <td>{{ row[3] }}</td>
-                <td><a href="{{ url_for('user.detail_team', teamname=row[4]) }}">{{ row[4] }}</a></td>
+                <td class="name"><a href="{{ url_for('user.detail_team', teamname=row[4]) }}">{{ row[4] }}</a></td>
             </tr>
         {% endfor %}
     </table>
@@ -25,7 +25,7 @@
             <tr>
                 <td width="26"><a href="{{ url_for('competition.detail_game', gameid=row[0]) }}">{{ row[0] }}</a></td>
                 <td width="30">{{ row[1] }}</td>
-                <td width="220"><a href="{{ url_for('user.detail_team', teamname=row[2]) }}">{{ row[2] }}</a></td>
+                <td width="220" class="name"><a href="{{ url_for('user.detail_team', teamname=row[2]) }}">{{ row[2] }}</a></td>
                 {% if row[3] %}
                 <td width="14">{{ row[3] }}</td>
                 {% else %}
@@ -36,9 +36,9 @@
                 {% else %}
                 <td width="14">x</td>
                 {% endif %}
-                <td width="220"><a href="{{ url_for('user.detail_team', teamname=row[5]) }}">{{ row[5] }}</a></td>
+                <td width="220" class="name"><a href="{{ url_for('user.detail_team', teamname=row[5]) }}">{{ row[5] }}</a></td>
                 <td width="30">{{ row[6] }}</td>
-                <td width="185">
+                <td width="185" class="name">
                         {% for item in row[8] %}
                         <a href="{{ url_for('user.detail_player', nickname=item[0]) }}">{{ item[0] }}</a>: {{ item[1] }}<br>
                         {% endfor %}
@@ -52,36 +52,36 @@
     <caption>Teamtabelle</caption>
         <tr>
             <th width="44">Platz</th>
-            <th width="220">Team</th>
+            <th width="220" class="name">Team</th>
             <th width="53">Spiele</th>
-            <th></th>
+            <th class="spacer"></th>
             <th width="71">Treffer</th>
             <th width="71">Kassiert</th>
             <th width="71">Diff</th>
-            <th></th>
+            <th class="spacer"></th>
             <th width="30">G</th>
             <th width="30">V</th>
             <th width="30">OTS</th>
             <th width="30">OTN</th>
-            <th></th>
+            <th class="spacer"></th>
             <th>Punkte</th>
         </tr>
         {% set count = 1 %}
         {% for row in table_teamtabelle %}
             <tr>
                 <td>{{ count }}</td>
-                <td><a href="{{ url_for('user.detail_team', teamname=row[0]) }}">{{ row[0] }}</a></td>
+                <td class="name"><a href="{{ url_for('user.detail_team', teamname=row[0]) }}">{{ row[0] }}</a></td>
                 <td>{{ row[1] }}</td>
-                <td></td>
+                <td class="spacer"></td>
                 <td>{{ row[2] }}</td>
                 <td>{{ row[3] }}</td>
                 <td>{{ row[4] }}</td>
-                <td></td>
+                <td class="spacer"></td>
                 <td>{{ row[5] }}</td>
                 <td>{{ row[6] }}</td>
                 <td>{{ row[7] }}</td>
                 <td>{{ row[8] }}</td>
-                <td></td>
+                <td class="spacer"></td>
                 <td>{{ row[9] }}</td>
             </tr>
             {% set count = count+1 %}
@@ -92,7 +92,7 @@
     <table border="1">
     <caption>Spielertabelle</caption>
         <tr>
-            <th width="104">Name</th>
+            <th width="104" class="name">Name</th>
             <th>Treffer</th>
             <th>Spiele</th>
             <th>Schnitt</th>
@@ -132,7 +132,7 @@
     <caption>Teamtabelle</caption>
         <tr>
             <th width="20px">P.</th>
-            <th width="220">Team</th> <!-- 220px -->
+            <th width="220" class="name">Team</th> <!-- 220px -->
             <th width="20px">Sp.</th>
             <th width="30px">Diff</th>
             <th width="30px">Pkt</th>
@@ -141,7 +141,7 @@
         {% for row in table_teamtabelle %}
             <tr>
                 <td>{{ count }}</td>
-                <td><a href="{{ url_for('user.detail_team', teamname=row[0]) }}">{{ row[0] }}</a></td>
+                <td class="name"><a href="{{ url_for('user.detail_team', teamname=row[0]) }}">{{ row[0] }}</a></td>
                 <td>{{ row[1] }}</td>
                 <td>{{ row[4] }}</td>
                 <td>{{ row[9] }}</td>
@@ -155,9 +155,9 @@
         <caption><b>Spiele</b></caption>
         {% for row in table_spiele %}
             <tr>
-                <td width="26px"><a href="{{ url_for('competition.detail_game', gameid=row[0]) }}">-></a></td>
+                <td width="26px"><a href="{{ url_for('competition.detail_game', gameid=row[0]) }}"><img src="{{ url_for('static', filename='info.png') }}"></a></td>
                 <td width="30px">{{ row[1] }}</td>
-                <td width="220px"><a href="{{ url_for('user.detail_team', teamname=row[2]) }}">{{ row[2] }}</a></td>
+                <td width="220px" class="name"><a href="{{ url_for('user.detail_team', teamname=row[2]) }}">{{ row[2] }}</a></td>
                 {% if row[3] %}
                 <td width="14">{{ row[3] }}</td>
                 {% else %}
@@ -168,7 +168,7 @@
                 {% else %}
                 <td width="14">x</td>
                 {% endif %}
-                <td width="220px"><a href="{{ url_for('user.detail_team', teamname=row[5]) }}">{{ row[5] }}</a></td>
+                <td width="220px" class="name"><a href="{{ url_for('user.detail_team', teamname=row[5]) }}">{{ row[5] }}</a></td>
                 <td width="30px">{{ row[6] }}</td>
             </tr>
         {% endfor %}
@@ -178,14 +178,14 @@
     <table border="1">
     <caption>Spielertabelle</caption>
         <tr>
-            <th width="104px">Name</th>
+            <th width="104px" class="name">Name</th>
             <th width="27px">Tr.</th>
             <th width="27px">Sp.</th>
             <th width="36px">/</th>
         </tr>
         {% for row in table_spielertabelle  %}
             <tr>
-				<td><a href="{{ url_for('user.detail_player', nickname=row.name) }}">{{ row.name }}</a></td>
+				<td class="name"><a href="{{ url_for('user.detail_player', nickname=row.name) }}">{{ row.name }}</a></td>
 				<td>{{ row.treffer }}</td>
 				<td>{{ row.spiele }}</td>
                 <td>{{ row.schnitt }}</td>
@@ -198,10 +198,10 @@
         {% for row in table_spiele %}
             <tr>
                 <td width="30px">{{ row[1] }}</td>
-                <td width="220px"><a href="{{ url_for('user.detail_team', teamname=row[2]) }}">{{ row[2] }}</a></td>
+                <td width="220px" class="name"><a href="{{ url_for('user.detail_team', teamname=row[2]) }}">{{ row[2] }}</a></td>
                 <td width="14px">{{ row[3] }}</td>
                 <td width="14px">{{ row[4] }}</td>
-                <td width="220px"><a href="{{ url_for('user.detail_team', teamname=row[5]) }}">{{ row[5] }}</a></td>
+                <td width="220px" class="name"><a href="{{ url_for('user.detail_team', teamname=row[5]) }}">{{ row[5] }}</a></td>
                 <td width="30px">{{ row[6] }}</td>
             </tr>
         {% endfor %}
