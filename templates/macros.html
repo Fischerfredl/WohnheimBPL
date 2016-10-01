@@ -1,5 +1,5 @@
 {% macro kospiele(table_spiele) %}
-    <table border="1">
+    <table border="1" class="standings">
         <tr>
             <th>SpielID</th>
             <th>Team1</th>
@@ -19,7 +19,7 @@
     </table>
 {% endmacro %}
 {% macro ligaspiele(table_spiele) %}
-    <table border="1">
+    <table border="1" class="standing">
         <caption>Spiele</caption>
         {% for row in table_spiele %}
             <tr>
@@ -48,7 +48,7 @@
     </table>
 {%  endmacro %}
 {% macro teamtabelle(table_teamtabelle) %}
-    <table border="1">
+    <table border="1" class="standings">
     <caption>Teamtabelle</caption>
         <tr>
             <th width="44">Platz</th>
@@ -89,7 +89,7 @@
     </table>
 {% endmacro %}
 {% macro spielertabelle(table_spielertabelle) %}
-    <table border="1">
+    <table border="1" class="standings">
     <caption>Spielertabelle</caption>
         <tr>
             <th width="104" class="name">Name</th>
@@ -128,7 +128,7 @@
     </div>
 {% endmacro %}
 {% macro teamtabelle_small(table_teamtabelle) %}
-    <table border="1">
+    <table border="1" class="standings">
     <caption>Teamtabelle</caption>
         <tr>
             <th width="20px">P.</th>
@@ -151,7 +151,7 @@
     </table>
 {% endmacro %}
 {% macro ligaspiele_small(table_spiele, day, max) %}
-    <table border="1">
+    <table border="1" class="standings">
         <caption><b>Spiele</b></caption>
         {% for row in table_spiele %}
             <tr>
@@ -175,7 +175,7 @@
     </table>
 {%  endmacro %}
 {% macro spielertabelle_small(table_spielertabelle) %}
-    <table border="1">
+    <table border="1" class="standings">
     <caption>Spielertabelle</caption>
         <tr>
             <th width="104px" class="name">Name</th>
@@ -194,14 +194,15 @@
 		</table>
 {% endmacro %}
 {% macro ligaspiele_info(table_spiele) %}
-    <table border="1">
+    <table border="1" class="standings">
+    <caption>Ergebnis</caption>
         {% for row in table_spiele %}
             <tr>
                 <td width="30px">{{ row[1] }}</td>
-                <td width="220px" class="name"><a href="{{ url_for('user.detail_team', teamname=row[2]) }}">{{ row[2] }}</a></td>
+                <td width="220px"><a href="{{ url_for('user.detail_team', teamname=row[2]) }}">{{ row[2] }}</a></td>
                 <td width="14px">{{ row[3] }}</td>
                 <td width="14px">{{ row[4] }}</td>
-                <td width="220px" class="name"><a href="{{ url_for('user.detail_team', teamname=row[5]) }}">{{ row[5] }}</a></td>
+                <td width="220px"><a href="{{ url_for('user.detail_team', teamname=row[5]) }}">{{ row[5] }}</a></td>
                 <td width="30px">{{ row[6] }}</td>
             </tr>
         {% endfor %}

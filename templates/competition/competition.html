@@ -6,7 +6,7 @@ table_divisions [(UnterwbID, Unterwbname, Modus)]
 
 {% extends "base.html" %}
 {%  block content %}
-    <a href="{{ url_for('competition.overview') }}"><button id="back">Zurück</button></a>
+    <span id="back"><a href="{{ url_for('competition.overview') }}" class="myButton">Zurück</a></span>
     <h1>Übersicht zum Wettbewerb {{ object[1] }}</h1>
     Sieh dir die angemeldeten Teams und Spieler an:
     <a href="{{ url_for('competition.competition_signed_teams', competitionid=object[0]) }}">Link</a>

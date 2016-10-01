@@ -21,7 +21,7 @@ def get_player_history(playername):
             rank = get_league_teamrank(divisionid, team)
         else:
             # row[1] == 'ko'
-            rank = 'Platzierung fuer KO nicht implementiert'
+            rank = '?'
         line = (divisionid, divisionname, rank, team)
         history.append(line)
     return history
@@ -42,7 +42,7 @@ def get_team_history(teamname):
             rank = get_league_teamrank(divisionid, teamname)
         else:
             # row[1] == 'ko'
-            rank = 'Platzierung fuer KO nicht implementiert'
+            rank = '?'
         spieler = query_db('SELECT (SELECT Nickname FROM Spieler WHERE Spieler.SpielerID = Teilgenommen.SpielerID) \
                            FROM Teilgenommen \
                            WHERE UnterwbID = ? AND \

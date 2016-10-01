@@ -4,8 +4,9 @@
     TeamID: {{ data[0] }}
     <br>
     <br>
-    Teilgenommene Wettbewerbe:
-    <table border="1">
+
+    <table border="1" id="detail-team">
+    <caption>Teilgenommene Wettbewerbe</caption>
         <tr>
             <th>Wettbewerb</th>
             <th>Platz</th>
@@ -14,7 +15,7 @@
         {% for row in history %}
             <tr>
                 <td><a href="{{ url_for('competition.detail_division', divisionid=row[0]) }}">{{ row[1] }}</a></td>
-                <td>{{ row[2] }}</td>
+                <td width="50px" class="center">{{ row[2] }}</td>
                 <td>
                     {% for spieler in row[3] %}<a href="{{ url_for('user.detail_player', nickname=spieler[0]) }}">{{ spieler[0] }}</a> {% endfor %}
                 </td>
