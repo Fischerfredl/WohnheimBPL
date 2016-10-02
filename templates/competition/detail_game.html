@@ -3,7 +3,7 @@
 {%  block content %}
     Unterwettbewerb: <a href="{{ url_for('competition.detail_division', divisionid=data[1]) }}">{{ data[2] }}</a>
     {% if data[3] == 'liga' %}
-        <a href="{{ url_for('competition.detail_league', leagueid=data[1], matchday=result[7]) }}"><button id="back">Zurück</button></a>
+        <span id="back"><a href="{{ url_for('competition.detail_league', leagueid=data[1], matchday=result[7]) }}" class="myButton">Zurück</a></span>
         <br>
         Spieltag: <a href="{{ url_for('competition.detail_league', leagueid=data[1], matchday=result[7]) }}">{{ result[7] }}</a><br>
     {%  endif %}

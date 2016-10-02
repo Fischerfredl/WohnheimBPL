@@ -4,7 +4,7 @@ object (UntewbID, Name, Modus, WbID, WbName)
 -->
 {% extends "base.html" %}
 {% block content %}
-    <a href="{{ url_for('competition.detail_competition', competitionid=object[3]) }}"><button id="back">Zurück</button></a>
+    <span id="back"><a href="{{ url_for('competition.detail_competition', competitionid=object[3]) }}" class="myButton">Zurück</a></span>
         {% block spiele %}{% endblock %}
     <div id="teamtext">
         <a href="{{ url_for('competition.division_signed_teams', divisionid=object[0]) }}">Teamliste</a></div>

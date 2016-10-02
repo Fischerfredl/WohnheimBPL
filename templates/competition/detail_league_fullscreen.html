@@ -4,11 +4,16 @@
 {%  block spiele %}
 
     <h1>
-        <a href="{{ url_for('competition.detail_league_fullscreen', leagueid=object[0], matchday=matchday - 1) }}">
-            <button type="submit" value="Spieltag zurück" {% if matchday == 1 %}disabled{% endif %}><</button></a>
-        Spieltag: {{ matchday }}
-        <a href="{{ url_for('competition.detail_league_fullscreen', leagueid=object[0], matchday=matchday + 1) }}">
-            <button type="submit" value="Spieltag zurück" {% if matchday == matchday_max %}disabled{% endif %}>></button></a>
+    <table id="matchday-title">
+    <td>
+    <form method="get" action="{{ url_for('competition.detail_league_fullscreen', leagueid=object[0], matchday=matchday - 1) }}">
+    <button type="submit" {% if matchday == 1 %}disabled{% endif %}><</button>
+    </form></td>
+    <td width="170px">Spieltag: {{ matchday }}</td>
+    <td><form method="get" action="{{ url_for('competition.detail_league_fullscreen', leagueid=object[0], matchday=matchday + 1) }}">
+    <button type="submit" {% if matchday == matchday_max %}disabled{% endif %}>></button>
+    </form></td>
+    </table>
     </h1>
 
     <br>

@@ -6,8 +6,8 @@
         <li>Vorname: {{ data[2] }}</li>
         <li>Nachname: {{ data[3] }}</li>
     </ul>
-    Teilgenommene Wettbewerbe:
-    <table border="1">
+    <table border="1" id="detail-player">
+        <caption>Teilgenommene Wettbewerbe</caption>
         <tr>
             <th>Wettbewerb</th>
             <th>Platz</th>
@@ -16,7 +16,7 @@
         {% for row in history %}
             <tr>
                 <td><a href="{{ url_for('competition.detail_division', divisionid=row[0]) }}">{{ row[1] }}</a></td>
-                <td>{{ row[2] }}</td>
+                <td width="50px" class="center">{{ row[2] }}</td>
                 <td>
                     <a href="{{ url_for('user.detail_team', teamname=row[3]) }}">{{ row[3] }}</a>
                 </td>

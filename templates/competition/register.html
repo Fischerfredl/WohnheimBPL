@@ -6,7 +6,7 @@ registration
 
 {% extends 'base.html' %}
 {% block content %}
-    <a href="{{ url_for('competition.detail_competition', competitionid=object[0]) }}"><button id="back">Zurück</button></a>
+    <span id="back"><a href="{{ url_for('competition.detail_competition', competitionid=object[0]) }}" class="myButton">Zurück</a></span>
     <h1>Anmeldung: {{ object[1] }}</h1>
     {% if not registration %}
         <form action="{{ url_for('competition.register', competitionid=object[0], nickname=session['username']) }}" method="post">

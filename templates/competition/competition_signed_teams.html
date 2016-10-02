@@ -7,14 +7,15 @@ signed_teams dict('teamname': (spieler))
 {% extends "base.html" %}
 {%  block content %}
     {% if object[2] == 'turnier' or object[2] == 'liga' or object[2] == 'ko' %}
-        <a href="{{ url_for('competition.detail_division', divisionid=object[0]) }}"><button id="back">Zurück</button></a>
+        <span id="back"><a href="{{ url_for('competition.detail_division', divisionid=object[0]) }}" class="myButton">Zurück</a></span>
     {% elif object[2] == 'anmeldung' %}
-        <a href="{{ url_for('competition.detail_competition', competitionid=object[0]) }}"><button id="back">Zurück</button></a>
+        <span id="back"><a href="{{ url_for('competition.detail_competition', competitionid=object[0]) }}" class="myButton">Zurück</a></span>
     {% else %}
-        <a href="{{ url_for('competition.detail_competition', competitionid=object[0]) }}"><button id="back">Zurück</button></a>
+        <span id="back"><a href="{{ url_for('competition.detail_competition', competitionid=object[0]) }}" class="myButton">Zurück</a></span>
         {% endif %}
     <h1>Angemeldete Teams</h1>
     <table border = 1>
+    <caption>{{ page_title }}</caption>
     {% for key in signed_teams %}
         <tr>
             <td width="220"><a href="{{ url_for('user.detail_team', teamname=key) }}">{{ key }}</a></td>

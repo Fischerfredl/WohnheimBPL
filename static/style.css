@@ -14,27 +14,174 @@ h2 {
     -webkit-margin-after: 0em;
 }
 
+/* unvisited link */
+a:link {
+    color: black;
+}
+
+/* visited link */
+a:visited {
+    color: black;
+}
+
+/* mouse over link */
+a:hover {
+    color: #ed1b24;
+}
+
+#footer a:hover {
+    color: black;
+}
+/* selected link */
+a:active {
+    color: blue;
+}
+
+table a:link {
+    text-decoration: none;
+}
+
+table {
+    border-collapse: collapse;
+    border: none;
+    white-space: nowrap;
+}
+
+tbody tr:hover td
+{
+	color: black;
+	background: #fdd1ce;
+}
+
+table caption {
+    background: #ed1b24;
+    color: white;
+}
+
+th {
+    height: 30px;
+}
+
+table.standings{
+    border-bottom: 1px solid #ed1b24;
+    text-align: center;
+}
+
+tr .name {
+    text-align: left;
+}
+
+table {
+    max-width: 600px;
+}
+
+#detail-team td {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#detail-player td {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.spacer {
+    width: 6px;
+}
+
+.center {
+    text-align: center;
+}
+
+#matchday-title {
+    text-align: center;
+}
+
+#matchday-title tr:hover td{
+    background: transparent;
+}
+
+.myButton {
+    -moz-box-shadow: inset 0px 39px 0px -24px #e67a73;
+    -webkit-box-shadow: inset 0px 39px 0px -24px #e67a73;
+    box-shadow: inset 0px 39px 0px -24px #e67a73;
+    background-color: #e4685d;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    border: 1px solid #ffffff;
+    display: inline-block;
+    cursor: pointer;
+    color: #ffffff;
+    font-size: 15px;
+    padding: 4px 15px;
+    text-decoration: none;
+    text-shadow: 0px 1px 0px #b23e35;
+}
+
+.myButton:hover {
+    color: black;
+}
+
+#back {
+    float: right;
+}
+
+.myButton:hover {
+	background-color:#eb675e;
+}
+.myButton:active {
+	position:relative;
+	top:1px;
+}
+
+
 #header {
     background-image: url(header-background.png);
     color:black;
     padding:5px;
-    height: 90px
+    height: 90px;
+    display: flex;
 }
 
 #header-logo {
     float: left;
-    margin: 5px 5px 5px 27px;
+    margin-top: 5px;
+
+
+}
+
+#header-center {
+    min-width: 600px;
+    width: 600px;
+    padding:10px;
+    margin-right: 35%;
+    margin-left: auto;
+    border-left: solid transparent;
+    border-right: solid transparent;
+}
+
+#header-left {
+    min-width: 150px;
+    width: 150px;
+    float:left;
+    margin-left: 20px;
+    margin-right: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-left: solid transparent;
+    border-right: solid transparent;
+
 }
 
 #header-title {
     float: left;
-    width: 500px;
-    margin: 30px 0px 0px 125px;
+    margin-top: 20px
 }
 
 #header-right {
-    float: left;
-    margin-top: 30px
+    float: right;
+    margin-top: 20px
 }
 
 #h-button {
@@ -72,7 +219,7 @@ h2 {
 }
 
 #section {
-    display: inline-flex;
+    display: flex;
     margin-top: 20px;
 }
 
@@ -83,7 +230,8 @@ h2 {
     border: solid #ed1b24;
     border-radius: 14px;
     box-shadow: 0 0 8px 8px #c0c0c0;
-    margin: 0px 10px 32px 10px;
+    margin: 0px 35% 32px auto;
+
 }
 
 #messages {
@@ -103,16 +251,34 @@ h2 {
     -webkit-padding-start: 14px;
 }
 
-#back {
-    float: right;
+#footer {
+    display: flex;
+    background-color:#ed1b24;
 }
 
-#footer {
-    background-color:#ed1b24;
+#footer-left {
+    min-width: 150px;
+    width: 150px;
+    float:left;
+    margin-left: 20px;
+    margin-right: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-left: solid transparent;
+    border-right: solid transparent;
+}
+
+#footer-text {
+    min-width: 600px;
+    width: 600px;
     color: white;
     clear: both;
     text-align: center;
-    padding: 5px;
+    padding: 5px 10px;
+    margin-left: auto;
+    margin-right: 35%;
+    border-left: solid transparent;
+    border-right: solid transparent;
 
 }
 
@@ -136,7 +302,7 @@ h2 {
 
 #teamtable {
     float: left;
-    margin-right: 10px;
+    margin-right: 21px;
     margin-bottom: 10px;
 }
 
