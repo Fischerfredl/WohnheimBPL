@@ -140,23 +140,48 @@ table {
     background-image: url(header-background.png);
     color:black;
     padding:5px;
-    height: 90px
+    height: 90px;
+    display: flex;
 }
 
 #header-logo {
     float: left;
-    margin: 5px 5px 5px 27px;
+    margin-top: 5px;
+
+
+}
+
+#header-center {
+    min-width: 600px;
+    width: 600px;
+    padding:10px;
+    margin-right: 35%;
+    margin-left: auto;
+    border-left: solid transparent;
+    border-right: solid transparent;
+}
+
+#header-left {
+    min-width: 150px;
+    width: 150px;
+    float:left;
+    margin-left: 20px;
+    margin-right: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-left: solid transparent;
+    border-right: solid transparent;
+
 }
 
 #header-title {
     float: left;
-    width: 500px;
-    margin: 30px 0px 0px 125px;
+    margin-top: 20px
 }
 
 #header-right {
-    float: left;
-    margin-top: 30px
+    float: right;
+    margin-top: 20px
 }
 
 #h-button {
@@ -194,7 +219,7 @@ table {
 }
 
 #section {
-    display: inline-flex;
+    display: flex;
     margin-top: 20px;
 }
 
@@ -205,7 +230,8 @@ table {
     border: solid #ed1b24;
     border-radius: 14px;
     box-shadow: 0 0 8px 8px #c0c0c0;
-    margin: 0px 10px 32px 10px;
+    margin: 0px 35% 32px auto;
+
 }
 
 #messages {
@@ -225,13 +251,34 @@ table {
     -webkit-padding-start: 14px;
 }
 
-
 #footer {
+    display: flex;
     background-color:#ed1b24;
+}
+
+#footer-left {
+    min-width: 150px;
+    width: 150px;
+    float:left;
+    margin-left: 20px;
+    margin-right: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-left: solid transparent;
+    border-right: solid transparent;
+}
+
+#footer-text {
+    min-width: 600px;
+    width: 600px;
     color: white;
     clear: both;
     text-align: center;
-    padding: 5px;
+    padding: 5px 10px;
+    margin-left: auto;
+    margin-right: 35%;
+    border-left: solid transparent;
+    border-right: solid transparent;
 
 }
 

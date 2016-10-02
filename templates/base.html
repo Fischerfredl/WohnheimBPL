@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" type=text/css href="{{ url_for('static', filename='style.css') }}">
+     <link rel="stylesheet" type=text/css href="{{ url_for('static', filename='style.css') }}">
     {% if large %}
         <link rel="stylesheet" type=text/css href="{{ url_for('static', filename='large.css') }}">
     {% endif %}
@@ -11,9 +11,12 @@
 </head>
 <body>
     <div id="header">
+    <div id="header-left">
         <div id="header-logo">
             <a href="{{ url_for('competition.overview') }}"><img src="{{ url_for('static', filename='logo.png') }}" width="70" height="80"></a>
         </div>
+    </div>
+    <div id="header-center">
         <div id="header-title">
             <div id="website-title">BLLV WHA Bierpongliga</div>
             <div id="page-title">
@@ -24,6 +27,7 @@
                 {% endif %}
             </div>
         </div>
+
         <div id="header-right">
         {% if not session.logged_in %}
             <br>
@@ -38,6 +42,7 @@
             <a href="{{ url_for('login.logout') }}"><button id="h-button" class="logout">Logout</button></a>
         {% endif %}
         </div>
+    </div>
     </div>
     <div id="section">
     <div id="nav">
@@ -62,10 +67,11 @@
 
     </div>
 
-
     <div id="footer">
-        Made by Alfred Melch | Contact alfred.melch [at] gmx.de | <a href="http://www.facebook.com/alfred.melch" target="_blank">Facebook</a> | <a href="{{ url_for('about') }}">About</a>
+    <div id="footer-left"></div>
+    <div id="footer-text">
+        Made by Alfred Melch | alfred.melch [at] gmx.de | <a href="http://www.facebook.com/alfred.melch" target="_blank">Facebook</a> | <a href="{{ url_for('about') }}">About</a>
     </div>
-
+    </div>
 </body>
 </html>

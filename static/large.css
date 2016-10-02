@@ -1,5 +1,8 @@
 #content {
     width: 1110px;
+    min-width: 1110px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 #standings {
@@ -24,7 +27,7 @@
 }
 
 #nav {
-    display: none;
+
 }
 
 table {
