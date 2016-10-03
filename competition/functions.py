@@ -1,4 +1,4 @@
-from flask import abort, session, flash, g
+from flask import abort, session, flash, g, current_app
 from functions_general import query_db, update_db
 
 
@@ -287,6 +287,9 @@ def get_game_show_edit(gameid):
     phase = query_db("SELECT (SELECT Phase FROM Wettbewerb WHERE Wettbewerb.WbID = Unterwettbewerb.WbID) FROM Unterwettbewerb WHERE UnterwbID = ?", [div_id], one=True)
     if phase != 'laeuft':
         return False
+
+    if session.get('username') == current_app.config['MODLOGIN']:
+        return True
 
     if query_db("SELECT SiegerID FROM Spiel WHERE SpielID = ?", [gameid], one=True):
         return False
