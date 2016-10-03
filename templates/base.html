@@ -53,19 +53,20 @@
     <div id="content">
     {% block content %}{% endblock %}
     </div>
+    </div>
 
-
-        {% with messages = get_flashed_messages() %}
+{% with messages = get_flashed_messages() %}
         {% if messages %}
             <div id="messages">
-            <h1>Messages</h1>
-            <ul>{% for message in messages %}<li>{{ message }}</li>{% endfor %}</ul>
-         </div>
+            <div id="messages-left"></div>
+            <div id="messages-content">
+                <h1>Messages</h1>
+                <ul>{% for message in messages %}<li>{{ message }}</li>{% endfor %}</ul>
+                </div>
+            </div>
         {% endif %}
         {% endwith %}
 
-
-    </div>
 
     <div id="footer">
     <div id="footer-left"></div>

@@ -235,20 +235,37 @@ table {
 }
 
 #messages {
+    display: flex;
+}
+
+#messages-content {
     background-color:#eeeeee;
     height:auto;
-    min-width: 150px;
+    min-width: 600px;
+    width: 600px;
     padding: 10px;
     border: solid #ed1b24;
     border-radius: 14px;
     box-shadow: 0 0 8px 8px #c0c0c0;
-    margin-right: 20px;
-    margin-left: 20px;
+    margin-right: 35%;
+    margin-left: auto;
     margin-bottom: 32px;
 }
 
-#messages ul{
+#messages-content ul{
     -webkit-padding-start: 14px;
+}
+
+#messages-left {
+    min-width: 150px;
+    width: 150px;
+    float:left;
+    margin-left: 20px;
+    margin-right: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-left: solid transparent;
+    border-right: solid transparent;
 }
 
 #footer {
