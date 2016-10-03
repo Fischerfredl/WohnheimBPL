@@ -154,11 +154,30 @@ table {
 #header-center {
     min-width: 600px;
     width: 600px;
-    padding:10px;
-    margin-right: 35%;
-    margin-left: auto;
-    border-left: solid transparent;
-    border-right: solid transparent;
+    padding: 10px;
+    margin: auto 35% auto auto;
+    border: solid transparent;
+    height: 35px;
+    border-radius: 14px;
+    color: black;
+    text-shadow: 0 0 10px #eeeeee;
+
+}
+
+#website-title {
+    font-size: 0.8em;
+}
+
+#page-title {
+    font-size: 1.2em;
+}
+
+#header-title {
+    float: left;
+}
+
+#header-right {
+    float: right;
 }
 
 #header-left {
@@ -171,18 +190,12 @@ table {
     padding-right: 10px;
     border-left: solid transparent;
     border-right: solid transparent;
-
 }
 
-#header-title {
-    float: left;
-    margin-top: 20px
-}
 
-#header-right {
-    float: right;
-    margin-top: 20px
-}
+
+
+
 
 #h-button {
     width: 100px;
