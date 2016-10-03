@@ -4,6 +4,8 @@ from functions_general import query_db, update_db, verify_password, set_password
 from competition.functions import get_league_game_result
 from random import shuffle
 
+import platform
+
 
 # label, type, name, value
 def get_form(option):

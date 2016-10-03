@@ -87,7 +87,7 @@ def main(option):
 @settings.route('/getdb')
 @login_required(user='admin')
 def getdb():
-    return send_from_directory(current_app.config['DATABASE']+'/..', 'database.db', as_attachment=True)
+    return send_from_directory(os.path.join(current_app.config['DATABASE'], os.pardir), 'database.db', as_attachment=True)
 
 
 @settings.route('/postdb', methods=['GET', 'POST'])
@@ -106,7 +106,7 @@ def postdb():
             return redirect(request.url)
         if file and '.' in file.filename and file.filename.rsplit('.', 1)[1] in ['db']:
             filename = 'database.db'
-            file.save(os.path.join(current_app.config['DATABASE']+'/..', filename))
+            file.save(os.path.join(current_app.config['DATABASE'], os.pardir, filename))
             flash('Database upload complete')
             return redirect(url_for('settings.home'))
         else:
@@ -135,7 +135,7 @@ def postregelwerk():
             return redirect(request.url)
         if file and '.' in file.filename and file.filename.rsplit('.', 1)[1] in ['pdf']:
             filename = 'regelwerk.pdf'
-            file.save(os.path.join(current_app.config['DATABASE']+'/../static', filename))
+            file.save(os.path.join(current_app.config['DATABASE'], os.pardir, 'static', filename))
             flash('Regelwerk upload complete')
             return redirect(url_for('settings.home'))
         else:
