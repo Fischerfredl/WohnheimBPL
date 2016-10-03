@@ -162,8 +162,8 @@ table {
 }
 
 #header-left {
-    min-width: 150px;
-    width: 150px;
+    min-width: 220px;
+    width: 220px;
     float:left;
     margin-left: 20px;
     margin-right: 20px;
@@ -191,8 +191,8 @@ table {
 #nav {
     background-color:#eeeeee;
     height:auto;
-    min-width: 150px;
-    width: 150px;
+    min-width: 220px;
+    width: 220px;
     float:left;
     padding: 10px;
     border: solid #ed1b24;
@@ -253,7 +253,7 @@ table {
 }
 
 #messages-content ul{
-    -webkit-padding-start: 14px;
+    -webkit-padding-start: 32px;
 }
 
 #messages-left {
@@ -274,8 +274,8 @@ table {
 }
 
 #footer-left {
-    min-width: 150px;
-    width: 150px;
+    min-width: 220px;
+    width: 220px;
     float:left;
     margin-left: 20px;
     margin-right: 20px;

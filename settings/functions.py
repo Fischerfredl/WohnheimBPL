@@ -36,7 +36,7 @@ def get_form(option):
     elif option == 'competition_make':
         form_input = [('Wettbewerb', 'select_list', 'competition_name',
                        [row[0] for row in query_db("SELECT Name FROM Wettbewerb WHERE Phase = 'anmeldung'")]),
-                      ('Modus', 'select_list', 'modus', ['Liga - eine Gruppe'])]
+                      ('Modus', 'select_list', 'modus', ['Liga - eine Gruppe', 'Liga - zwei Gruppen'])]
     elif option == 'competition_advance':
         pass
     elif option == 'competition_close':
@@ -106,6 +106,17 @@ def get_form(option):
             ('Unterwettbewerb', 'select_list', 'division_name', [row[0] for row in query_db("SELECT Name FROM Unterwettbewerb WHERE (SELECT Phase FROM Wettbewerb WHERE Wettbewerb.WbID = Unterwettbewerb.WbID) = 'laeuft'")]),
             ('Name', 'text', 'name', '')
         ]
+    elif option == 'Liga - zwei Gruppen':
+        comp_id = query_db('SELECT WbID FROM Wettbewerb WHERE Name = ?', [session['comp_make_compname']], one=True)
+        division_id = query_db('SELECT UnterwbID FROM Unterwettbewerb WHERE WbID = ?', [comp_id], one=True)
+        if not competition_make_checkteams(division_id, 4):
+            form_input = [('Zu wenig Teams', 'label', 'label', '')]
+        else:
+            select_input = ['Gruppe 1', 'Gruppe 2']
+            for team in session['make_comp_list_teams']:
+                name = query_db('SELECT Name FROM Team WHERE TeamID = ?', [team], one=True)
+                form_input.append((name, 'select_list', str(team), select_input))
+
     return [{'label': row[0], 'type': row[1], 'name': row[2], 'value': row[3]} for row in form_input]
 
 
@@ -246,17 +257,118 @@ def competition_create():
     return True
 
 
-def competition_make():
+def competition_make_one():
     modus = request.form['modus']
     competition_name = request.form['competition_name']
     competition_id = query_db('SELECT WbID FROM Wettbewerb WHERE Name = ?', [competition_name], one=True)
     division_id = query_db('SELECT UnterwbID FROM Unterwettbewerb WHERE WbID = ?', [competition_id], one=True)
+
+    if not competition_make_checkteams(division_id, 2):
+        return False
+
+    make_spielplan(division_id, session['make_comp_list_teams'])
+    update_db("UPDATE Unterwettbewerb SET Modus = 'liga' WHERE UnterwbID = ?", [division_id])
+    update_db("UPDATE Unterwettbewerb SET Name = ? WHERE UnterwbID = ?", [competition_name + ' - Gruppe1', division_id])
+
+    update_db("UPDATE Wettbewerb SET Phase = 'laeuft' WHERE WbID = ?", [competition_id])
+    flash('Wettbewerb ' + competition_name + ' erfolgreich gestartet')
+    return True
+
+
+def competition_make_advanced():
+    modus = session['modus']
+    dict_backup = session['make_comp_dict_teams']
+    list_teams = session['make_comp_list_teams']
+    competition_name = session['comp_make_compname']
+    competition_id = query_db('SELECT WbID FROM Wettbewerb WHERE Name = ?', [competition_name], one=True)
+    div_old_id = query_db('SELECT UnterwbID FROM Unterwettbewerb WHERE WbID = ?', [competition_id], one=True)
+
+    if modus == 'Liga - zwei Gruppen':
+        teams_one = []
+        teams_two = []
+        for team in list_teams:
+            group = request.form[str(team)]
+            if group == 'Gruppe 1':
+                teams_one.append(team)
+            else:
+                teams_two.append(team)
+
+        if len(teams_one) < 2 or len(teams_two) < 2:
+            flash('Wettbewerb nicht gestartet')
+            flash('Eine Liga braucht mindestens zwei Teams')
+            return False
+
+        dict_one = dict()
+        dict_two = dict()
+
+        for team in teams_one:
+            dict_one[team] = dict_backup[str(team)]
+        for team in teams_two:
+            dict_two[team] = dict_backup[str(team)]
+
+        for key in dict_one:
+            if len(dict_backup[str(key)]) < 2:
+                flash('Wettbewerb nicht gestartet')
+                flash('Mindestens ein Team hat zu wenig Spieler')
+                return False
+
+        for key in dict_two:
+            if len(dict_backup[str(key)]) < 2:
+                flash('Wettbewerb nicht gestartet')
+                flash('Mindestens ein Team hat zu wenig Spieler')
+                return False
+
+        div_id_one = get_new_id('division')
+        div_id_two = div_id_one+1
+
+        v = update_db('INSERT INTO Unterwettbewerb(UnterwbID, WbID, Name, Modus) VALUES (?, ?, ?, ?)', [div_id_one, competition_id, competition_name+' - Gruppe 1', 'liga'])
+        if v:
+            flash(v)
+            return False
+        v = update_db('INSERT INTO Unterwettbewerb(UnterwbID, WbID, Name, Modus) VALUES (?, ?, ?, ?)', [div_id_two, competition_id, competition_name+' - Gruppe 2', 'liga'])
+        if v:
+            flash(v)
+            return False
+
+        for team in dict_one:
+            for player in dict_one[team]:
+                v = update_db('INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (?, ?, ?)', [div_id_one, team, player])
+                if v:
+                    flash(v)
+                    return False
+
+        for team in dict_two:
+            for player in dict_two[team]:
+                v = update_db('INSERT INTO Teilgenommen(UnterwbID, TeamID, SpielerID) VALUES (?, ?, ?)', [div_id_two, team, player])
+                if v:
+                    flash(v)
+                    return False
+
+        v = update_db('DELETE FROM Teilgenommen WHERE UnterwbID = ?', [div_old_id])
+        if v:
+            flash(v)
+            return False
+        v = update_db("DELETE FROM Unterwettbewerb WHERE UnterwbID = ?", [div_old_id])
+        if v:
+            return False
+
+        make_spielplan(div_id_one, teams_one)
+        make_spielplan(div_id_two, teams_two)
+
+    update_db("UPDATE Wettbewerb SET Phase = 'laeuft' WHERE WbID = ?", [competition_id])
+    flash('Wettbewerb ' + competition_name + ' erfolgreich gestartet')
+    return True
+
+
+def competition_make_checkteams(division_id, min_teams):
     dict_backup = dict()
     for row in query_db('SELECT TeamID, SpielerID FROM Teilgenommen WHERE UnterwbID = ?', [division_id]):
         if row[0] not in dict_backup:
             dict_backup[row[0]] = []
         dict_backup[row[0]].append(row[1])
     list_teams = [key for key in dict_backup]
+    session['make_comp_dict_teams'] = dict_backup
+    session['make_comp_list_teams'] = list_teams
 
     for key in dict_backup:
         if len(dict_backup[key]) < 2:
@@ -264,24 +376,14 @@ def competition_make():
             flash('Mindestens ein Team hat zu wenig Spieler')
             return False
 
-    if modus == 'Liga - eine Gruppe':
-        if len(list_teams) < 2:
-            flash('Wettbewerb nicht gestartet')
-            flash('Zu wenig Teams angemeldet')
-            return False
-        make_spielplan(division_id, list_teams)
-        update_db("UPDATE Unterwettbewerb SET Modus = 'liga' WHERE UnterwbID = ?", [division_id])
-        update_db("UPDATE Unterwettbewerb SET Name = ? WHERE UnterwbID = ?", [competition_name + ' - Gruppe1', division_id])
-    elif modus == 'Liga - zwei Gruppen':
-        v = update_db('DELETE FROM Unterwettbewerb WHERE UnterwbID = ?', [division_id])
-        if v:
-            flash(v)
-        v = update_db('DELETE FROM Teilgenommen WHERE UnterwbID = ?', [division_id])
-        if v:
-            flash(v)
-    update_db("UPDATE Wettbewerb SET Phase = 'laeuft' WHERE WbID = ?", [competition_id])
-    flash('Wettbewerb ' + competition_name + ' erfolgreich gestartet')
+    if len(list_teams) < min_teams:
+        flash('Wettbewerb nicht gestartet')
+        flash('Zu wenig Teams angemeldet')
+        flash('Es muessen mindesten %s Teams angemeldet sein' % min_teams)
+        return False
+
     return True
+
 
 def competition_advance():
     return
