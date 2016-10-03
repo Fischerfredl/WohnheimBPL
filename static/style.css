@@ -109,12 +109,12 @@ table {
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
     border-radius: 4px;
-    border: 1px solid #ffffff;
+    border: 2px solid #ed1b24;
     display: inline-block;
     cursor: pointer;
     color: #ffffff;
-    font-size: 15px;
-    padding: 4px 15px;
+
+    padding: 0px 15px;
     text-decoration: none;
     text-shadow: 0px 1px 0px #b23e35;
 }
@@ -154,11 +154,48 @@ table {
 #header-center {
     min-width: 600px;
     width: 600px;
-    padding:10px;
-    margin-right: 35%;
-    margin-left: auto;
-    border-left: solid transparent;
-    border-right: solid transparent;
+    padding: 10px;
+    margin: auto 35% auto auto;
+    border: solid transparent;
+    height: 35px;
+    border-radius: 14px;
+    color: black;
+    text-shadow: 0 0 10px #eeeeee;
+
+}
+
+#website-title {
+    font-size: 0.8em;
+}
+
+#page-title {
+    margin-top: 2px;
+    font-size: 1.2em;
+}
+
+#header-title {
+    float: left;
+    margin-top: 2px;
+}
+
+#header-right {
+    float: right;
+    margin-top: -6px;
+}
+
+#login-button {
+    margin-top: 5px;
+}
+
+#header-right button {
+    border: 2px solid #ed1b24;
+    border-radius: 4px;
+    background: -webkit-gradient(linear, left top, left bottom, from(#ffb1aa), to(#c44138));
+}
+
+#header-right button:active {
+    position:relative;
+	top:1px;
 }
 
 #header-left {
@@ -171,18 +208,12 @@ table {
     padding-right: 10px;
     border-left: solid transparent;
     border-right: solid transparent;
-
 }
 
-#header-title {
-    float: left;
-    margin-top: 20px
-}
 
-#header-right {
-    float: right;
-    margin-top: 20px
-}
+
+
+
 
 #h-button {
     width: 100px;

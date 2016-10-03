@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
     {% if session['username'] in ['admin', 'mod'] %}
-    <a href="{{ url_for('settings.home') }}"><button id="back">Zurück</button></a>
+        <span id="back"><a href="{{ url_for('settings.home') }}" class="myButton">Zurück</a></span>
         {% else %}
         <a href="{{ url_for('home') }}"><- Zurück</a>
     {% endif %}

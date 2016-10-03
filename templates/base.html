@@ -31,15 +31,15 @@
         <div id="header-right">
         {% if not session.logged_in %}
             <br>
-            <a href="{{ url_for('login.login') }}"><button id="h-button" class="login">Login</button></a>
+            <div id="login-button"><a href="{{ url_for('login.login') }}"><button id="h-button" class="login">Login</button></a></div>
         {% else %}
             {% if session.username == 'admin' or session.username == 'mod' %}
-                <a href="{{ url_for('settings.home') }}"><button id="h-button" class="settings">{{ session.username }}</button></a>
+                <div id="username-button"><a href="{{ url_for('settings.home') }}"><button id="h-button" class="settings">{{ session.username }}</button></a></div>
             {% else %}
-                <a href="{{ url_for('user.detail_player', nickname=session.username) }}"><button id="h-button" class="user">{{ session.username }}</button></a>
+                <div id="username-button"><a href="{{ url_for('user.detail_player', nickname=session.username) }}"><button id="h-button" class="user">{{ session.username }}</button></a></div>
             {% endif %}
-            <br>
-            <a href="{{ url_for('login.logout') }}"><button id="h-button" class="logout">Logout</button></a>
+
+            <div id="login-button"><a href="{{ url_for('login.logout') }}"><button id="h-button" class="logout">Logout</button></a></div>
         {% endif %}
         </div>
     </div>
