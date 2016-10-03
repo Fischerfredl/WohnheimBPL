@@ -15,6 +15,7 @@ def home():
 @settings.route('/<option>', methods=['GET', 'POST'])
 @settings_permission_required
 def main(option):
+    overwrite_form = 0
     if request.method == 'POST':
         if option == 'player_new':
             player_new()
@@ -35,7 +36,15 @@ def main(option):
         elif option == 'competition_create':
             competition_create()
         elif option == 'competition_make':
-            competition_make()
+            modus = request.form.get('modus')
+            if modus == 'Liga - eine Gruppe':
+                competition_make_one()
+            elif modus == 'Liga - zwei Gruppen':
+                session['comp_make_compname'] = request.form['competition_name']
+                session['modus'] = modus
+                overwrite_form = 'Liga - zwei Gruppen'
+            else:
+                competition_make_advanced()
         elif option == 'competition_advance':
             competition_advance()
         elif option == 'competition_close':
@@ -70,6 +79,8 @@ def main(option):
             abort(404)
 
     form = get_form(option)
+    if overwrite_form:
+        form = get_form(overwrite_form)
     hide_submit = 0
     for item in form:
         if item['type'] == 'select_list':
@@ -80,6 +91,8 @@ def main(option):
             leagueid = query_db("SELECT UnterwbID FROM Spiel WHERE SpielID = ?", [gameid], one=True)
             matchday = query_db("SELECT Spieltag FROM Ligaspiel WHERE SpielID = ?", [gameid], one=True)
             return redirect(url_for('competition.detail_league', leagueid=leagueid, matchday=matchday))
+        if item['label'] == 'Zu wenig Teams':
+            hide_submit = 1
     return render_template('settings/forms.html', option=option, header=get_header(), form=form,
                            hide_submit=hide_submit, page_title='Einstellungen: %s' % get_header()[option])
 
