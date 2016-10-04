@@ -129,7 +129,7 @@ def postdb():
 
 @settings.route('/regelwerk')
 def regelwerk():
-    return send_from_directory('static', 'regelwerk.pdf', as_attachment=True)
+    return send_from_directory('static', 'Regelwerk.pdf', as_attachment=True)
 
 
 @settings.route('/postregelwerk', methods=['GET', 'POST'])
