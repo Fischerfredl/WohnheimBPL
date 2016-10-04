@@ -147,7 +147,7 @@ def postregelwerk():
             flash('No selected file')
             return redirect(request.url)
         if file and '.' in file.filename and file.filename.rsplit('.', 1)[1] in ['pdf']:
-            filename = 'regelwerk.pdf'
+            filename = 'Regelwerk.pdf'
             file.save(os.path.join(current_app.config['DATABASE'], os.pardir, 'static', filename))
             flash('Regelwerk upload complete')
             return redirect(url_for('settings.home'))
